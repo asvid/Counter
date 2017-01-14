@@ -1,5 +1,4 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:configure="widget.BeerCounterWidgetConfigure"
                     android:initialLayout="@layout/beer_counter_appwidget"
                     android:minHeight="40dp"
                     android:minWidth="40dp"
