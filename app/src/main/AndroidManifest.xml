@@ -3,6 +3,7 @@
           package="asvid.beercounter">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="widget.BeerCounterWidgetConfigurationActivity">
+
+        </activity>
+
         <receiver android:name="widget.BeerCounterWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

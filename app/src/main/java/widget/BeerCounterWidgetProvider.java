@@ -6,19 +6,19 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.util.Random;
-
 import asvid.beercounter.R;
+import asvid.beercounter.data.CounterItem;
 
 /**
  * Created by adam on 14.01.17.
  */
 
 public class BeerCounterWidgetProvider extends AppWidgetProvider {
-    private static final String ACTION_CLICK = "ACTION_CLICK";
+
+    public static final String CLICKED = "CLICKED";
+    public static final String ACTION = "ACTION";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -30,20 +30,17 @@ public class BeerCounterWidgetProvider extends AppWidgetProvider {
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         for (int widgetId : allWidgetIds) {
             // create some random data
-            int number = (new Random().nextInt(100));
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.beer_counter_appwidget);
-            Log.w("WidgetExample", String.valueOf(number));
-            // Set the text
-            remoteViews.setTextViewText(R.id.update, String.valueOf(number));
 
             // Register an onClickListener
             Intent intent = new Intent(context,
                     BeerCounterWidgetProvider.class);
 
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+            intent.putExtra(ACTION, CLICKED);
 
             PendingIntent pendingIntent = PendingIntent
                     .getBroadcast(context, 0, intent,
@@ -52,5 +49,15 @@ public class BeerCounterWidgetProvider extends AppWidgetProvider {
                     pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
+    }
+
+    public static void updateAppWidget(Context context,
+                                       AppWidgetManager appWidgetManager,
+                                       int mAppWidgetId, CounterItem item) {
+        final RemoteViews views = new RemoteViews(context.getPackageName(),
+                R.layout.beer_counter_appwidget);
+        views.setTextViewText(R.id.name, String.valueOf(item.getName()));
+        views.setTextViewText(R.id.value, String.valueOf(item.getValue()));
+        appWidgetManager.updateAppWidget(mAppWidgetId, views);
     }
 }
