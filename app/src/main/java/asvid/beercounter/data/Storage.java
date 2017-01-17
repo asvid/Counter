@@ -43,6 +43,10 @@ public class Storage {
         return realm.where(CounterItem.class).equalTo("id", id).findFirst();
     }
 
+    public CounterWidget getWidget(int id) {
+        return realm.where(CounterWidget.class).equalTo("id", id).findFirst();
+    }
+
     public List<CounterItem> getAllItems() {
         return realm.where(CounterItem.class).findAll();
     }
@@ -57,5 +61,12 @@ public class Storage {
         }
 
         return nextId;
+    }
+
+    public void increaseAndSave(CounterItem item){
+        realm.beginTransaction();
+        item.setValue(item.getValue() + 1);
+        realm.copyToRealmOrUpdate(item);
+        realm.commitTransaction();
     }
 }
