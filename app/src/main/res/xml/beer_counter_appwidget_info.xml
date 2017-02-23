@@ -3,6 +3,6 @@
                     android:initialLayout="@layout/beer_counter_appwidget"
                     android:minHeight="40dp"
                     android:minWidth="40dp"
-                    android:resizeMode="horizontal|vertical"
+                    android:resizeMode="none"
                     android:updatePeriodMillis="86400000">
 </appwidget-provider>
