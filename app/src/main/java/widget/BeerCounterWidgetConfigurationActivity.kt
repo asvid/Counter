@@ -3,15 +3,17 @@ package widget
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
-import asvid.beercounter.App
 import asvid.beercounter.CounterListAdapter
 import asvid.beercounter.CounterListListener
+import asvid.beercounter.Di
 import asvid.beercounter.R
 import asvid.beercounter.data.CounterItem
+import asvid.beercounter.data.CounterItemManager
+import kotlin.properties.Delegates
 
 /**
  * Created by adam on 15.01.17.
@@ -19,9 +21,11 @@ import asvid.beercounter.data.CounterItem
 
 class BeerCounterWidgetConfigurationActivity : Activity(), CounterListListener {
 
-    private val mRowIDs: List<Long>? = null
-    internal var mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private var mAdapter: CounterListAdapter? = null
+
+    private var counterAdapter: CounterListAdapter by Delegates.notNull()
+    private var counterList: RecyclerView by Delegates.notNull()
+
+    private var mAppWidgetId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,46 +51,56 @@ class BeerCounterWidgetConfigurationActivity : Activity(), CounterListListener {
             finish()
         }
 
-        val itemList = (application as App).storage!!.allItems()
-        mAdapter = CounterListAdapter(itemList, this)
-        counterList.adapter = mAdapter
+        setList()
+    }
+
+    private fun setList() {
+        val itemList = CounterItemManager.getAllCounterItems()
+        counterAdapter = CounterListAdapter(itemList, this)
+
+        counterList = findViewById(R.id.counterList) as RecyclerView
+        counterList.adapter = counterAdapter
+        counterList.layoutManager = LinearLayoutManager(this)
     }
 
     private fun addItem(name: String, value: String) {
-        var value = value
         val counterItem = CounterItem()
         counterItem.name = name
-        if (TextUtils.isEmpty(value)) value = "0"
         counterItem.value = Integer.parseInt(value)
-        (application as App).storage!!.saveItem(counterItem)
+        CounterItemManager.saveCounterItem(counterItem)
 
+        createWidget(counterItem)
+    }
+
+    private fun createWidget(counterItem: CounterItem) {
         val widget = CounterWidget()
         widget.counterItem = counterItem
         widget.id = mAppWidgetId.toLong()
-        (application as App).storage!!.saveWidget(widget)
+        Di.storage.saveWidget(widget)
 
         // Request widget update
-        val appWidgetManager = AppWidgetManager.getInstance(this)
-        BeerCounterWidgetProvider.updateAppWidget(this, appWidgetManager, mAppWidgetId,
-            counterItem)
+        BeerCounterWidgetProvider.updateAppWidget(this, mAppWidgetId, counterItem)
 
-        setResult(Activity.RESULT_OK)
+        setResult(RESULT_OK)
         finish()
     }
 
-    override fun onItemDelete(item: CounterItem) {
-
+    override fun onItemDelete(item: CounterItem, position: Int) {
+        CounterItemManager.deleteCounterItem(item)
+        counterAdapter.removeItem(position)
     }
 
-    override fun onItemClicked(item: CounterItem) {
-
+    override fun onItemClicked(item: CounterItem, position: Int) {
+        createWidget(item)
     }
 
-    override fun onItemIncrement(item: CounterItem) {
-
+    override fun onItemIncrement(item: CounterItem, position: Int) {
+        CounterItemManager.incrementAndSave(item)
+        counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemDecrement(item: CounterItem) {
-
+    override fun onItemDecrement(item: CounterItem, position: Int) {
+        CounterItemManager.decrementAndSave(item)
+        counterAdapter.notifyItemChanged(position)
     }
 }

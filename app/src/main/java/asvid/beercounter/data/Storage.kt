@@ -22,7 +22,7 @@ class Storage(context: Context) {
 
     fun saveItem(item: CounterItem) {
         realm.beginTransaction()
-        item.id = getId(CounterItem::class.java).toLong()
+        if (item.id == null) item.id = getId(CounterItem::class.java).toLong()
         realm.copyToRealmOrUpdate(item)
         realm.commitTransaction()
     }
@@ -54,17 +54,32 @@ class Storage(context: Context) {
         return nextId
     }
 
-    fun increaseAndSave(item: CounterItem) {
-        realm.beginTransaction()
-        item.value = item.value!! + 1
-        realm.copyToRealmOrUpdate(item)
-        realm.commitTransaction()
+    fun getCounterItem(id: Long): CounterItem {
+        return realm.copyFromRealm(
+            realm.where(CounterItem::class.java).equalTo("id", id).findFirst())
     }
 
-    fun decreaseAndSave(item: CounterItem) {
-        realm.beginTransaction()
-        item.value = item.value!! - 1
-        realm.copyToRealmOrUpdate(item)
-        realm.commitTransaction()
+    fun deleteWidget(widget: CounterWidget) {
+        deleteObject(
+            realm.where(CounterWidget::class.java).equalTo("id", widget.id?.toInt()!!).findFirst())
+    }
+
+    fun deleteCounter(counter: CounterItem) {
+        deleteObject(
+            realm.where(CounterItem::class.java).equalTo("id", counter.id?.toInt()!!).findFirst())
+    }
+
+    fun deleteObject(realmObject: RealmObject) {
+        if (realmObject.isManaged) {
+            realm.beginTransaction()
+            realmObject.deleteFromRealm()
+            realm.commitTransaction()
+        }
+    }
+
+    fun getWidgetsOfCounter(counter: CounterItem): List<CounterWidget> {
+        return realm.where(CounterWidget::class.java)
+            .equalTo("counterItem.id", counter.id!!)
+            .findAll()
     }
 }

@@ -11,6 +11,12 @@ import io.realm.annotations.PrimaryKey
 open class CounterWidget : RealmObject() {
 
     @PrimaryKey
-    open var id: Long = 0
+    open var id: Long? = null
+
     open var counterItem: CounterItem? = null
+
+    override fun toString(): String {
+        return "CounterWidget(id=$id, counterItem=$counterItem)"
+    }
+
 }

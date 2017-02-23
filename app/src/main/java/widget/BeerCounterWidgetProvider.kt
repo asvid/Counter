@@ -6,31 +6,28 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
-
 import asvid.beercounter.R
 import asvid.beercounter.data.CounterItem
+import asvid.beercounter.data.CounterItemManager
 import asvid.beercounter.data.Storage
+import timber.log.Timber
 
 /**
  * Created by adam on 14.01.17.
  */
 
+
 class BeerCounterWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray) {
-
-        Log.d("WIDGET", "onUpdate ")
         // Get all ids
         val thisWidget = ComponentName(context,
             BeerCounterWidgetProvider::class.java)
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
             // create some random data
-
-            Log.d("WIDGET", "widgetId " + widgetId)
             val remoteViews = RemoteViews(context.packageName,
                 R.layout.beer_counter_appwidget)
 
@@ -42,26 +39,40 @@ class BeerCounterWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        if (intent.action == CLICKED) {
-            val widgetId = intent
-                .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
-            val appWidgetManager = AppWidgetManager
-                .getInstance(context)
-
-            val storage = Storage(context)
-            val widget = storage.getWidget(widgetId)
-
-            val item = widget.counterItem!!
-            storage.increaseAndSave(item)
-
-            updateAppWidget(context, appWidgetManager, widgetId, item)
-
-            Log.d("WIDGET", "onReceive " + widgetId)
+        Timber.d("BeerCounterWidgetProvider onReceive")
+        when (intent.action) {
+            CLICKED -> widgetClicked(context, intent)
+            UPDATE -> widgetUpdate(context, intent)
         }
+    }
+
+    private fun widgetUpdate(context: Context, intent: Intent) {
+        val widgetId = intent
+            .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+        val storage = Storage(context)
+        val widget = storage.getWidget(widgetId)
+        val item = widget.counterItem!!
+        Timber.d("updating widget item: $item widget: $widget")
+        updateAppWidget(context, widgetId, item)
+    }
+
+    private fun widgetClicked(context: Context, intent: Intent) {
+        val widgetId = intent
+            .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1)
+
+
+        val storage = Storage(context)
+        val widget = storage.getWidget(widgetId)
+
+        val item = widget.counterItem!!
+        CounterItemManager.incrementAndSave(item)
+
+        updateAppWidget(context, widgetId, item)
     }
 
     companion object {
 
+        val UPDATE: String = "UPDATE"
         val CLICKED = "CLICKED"
 
         private fun setOnClick(context: Context, widgetId: Int,
@@ -78,8 +89,9 @@ class BeerCounterWidgetProvider : AppWidgetProvider() {
         }
 
         fun updateAppWidget(context: Context,
-            appWidgetManager: AppWidgetManager,
             mAppWidgetId: Int, item: CounterItem) {
+            val appWidgetManager = AppWidgetManager
+                .getInstance(context)
             val views = RemoteViews(context.packageName,
                 R.layout.beer_counter_appwidget)
             views.setTextViewText(R.id.name, item.name.toString())

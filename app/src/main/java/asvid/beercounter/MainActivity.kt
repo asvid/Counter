@@ -9,12 +9,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import asvid.beercounter.data.CounterItem
+import asvid.beercounter.data.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
 
-    private var mAdapter: CounterListAdapter? = null
-    private var counterList: RecyclerView? = null
+    private var counterAdapter: CounterListAdapter by Delegates.notNull()
+    private var counterList: RecyclerView by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +34,12 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     }
 
     private fun setList() {
-        val itemList = (application as App).storage!!.allItems()
-        mAdapter = CounterListAdapter(itemList, this)
+        val itemList = CounterItemManager.getAllCounterItems()
+        counterAdapter = CounterListAdapter(itemList, this)
 
         counterList = findViewById(R.id.counterList) as RecyclerView
-        counterList!!.adapter = mAdapter
-        counterList!!.layoutManager = LinearLayoutManager(this)
+        counterList.adapter = counterAdapter
+        counterList.layoutManager = LinearLayoutManager(this)
     }
 
     private fun showColors() {
@@ -60,29 +62,30 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     }
 
     private fun addItem(name: String, value: String) {
-        var value = value
         val counterItem = CounterItem()
         counterItem.name = name
-        if (TextUtils.isEmpty(value)) value = "0"
-        counterItem.value = Integer.parseInt(value)
-        (application as App).storage!!.saveItem(counterItem)
-        mAdapter!!.addItem(counterItem)
-        counterList!!.adapter = mAdapter
+        if (!TextUtils.isEmpty(value)) counterItem.value = Integer.parseInt(value)
+        CounterItemManager.saveCounterItem(counterItem)
+        counterAdapter.addItem(counterItem)
+        counterList.adapter = counterAdapter
     }
 
-    override fun onItemDelete(item: CounterItem) {
-
+    override fun onItemDelete(item: CounterItem, position: Int) {
+        CounterItemManager.deleteCounterItem(item)
+        counterAdapter.removeItem(position)
     }
 
-    override fun onItemClicked(item: CounterItem) {
-
+    override fun onItemClicked(item: CounterItem, position: Int) {
+//        TODO("show edit dialog")
     }
 
-    override fun onItemIncrement(item: CounterItem) {
-
+    override fun onItemIncrement(item: CounterItem, position: Int) {
+        CounterItemManager.incrementAndSave(item)
+        counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemDecrement(item: CounterItem) {
-
+    override fun onItemDecrement(item: CounterItem, position: Int) {
+        CounterItemManager.decrementAndSave(item)
+        counterAdapter.notifyItemChanged(position)
     }
 }
