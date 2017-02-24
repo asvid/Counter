@@ -1,4 +1,4 @@
-package widget
+package asvid.counter.widget
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
@@ -46,7 +46,7 @@ class CounterWidgetConfigurationActivity : Activity(), CounterListListener {
                 AppWidgetManager.INVALID_APPWIDGET_ID)
         }
 
-        // If they gave us an intent without the widget id, just bail.
+        // If they gave us an intent without the asvid.counter.widget id, just bail.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish()
         }
@@ -78,7 +78,7 @@ class CounterWidgetConfigurationActivity : Activity(), CounterListListener {
         widget.id = mAppWidgetId.toLong()
         Di.storage.saveWidget(widget)
 
-        // Request widget update
+        // Request asvid.counter.widget update
         CounterWidgetProvider.updateAppWidget(this, mAppWidgetId, counterItem)
 
         setResult(RESULT_OK)

@@ -1,4 +1,4 @@
-package widget
+package asvid.counter.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -52,7 +52,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val storage = Storage(context)
         val widget = storage.getWidget(widgetId)
         val item = widget.counterItem!!
-        Timber.d("updating widget item: $item widget: $widget")
+        Timber.d("updating asvid.counter.widget item: $item asvid.counter.widget: $widget")
         updateAppWidget(context, widgetId, item)
     }
 
@@ -85,7 +85,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
             val pendingIntent = PendingIntent
                 .getBroadcast(context, widgetId, intent, 0)
             remoteViews
-                .setOnClickPendingIntent(R.id.`@+id/counterView`, pendingIntent)
+                .setOnClickPendingIntent(R.id.counterView, pendingIntent)
         }
 
         fun updateAppWidget(context: Context,

@@ -4,7 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import asvid.counter.Di
 import asvid.counter.Di.context
-import widget.CounterWidgetProvider
+import asvid.counter.widget.CounterWidgetProvider
 
 object CounterItemManager {
 
