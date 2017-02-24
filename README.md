@@ -1,1 +1,1 @@
-BeerCounter
+Counter
