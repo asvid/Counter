@@ -1,6 +1,6 @@
 package widget
 
-import asvid.beercounter.data.CounterItem
+import asvid.counter.data.CounterItem
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 

@@ -1,4 +1,4 @@
-package asvid.beercounter.data
+package asvid.counter.data
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

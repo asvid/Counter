@@ -7,10 +7,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import asvid.beercounter.R
-import asvid.beercounter.data.CounterItem
-import asvid.beercounter.data.CounterItemManager
-import asvid.beercounter.data.Storage
+import asvid.counter.R
+import asvid.counter.data.CounterItem
+import asvid.counter.data.CounterItemManager
+import asvid.counter.data.Storage
 import timber.log.Timber
 
 /**

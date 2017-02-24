@@ -1,9 +1,9 @@
-package asvid.beercounter.data
+package asvid.counter.data
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import asvid.beercounter.Di
-import asvid.beercounter.Di.context
+import asvid.counter.Di
+import asvid.counter.Di.context
 import widget.BeerCounterWidgetProvider
 
 object CounterItemManager {

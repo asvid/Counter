@@ -1,4 +1,4 @@
-package asvid.beercounter
+package asvid.counter
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -8,8 +8,8 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import asvid.beercounter.data.CounterItem
-import asvid.beercounter.data.CounterItemManager
+import asvid.counter.data.CounterItem
+import asvid.counter.data.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 

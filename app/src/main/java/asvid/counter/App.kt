@@ -1,4 +1,4 @@
-package asvid.beercounter
+package asvid.counter
 
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary

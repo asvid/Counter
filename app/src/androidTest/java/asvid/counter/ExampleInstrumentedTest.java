@@ -1,4 +1,4 @@
-package asvid.beercounter;
+package asvid.counter;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

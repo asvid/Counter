@@ -7,12 +7,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
-import asvid.beercounter.CounterListAdapter
-import asvid.beercounter.CounterListListener
-import asvid.beercounter.Di
-import asvid.beercounter.R
-import asvid.beercounter.data.CounterItem
-import asvid.beercounter.data.CounterItemManager
+import asvid.counter.CounterListAdapter
+import asvid.counter.CounterListListener
+import asvid.counter.Di
+import asvid.counter.R
+import asvid.counter.data.CounterItem
+import asvid.counter.data.CounterItemManager
 import kotlin.properties.Delegates
 
 /**

@@ -1,4 +1,4 @@
-package asvid.beercounter.data
+package asvid.counter.data
 
 import android.content.Context
 import io.realm.Realm
