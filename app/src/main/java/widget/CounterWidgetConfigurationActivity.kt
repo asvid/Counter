@@ -7,19 +7,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.EditText
-import asvid.beercounter.CounterListAdapter
-import asvid.beercounter.CounterListListener
-import asvid.beercounter.Di
-import asvid.beercounter.R
-import asvid.beercounter.data.CounterItem
-import asvid.beercounter.data.CounterItemManager
+import asvid.counter.CounterListAdapter
+import asvid.counter.CounterListListener
+import asvid.counter.Di
+import asvid.counter.R
+import asvid.counter.data.CounterItem
+import asvid.counter.data.CounterItemManager
 import kotlin.properties.Delegates
 
 /**
  * Created by adam on 15.01.17.
  */
 
-class BeerCounterWidgetConfigurationActivity : Activity(), CounterListListener {
+class CounterWidgetConfigurationActivity : Activity(), CounterListListener {
 
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
@@ -30,7 +30,7 @@ class BeerCounterWidgetConfigurationActivity : Activity(), CounterListListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setResult(Activity.RESULT_CANCELED)
-        setContentView(R.layout.beer_counter_widget_configuration_activity)
+        setContentView(R.layout.counter_widget_configuration_activity)
 
         val counterList = findViewById(R.id.counterList) as RecyclerView
         val name = findViewById(R.id.name) as EditText
@@ -79,7 +79,7 @@ class BeerCounterWidgetConfigurationActivity : Activity(), CounterListListener {
         Di.storage.saveWidget(widget)
 
         // Request widget update
-        BeerCounterWidgetProvider.updateAppWidget(this, mAppWidgetId, counterItem)
+        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId, counterItem)
 
         setResult(RESULT_OK)
         finish()

@@ -1,4 +1,4 @@
-package asvid.beercounter;
+package asvid.counter;
 
 import org.junit.Test;
 

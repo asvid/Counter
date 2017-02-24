@@ -1,6 +1,6 @@
-package asvid.beercounter
+package asvid.counter
 
-import asvid.beercounter.data.CounterItem
+import asvid.counter.data.CounterItem
 
 interface CounterListListener {
     fun onItemDelete(item: CounterItem, position: Int)

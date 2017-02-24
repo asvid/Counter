@@ -1,7 +1,7 @@
-package asvid.beercounter
+package asvid.counter
 
 import android.content.Context
-import asvid.beercounter.data.Storage
+import asvid.counter.data.Storage
 import kotlin.properties.Delegates
 
 object Di {

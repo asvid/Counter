@@ -1,10 +1,10 @@
-package asvid.beercounter.data
+package asvid.counter.data
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import asvid.beercounter.Di
-import asvid.beercounter.Di.context
-import widget.BeerCounterWidgetProvider
+import asvid.counter.Di
+import asvid.counter.Di.context
+import widget.CounterWidgetProvider
 
 object CounterItemManager {
 
@@ -15,8 +15,8 @@ object CounterItemManager {
     }
 
     private fun updateWidget(id: Long?) {
-        val intent = Intent(context, BeerCounterWidgetProvider::class.java)
-        intent.action = BeerCounterWidgetProvider.UPDATE
+        val intent = Intent(context, CounterWidgetProvider::class.java)
+        intent.action = CounterWidgetProvider.UPDATE
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id?.toInt())
 
         context.sendBroadcast(intent)

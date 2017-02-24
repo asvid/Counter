@@ -28,7 +28,7 @@ android {
   compileSdkVersion rootProject.compileSdkVersion
   buildToolsVersion rootProject.buildToolsVersion
   defaultConfig {
-    applicationId "asvid.beercounter"
+    applicationId "asvid.counter"
     minSdkVersion rootProject.minSdkVersion
     targetSdkVersion rootProject.targetSdkVersion
     versionCode versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild

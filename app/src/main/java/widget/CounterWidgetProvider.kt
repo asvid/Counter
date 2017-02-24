@@ -7,10 +7,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import asvid.beercounter.R
-import asvid.beercounter.data.CounterItem
-import asvid.beercounter.data.CounterItemManager
-import asvid.beercounter.data.Storage
+import asvid.counter.R
+import asvid.counter.data.CounterItem
+import asvid.counter.data.CounterItemManager
+import asvid.counter.data.Storage
 import timber.log.Timber
 
 /**
@@ -18,18 +18,18 @@ import timber.log.Timber
  */
 
 
-class BeerCounterWidgetProvider : AppWidgetProvider() {
+class CounterWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray) {
         // Get all ids
         val thisWidget = ComponentName(context,
-            BeerCounterWidgetProvider::class.java)
+            CounterWidgetProvider::class.java)
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
             // create some random data
             val remoteViews = RemoteViews(context.packageName,
-                R.layout.beer_counter_appwidget)
+                R.layout.counter_appwidget)
 
             // Register an onClickListener
             setOnClick(context, widgetId, remoteViews)
@@ -39,7 +39,7 @@ class BeerCounterWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        Timber.d("BeerCounterWidgetProvider onReceive")
+        Timber.d("CounterWidgetProvider onReceive")
         when (intent.action) {
             CLICKED -> widgetClicked(context, intent)
             UPDATE -> widgetUpdate(context, intent)
@@ -77,7 +77,7 @@ class BeerCounterWidgetProvider : AppWidgetProvider() {
 
         private fun setOnClick(context: Context, widgetId: Int,
             remoteViews: RemoteViews) {
-            val intent = Intent(context, BeerCounterWidgetProvider::class.java)
+            val intent = Intent(context, CounterWidgetProvider::class.java)
 
             intent.action = CLICKED
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
@@ -85,7 +85,7 @@ class BeerCounterWidgetProvider : AppWidgetProvider() {
             val pendingIntent = PendingIntent
                 .getBroadcast(context, widgetId, intent, 0)
             remoteViews
-                .setOnClickPendingIntent(R.id.beerCounterView, pendingIntent)
+                .setOnClickPendingIntent(R.id.`@+id/counterView`, pendingIntent)
         }
 
         fun updateAppWidget(context: Context,
@@ -93,7 +93,7 @@ class BeerCounterWidgetProvider : AppWidgetProvider() {
             val appWidgetManager = AppWidgetManager
                 .getInstance(context)
             val views = RemoteViews(context.packageName,
-                R.layout.beer_counter_appwidget)
+                R.layout.counter_appwidget)
             views.setTextViewText(R.id.name, item.name.toString())
             views.setTextViewText(R.id.value, item.value.toString())
             setOnClick(context, mAppWidgetId, views)
