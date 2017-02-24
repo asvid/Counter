@@ -1,4 +1,4 @@
-package widget
+package asvid.counter.widget
 
 import asvid.counter.data.CounterItem
 import io.realm.RealmObject

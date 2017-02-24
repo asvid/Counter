@@ -4,7 +4,7 @@ import android.content.Context
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmObject
-import widget.CounterWidget
+import asvid.counter.widget.CounterWidget
 
 /**
  * Created by adam on 15.01.17.
