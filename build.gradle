@@ -1,23 +1,44 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+  ext.kotlin_version = '1.0.1-2'
+
+  ext {
+    supportLibraryVersion = "25.2.0"
+    buildToolsVersion = "25"
+    google_services_version = '10.0.1'
+    compileSdkVersion = 25
+    minSdkVersion = 16
+    targetSdkVersion = 25
+  }
+
+  repositories {
+    jcenter()
+    maven {
+      url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
     }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.3'
+    classpath "io.realm:realm-gradle-plugin:2.2.2"
+    classpath 'com.google.gms:google-services:3.0.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
+  repositories {
+    jcenter()
+    maven {
+      url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
     }
+    maven { url 'http://github.com/wada811/Android-Material-Design-Colors/raw/master/repository/' }
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }

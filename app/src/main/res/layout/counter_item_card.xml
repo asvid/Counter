@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/card_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    card_view:cardCornerRadius="4dp"
+                                    card_view:cardUseCompatPadding="true"
+                                    card_view:contentPadding="5dp"
+    >
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+      <TextView
+          android:id="@+id/name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="ITEM NAME"
+          android:textColor="@color/colorAccent"
+          />
+      <com.mikepenz.iconics.view.IconicsButton
+          android:id="@+id/deleteButton"
+          android:layout_height="20dp"
+          android:layout_gravity="right"
+          android:text="{faw-trash}"
+          android:textColor="@color/md_grey_900"
+          style="@style/ListButton"
+          />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+      <TextView
+          android:id="@+id/value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="10dp"
+          android:text="VALUE "
+          android:textColor="@android:color/black"
+          android:textSize="30dp"
+          />
+
+      <com.mikepenz.iconics.view.IconicsButton
+          android:id="@+id/incrementButton"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="10dp"
+          android:text="{faw-plus-square-o}"
+          android:textColor="@color/md_grey_900"
+          android:textSize="30dp"
+          style="@style/ListButton"
+          />
+      <com.mikepenz.iconics.view.IconicsButton
+          android:id="@+id/decrementButton"
+          android:layout_height="wrap_content"
+          android:text="{faw-minus-square-o}"
+          android:textColor="@color/md_grey_900"
+          android:textSize="30dp"
+          style="@style/ListButton"
+          />
+    </LinearLayout>
+  </LinearLayout>
+
+</android.support.v7.widget.CardView>
