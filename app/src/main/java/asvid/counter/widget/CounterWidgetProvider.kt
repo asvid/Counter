@@ -94,8 +94,9 @@ class CounterWidgetProvider : AppWidgetProvider() {
                 .getInstance(context)
             val views = RemoteViews(context.packageName,
                 R.layout.counter_appwidget)
-            views.setTextViewText(R.id.name, item.name.toString())
+            views.setTextViewText(R.id.name, item.name)
             views.setTextViewText(R.id.value, item.value.toString())
+//            views.setInt(R.id.counterView, "setStrokeColor", 0)
             setOnClick(context, mAppWidgetId, views)
             appWidgetManager.updateAppWidget(mAppWidgetId, views)
         }

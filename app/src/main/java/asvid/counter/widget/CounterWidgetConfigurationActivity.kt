@@ -32,7 +32,6 @@ class CounterWidgetConfigurationActivity : Activity(), CounterListListener {
         setResult(Activity.RESULT_CANCELED)
         setContentView(R.layout.counter_widget_configuration_activity)
 
-        val counterList = findViewById(R.id.counterList) as RecyclerView
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
         val addButton = findViewById(R.id.addButton) as Button

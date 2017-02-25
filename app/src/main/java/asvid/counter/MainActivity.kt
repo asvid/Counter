@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setList()
 
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
@@ -87,5 +86,10 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     override fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setList()
     }
 }

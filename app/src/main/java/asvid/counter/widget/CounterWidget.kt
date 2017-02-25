@@ -12,6 +12,7 @@ open class CounterWidget : RealmObject() {
 
     @PrimaryKey
     open var id: Long? = null
+    var color: String? = null
 
     open var counterItem: CounterItem? = null
 

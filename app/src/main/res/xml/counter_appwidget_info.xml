@@ -1,8 +1,6 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
                     android:configure="asvid.counter.widget.CounterWidgetConfigurationActivity"
                     android:initialLayout="@layout/counter_appwidget"
-                    android:minHeight="40dp"
-                    android:minWidth="40dp"
+                    android:previewImage="@mipmap/ic_launcher"
                     android:resizeMode="none"
-                    android:updatePeriodMillis="86400000">
-</appwidget-provider>
+                    android:updatePeriodMillis="86400000" />

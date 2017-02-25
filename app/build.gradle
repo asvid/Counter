@@ -67,7 +67,8 @@ dependencies {
   compile "com.thebluealliance:spectrum:0.7.1"
   compile "com.wada811:android-material-design-colors:3.0.0"
   compile 'com.jakewharton.timber:timber:4.5.1'
-
+  compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
+  
   compile "com.mikepenz:iconics-core:2.8.1@aar"
   compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
   testCompile "junit:junit:4.12"
