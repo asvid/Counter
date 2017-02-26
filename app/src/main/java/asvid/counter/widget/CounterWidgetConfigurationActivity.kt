@@ -16,18 +16,15 @@ import asvid.counter.CounterListAdapter
 import asvid.counter.CounterListListener
 import asvid.counter.Di
 import asvid.counter.R
+import asvid.counter.R.color
+import asvid.counter.R.id
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
-/**
- * Created by adam on 15.01.17.
- */
-
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
-
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
@@ -46,32 +43,37 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
 
         Di.analyticsHelper.sendScreenName(this, "CounterWidgetConfigurationActivity")
 
-        widgetColor = findViewById(R.id.widgetColor) as ImageView
+        setView()
+        handleIntent()
+        setList()
+    }
+
+    private fun setView() {
+        widgetColor = findViewById(id.widgetColor) as ImageView
         widgetColor.setOnClickListener {
             showColors()
         }
-        widgetColorValue = resources.getColor(R.color.colorAccent)
-        name = findViewById(R.id.name) as EditText
-        value = findViewById(R.id.value) as EditText
-        val addButton = findViewById(R.id.addButton) as Button
-
+        widgetColorValue = resources.getColor(color.colorAccent)
+        name = findViewById(id.name) as EditText
         name.addTextChangedListener(this)
+
+        value = findViewById(id.value) as EditText
         value.addTextChangedListener(this)
 
+        val addButton = findViewById(id.addButton) as Button
         addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
+    }
 
+    private fun handleIntent() {
         val intent = intent
         val extras = intent.extras
         if (extras != null) {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID)
         }
-
-        // If they gave us an intent without the asvid.counter.widget id, just bail.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish()
         }
-        setList()
     }
 
     private fun setList() {
@@ -99,7 +101,6 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.color = widgetColorValue
         Di.storage.saveWidget(widget)
 
-        // Request asvid.counter.widget update
         CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
 
         setResult(RESULT_OK)

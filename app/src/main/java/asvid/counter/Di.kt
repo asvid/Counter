@@ -2,7 +2,7 @@ package asvid.counter
 
 import android.content.Context
 import asvid.counter.data.Storage
-import asvid.counter.Config
+import com.aswiderski.frigo.Config
 import com.aswiderski.frigo.analytics.AnalyticsHelper
 import kotlin.properties.Delegates
 
