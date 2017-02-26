@@ -16,10 +16,6 @@ import com.mikepenz.iconics.view.IconicsButton
 class CounterListAdapter(private val items: MutableList<CounterItem>,
     private val listener: CounterListListener) : RecyclerView.Adapter<CounterListAdapter.CounterItemViewHolder>() {
 
-    init {
-        Log.d("CounterListAdapter", "list: " + items)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.counter_item_card, parent, false)
@@ -28,7 +24,6 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
 
     override fun onBindViewHolder(holder: CounterItemViewHolder, position: Int) {
         val item = items[position]
-        Log.d("CounterListAdapter", "item: " + item)
         if (item.isValid) {
             holder.item = item
             holder.name.text = item.name
