@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Licznik</string>
+  <string name="counter_name">Nazwa licznika</string>
+  <string name="starting_value">Wartość początkowa</string>
+  <string name="add">Dodaj</string>
+  <string name="available_counters">Dostępne liczniki:</string>
+  <string name="add_new_counter">Dodaj nowy licznik:</string>
+  <string name="or_select_existing_one">Lub wybierz istniejący</string>
+  <string name="select_widget_color">Wybierz kolor licznika, klikając na obrazek</string>
+  <string name="counter_removed">Licznik usunięty</string>
+  <string name="cancel">Anuluj</string>
+  <string name="select_color">Wybierz kolor widgetu</string>
+</resources>

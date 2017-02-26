@@ -1,0 +1,41 @@
+package com.aswiderski.frigo.analytics
+
+import android.app.Activity
+import android.content.Context
+import android.os.Bundle
+import asvid.counter.analytics.enums.Action
+import asvid.counter.analytics.enums.Category
+import com.google.firebase.analytics.FirebaseAnalytics
+
+class AnalyticsHelper private constructor(builder: Builder) {
+    var analytics = FirebaseAnalytics.getInstance(builder.context)
+    var isDebug = builder.isDebug
+
+    fun sendEvent(category: Category, action: Action, label: String) {
+        if (!isDebug) {
+            val params = Bundle()
+            params.putString("ACTION", action.toString())
+            params.putString("LABEL", label)
+            analytics.logEvent(category.toString(), params)
+        }
+    }
+
+    fun sendScreenName(activity: Activity, screen: String) {
+        if (!isDebug) {
+            analytics.setCurrentScreen(activity, screen, null)
+        }
+    }
+
+    class Builder(val context: Context) {
+        var isDebug = true
+
+        fun setDebug(isDevelop: Boolean): Builder {
+            this.isDebug = isDevelop
+            return this
+        }
+
+        fun build(): AnalyticsHelper {
+            return AnalyticsHelper(this)
+        }
+    }
+}

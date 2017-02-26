@@ -1,10 +1,10 @@
 package asvid.counter.data
 
 import android.content.Context
+import asvid.counter.widget.CounterWidget
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmObject
-import widget.CounterWidget
 
 /**
  * Created by adam on 15.01.17.
@@ -81,5 +81,9 @@ class Storage(context: Context) {
         return realm.where(CounterWidget::class.java)
             .equalTo("counterItem.id", counter.id!!)
             .findAll()
+    }
+
+    fun getAllWidgets(): MutableList<CounterWidget> {
+        return realm.where(CounterWidget::class.java).findAll()
     }
 }

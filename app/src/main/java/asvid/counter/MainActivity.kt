@@ -5,28 +5,29 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View.GONE
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.TextView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
-import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
+    private var availableCountersText: TextView by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setList()
-
+        Di.analyticsHelper.sendScreenName(this, "MainActivity")
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
         val addButton = findViewById(R.id.addButton) as Button
+        availableCountersText = findViewById(R.id.availableCountersText) as TextView
 
         addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
 
@@ -35,30 +36,12 @@ class MainActivity : AppCompatActivity(), CounterListListener {
 
     private fun setList() {
         val itemList = CounterItemManager.getAllCounterItems()
+        if (itemList.isEmpty()) availableCountersText.visibility = GONE
         counterAdapter = CounterListAdapter(itemList, this)
 
         counterList = findViewById(R.id.counterList) as RecyclerView
         counterList.adapter = counterAdapter
         counterList.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun showColors() {
-        SpectrumDialog.Builder(this).setColors(R.array.demo_colors)
-            .setSelectedColorRes(R.color.md_blue_500)
-            .setDismissOnColorSelected(true)
-            .setOutlineWidth(2)
-            .setOnColorSelectedListener { positiveResult, color ->
-                if (positiveResult) {
-                    Toast.makeText(this@MainActivity,
-                        "Color selected: #" + Integer.toHexString(color).toUpperCase(),
-                        Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@MainActivity, "Dialog cancelled", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-            .build()
-            .show(supportFragmentManager, "dialog_demo_1")
     }
 
     private fun addItem(name: String, value: String) {
@@ -87,5 +70,10 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     override fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setList()
     }
 }

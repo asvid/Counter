@@ -5,7 +5,7 @@ apply plugin: 'realm-android'
 def versionMajor = 0
 def versionMinor = 1
 def versionPatch = 0
-def versionBuild = 0
+def versionBuild = 1
 
 buildscript {
   repositories {
@@ -25,6 +25,17 @@ repositories {
 }
 
 android {
+  signingConfigs {
+    release
+  }
+  def props = new Properties()
+
+  props.load(new FileInputStream(rootProject.file("signing.conf")))
+  android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
+  android.signingConfigs.release.storePassword props.keyStorePassword
+  android.signingConfigs.release.keyAlias props.keyAlias
+  android.signingConfigs.release.keyPassword props.keyAliasPassword
+
   compileSdkVersion rootProject.compileSdkVersion
   buildToolsVersion rootProject.buildToolsVersion
   defaultConfig {
@@ -39,8 +50,10 @@ android {
   }
   buildTypes {
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
+      zipAlignEnabled true
     }
   }
   sourceSets {
@@ -52,27 +65,28 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile fileTree(include: ['*.jar'], dir: 'libs')
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
   compile "com.android.support:appcompat-v7:$supportLibraryVersion"
   compile "com.android.support:preference-v7:$supportLibraryVersion"
   compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
   compile "com.android.support:cardview-v7:$supportLibraryVersion"
   compile "com.android.support:design:$supportLibraryVersion"
-  compile "com.thebluealliance:spectrum:0.7.1"
-  compile "com.wada811:android-material-design-colors:3.0.0"
+  compile 'com.google.firebase:firebase-core:10.2.0'
+  compile 'com.thebluealliance:spectrum:0.7.1'
+  compile 'com.wada811:android-material-design-colors:3.0.0'
   compile 'com.jakewharton.timber:timber:4.5.1'
-
-  compile "com.mikepenz:iconics-core:2.8.1@aar"
+  compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
+  compile 'com.mikepenz:iconics-core:2.8.1@aar'
   compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
-  testCompile "junit:junit:4.12"
 
+  testCompile 'junit:junit:4.12'
   debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
   releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
   testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }
+
+apply plugin: 'com.google.gms.google-services'
