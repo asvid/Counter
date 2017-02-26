@@ -27,16 +27,7 @@ import kotlin.properties.Delegates
  */
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
-    override fun afterTextChanged(p0: Editable?) {
-        drawWidgetImage()
-    }
 
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
@@ -52,6 +43,8 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         super.onCreate(savedInstanceState)
         setResult(Activity.RESULT_CANCELED)
         setContentView(R.layout.counter_widget_configuration_activity)
+
+        Di.analyticsHelper.sendScreenName(this, "CounterWidgetConfigurationActivity")
 
         widgetColor = findViewById(R.id.widgetColor) as ImageView
         widgetColor.setOnClickListener {
@@ -118,6 +111,8 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             .setSelectedColorRes(R.color.md_blue_500)
             .setDismissOnColorSelected(true)
             .setOutlineWidth(2)
+            .setTitle(resources.getString(R.string.select_widget_color))
+            .setNegativeButtonText(R.string.cancel)
             .setOnColorSelectedListener { positiveResult, color ->
                 if (positiveResult) {
                     widgetColorValue = color
@@ -160,5 +155,16 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     override fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
+    }
+
+    override fun afterTextChanged(p0: Editable?) {
+        drawWidgetImage()
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
     }
 }

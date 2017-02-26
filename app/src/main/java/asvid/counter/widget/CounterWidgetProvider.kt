@@ -7,10 +7,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
+import asvid.counter.analytics.enums.Action
+import asvid.counter.analytics.enums.Category
 import timber.log.Timber
 
 /**
@@ -57,6 +60,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
     }
 
     private fun widgetDeleted(context: Context, widgetId: Long) {
+        Di.analyticsHelper.sendEvent(Category.WIDGET, Action.DELETE, "")
         val storage = Storage(context)
         val widget = storage.getWidget(widgetId.toInt())
 
@@ -74,6 +78,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
     }
 
     private fun widgetClicked(context: Context, widgetId: Long) {
+        Di.analyticsHelper.sendEvent(Category.WIDGET, Action.CLICKED, "")
         val storage = Storage(context)
         Timber.d("widgetClicked: $widgetId")
         val widget = storage.getWidget(widgetId.toInt())

@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        Di.analyticsHelper.sendScreenName(this, "MainActivity")
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
         val addButton = findViewById(R.id.addButton) as Button

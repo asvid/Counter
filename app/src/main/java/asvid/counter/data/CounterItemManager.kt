@@ -4,6 +4,8 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import asvid.counter.Di
 import asvid.counter.Di.context
+import asvid.counter.analytics.enums.Action
+import asvid.counter.analytics.enums.Category
 import asvid.counter.widget.CounterWidgetProvider
 
 object CounterItemManager {
@@ -32,7 +34,9 @@ object CounterItemManager {
     }
 
     fun getAllCounterItems(): MutableList<CounterItem> {
-        return Di.storage.allItems()
+        val allItems = Di.storage.allItems()
+        Di.analyticsHelper.sendEvent(Category.COUNTER, Action.ALL_ITEMS, "${allItems.size}")
+        return allItems
     }
 
     fun getCounterItem(id: Long): CounterItem {
@@ -41,9 +45,11 @@ object CounterItemManager {
 
     fun saveCounterItem(counterItem: CounterItem) {
         Di.storage.saveItem(counterItem)
+        Di.analyticsHelper.sendEvent(Category.COUNTER, Action.ADD, "")
     }
 
     fun deleteCounterItem(item: CounterItem) {
+        Di.analyticsHelper.sendEvent(Category.COUNTER, Action.DELETE, "")
         Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
         Di.storage.deleteCounter(item)
     }

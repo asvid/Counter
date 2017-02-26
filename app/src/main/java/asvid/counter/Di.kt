@@ -2,6 +2,8 @@ package asvid.counter
 
 import android.content.Context
 import asvid.counter.data.Storage
+import asvid.counter.Config
+import com.aswiderski.frigo.analytics.AnalyticsHelper
 import kotlin.properties.Delegates
 
 object Di {
@@ -14,5 +16,9 @@ object Di {
 
     val storage: Storage by lazy {
         Storage(context)
+    }
+
+    val analyticsHelper: AnalyticsHelper by lazy {
+        AnalyticsHelper.Builder(context).setDebug(Config.isDevelop).build()
     }
 }

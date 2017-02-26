@@ -9,4 +9,6 @@
   <string name="or_select_existing_one">Lub wybierz istniejący</string>
   <string name="select_widget_color">Wybierz kolor licznika, klikając na obrazek</string>
   <string name="counter_removed">Licznik usunięty</string>
+  <string name="cancel">Anuluj</string>
+  <string name="select_color">Wybierz kolor widgetu</string>
 </resources>

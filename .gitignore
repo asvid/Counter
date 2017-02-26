@@ -11,3 +11,9 @@
 keystore\.jks
 
 signing\.conf
+
+Google Play Android Developer-f879e9689c0b\.json
+
+app/google-services\.json
+
+fastlane/
