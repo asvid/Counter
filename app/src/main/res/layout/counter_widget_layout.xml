@@ -8,24 +8,26 @@
 
   <TextView
       android:id="@+id/value"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
+      android:layout_gravity="bottom|center"
       android:ellipsize="end"
+      android:gravity="center"
       android:lines="1"
       android:padding="5dp"
       android:text="777"
-      android:textColor="@color/widget_value"
-      android:textSize="30dp"
+      android:textColor="@color/md_grey_50"
+      android:textSize="26dp"
       />
   <TextView
       android:id="@+id/name"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_gravity="top|center"
+      android:gravity="center"
       android:padding="10dp"
-      android:text="Name"
-      android:textAlignment="center"
-      android:textColor="@color/widget_name"
+      android:text="Cycki na plaży"
+      android:textColor="@color/md_grey_200"
+      android:textSize="8dp"
       />
 </FrameLayout>

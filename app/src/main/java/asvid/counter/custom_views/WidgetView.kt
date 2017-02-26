@@ -1,19 +1,23 @@
 package asvid.counter.custom_views
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.TextView
-import asvid.counter.Di
 import asvid.counter.R
-import timber.log.Timber
+import asvid.counter.dpToPx
 
-class WidgetBackground(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
+val SIZE_IN_DP = 68
+val STROKE_SIZE_IN_ID = 5
+
+class WidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     defStyleRes: Int) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-    var name: TextView
-    var value: TextView
+    var nameView: TextView
+    var valueView: TextView
     var counterView: FrameLayout
 
     constructor(context: Context) : this(context, null, 0, 0)
@@ -23,22 +27,30 @@ class WidgetBackground(context: Context, attrs: AttributeSet?, defStyleAttr: Int
 
     init {
         inflate(getContext(), R.layout.counter_widget_layout, this)
-        this.name = findViewById(R.id.name) as TextView
-        this.value = findViewById(R.id.value) as TextView
+        this.nameView = findViewById(R.id.name) as TextView
+        this.valueView = findViewById(R.id.value) as TextView
         this.counterView = findViewById(R.id.counterView) as FrameLayout
     }
 
     fun setStrokeColor(value: Int?) {
-        Timber.d("setting stroke color to: $value")
         val drawable = counterView.background as GradientDrawable
-        drawable.setStroke(Di.utils.dpToPx(5), value!!)
+        drawable.setStroke(dpToPx(STROKE_SIZE_IN_ID), value!!)
     }
 
     fun setNameText(nameText: String?) {
-        this.name.text = nameText
+        this.nameView.text = nameText
     }
 
     fun setValueText(valueText: Int?) {
-        this.value.text = valueText?.toString()
+        this.valueView.text = valueText?.toString()
+    }
+
+    fun getBitmap(): Bitmap {
+        val size = dpToPx(SIZE_IN_DP)
+        this.measure(size, size)
+        this.layout(0, 0, size, size)
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        this.draw(Canvas(bitmap))
+        return bitmap
     }
 }

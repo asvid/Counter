@@ -18,5 +18,11 @@
     <item name="android:background">@android:color/transparent</item>
     <item name="android:layout_width">30dp</item>
   </style>
+  <style name="TextShadow">
+    <item name="android:shadowColor">#000000</item>
+    <item name="android:shadowDx">1</item>
+    <item name="android:shadowDy">1</item>
+    <item name="android:shadowRadius">1</item>
+  </style>
 
 </resources>

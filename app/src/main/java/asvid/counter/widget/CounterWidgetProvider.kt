@@ -6,14 +6,9 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
 import android.widget.RemoteViews
-import asvid.counter.Di
 import asvid.counter.R
-import asvid.counter.custom_views.WidgetBackground
-import asvid.counter.data.CounterItem
+import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
 import timber.log.Timber
@@ -100,18 +95,11 @@ class CounterWidgetProvider : AppWidgetProvider() {
             val views = RemoteViews(context.packageName,
                 R.layout.counter_appwidget)
 
-
-            val myView = WidgetBackground(context)
-            val size = Di.utils.dpToPx(68)
-            myView.measure(size, size)
-            myView.layout(0, 0, size, size)
-            myView.setNameText(item.counterItem?.name)
-            myView.setValueText(item.counterItem?.value)
-            myView.setStrokeColor(item.color)
-
-            val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-            myView.draw(Canvas(bitmap))
-            views.setImageViewBitmap(R.id.imageView, bitmap)
+            val widgetView = WidgetView(context)
+            widgetView.setNameText(item.counterItem?.name)
+            widgetView.setValueText(item.counterItem?.value)
+            widgetView.setStrokeColor(item.color)
+            views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
 
             setOnClick(context, mAppWidgetId, views)
             appWidgetManager.updateAppWidget(mAppWidgetId, views)

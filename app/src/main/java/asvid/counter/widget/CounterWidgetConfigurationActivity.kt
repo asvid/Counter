@@ -2,8 +2,8 @@ package asvid.counter.widget
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -15,8 +15,10 @@ import asvid.counter.CounterListAdapter
 import asvid.counter.CounterListListener
 import asvid.counter.Di
 import asvid.counter.R
+import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
+import asvid.counter.dpToPx
 import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
@@ -30,6 +32,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
     private var widgetColor: ImageView by Delegates.notNull()
+    private var widgetColorValue: Int = R.color.colorAccent
 
     private var mAppWidgetId: Int = -1
 
@@ -85,9 +88,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         val widget = CounterWidget()
         widget.counterItem = counterItem
         widget.id = mAppWidgetId.toLong()
-
-        val drawable = widgetColor.background as ColorDrawable
-        widget.color = drawable.color
+        widget.color = widgetColorValue
         Di.storage.saveWidget(widget)
 
         // Request asvid.counter.widget update
@@ -104,12 +105,25 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             .setOutlineWidth(2)
             .setOnColorSelectedListener { positiveResult, color ->
                 if (positiveResult) {
-                    widgetColor.setBackgroundColor(
-                        Color.parseColor("#" + Integer.toHexString(color).toUpperCase()))
+                    widgetColorValue = color
+                    drawWidgetImage(color)
                 }
             }
             .build()
             .show(supportFragmentManager, "dialog_demo_1")
+    }
+
+    private fun drawWidgetImage(color: Int) {
+        val myView = WidgetView(this)
+        val size = dpToPx(68)
+        myView.measure(size, size)
+        myView.layout(0, 0, size, size)
+        myView.setNameText("name")
+        myView.setValueText(7)
+        myView.setStrokeColor(color)
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        myView.draw(Canvas(bitmap))
+        widgetColor.setImageBitmap(bitmap)
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {

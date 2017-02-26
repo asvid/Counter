@@ -15,8 +15,4 @@ object Di {
     val storage: Storage by lazy {
         Storage(context)
     }
-
-    val utils: Utils by lazy {
-        Utils(context)
-    }
 }

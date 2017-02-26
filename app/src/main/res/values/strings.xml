@@ -4,4 +4,7 @@
   <string name="starting_value">Starting value</string>
   <string name="add">Add</string>
   <string name="available_counters">Available counters:</string>
+  <string name="add_new_counter">Add new counter:</string>
+  <string name="or_select_existing_one">Or select existing one</string>
+  <string name="select_widget_color">Select widget color</string>
 </resources>
