@@ -10,8 +10,7 @@ object CounterItemManager {
 
     fun incrementAndSave(item: CounterItem) {
         item.incrementValue()
-        Di.storage.saveItem(item)
-        Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
+        saveAndUpdateWidget(item)
     }
 
     private fun updateWidget(id: Long?) {
@@ -24,6 +23,10 @@ object CounterItemManager {
 
     fun decrementAndSave(item: CounterItem) {
         item.decrementValue()
+        saveAndUpdateWidget(item)
+    }
+
+    private fun saveAndUpdateWidget(item: CounterItem) {
         Di.storage.saveItem(item)
         Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
     }
@@ -41,6 +44,7 @@ object CounterItemManager {
     }
 
     fun deleteCounterItem(item: CounterItem) {
+        Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
         Di.storage.deleteCounter(item)
     }
 

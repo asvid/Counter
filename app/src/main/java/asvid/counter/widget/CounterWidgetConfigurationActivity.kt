@@ -2,12 +2,13 @@ package asvid.counter.widget
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,7 +19,6 @@ import asvid.counter.R
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
-import asvid.counter.dpToPx
 import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
@@ -26,13 +26,25 @@ import kotlin.properties.Delegates
  * Created by adam on 15.01.17.
  */
 
-class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener {
+class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
+    override fun afterTextChanged(p0: Editable?) {
+        drawWidgetImage()
+    }
 
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+    }
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+    }
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
     private var widgetColor: ImageView by Delegates.notNull()
-    private var widgetColorValue: Int = R.color.colorAccent
+    private var widgetColorValue: Int by Delegates.notNull()
+
+    private var name: EditText by Delegates.notNull()
+    private var value: EditText by Delegates.notNull()
 
     private var mAppWidgetId: Int = -1
 
@@ -45,10 +57,13 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widgetColor.setOnClickListener {
             showColors()
         }
-
-        val name = findViewById(R.id.name) as EditText
-        val value = findViewById(R.id.value) as EditText
+        widgetColorValue = resources.getColor(R.color.colorAccent)
+        name = findViewById(R.id.name) as EditText
+        value = findViewById(R.id.value) as EditText
         val addButton = findViewById(R.id.addButton) as Button
+
+        name.addTextChangedListener(this)
+        value.addTextChangedListener(this)
 
         addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
 
@@ -92,7 +107,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         Di.storage.saveWidget(widget)
 
         // Request asvid.counter.widget update
-        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId, widget)
+        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
 
         setResult(RESULT_OK)
         finish()
@@ -106,24 +121,26 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             .setOnColorSelectedListener { positiveResult, color ->
                 if (positiveResult) {
                     widgetColorValue = color
-                    drawWidgetImage(color)
+                    drawWidgetImage()
                 }
             }
             .build()
             .show(supportFragmentManager, "dialog_demo_1")
     }
 
-    private fun drawWidgetImage(color: Int) {
+    private fun drawWidgetImage() {
         val myView = WidgetView(this)
-        val size = dpToPx(68)
-        myView.measure(size, size)
-        myView.layout(0, 0, size, size)
-        myView.setNameText("name")
-        myView.setValueText(7)
-        myView.setStrokeColor(color)
-        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-        myView.draw(Canvas(bitmap))
-        widgetColor.setImageBitmap(bitmap)
+        val nameString = name.text.toString()
+        var valueString = value.text.toString()
+
+        if (TextUtils.isEmpty(valueString)) {
+            valueString = "0"
+        }
+
+        myView.setNameText(nameString)
+        myView.setValueText(valueString.toInt())
+        myView.setStrokeColor(widgetColorValue)
+        widgetColor.setImageBitmap(myView.getBitmap())
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {

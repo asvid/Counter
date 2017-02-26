@@ -6,5 +6,6 @@
   <string name="available_counters">Available counters:</string>
   <string name="add_new_counter">Add new counter:</string>
   <string name="or_select_existing_one">Or select existing one</string>
-  <string name="select_widget_color">Select widget color</string>
+  <string name="select_widget_color">Select widget color, by clicking on image</string>
+  <string name="counter_removed">Counter removed</string>
 </resources>

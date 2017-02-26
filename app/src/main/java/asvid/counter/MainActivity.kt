@@ -5,18 +5,19 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View.GONE
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.TextView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
-import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
+    private var availableCountersText: TextView by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
         val addButton = findViewById(R.id.addButton) as Button
+        availableCountersText = findViewById(R.id.availableCountersText) as TextView
 
         addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
 
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
 
     private fun setList() {
         val itemList = CounterItemManager.getAllCounterItems()
+        if (itemList.isEmpty()) availableCountersText.visibility = GONE
         counterAdapter = CounterListAdapter(itemList, this)
 
         counterList = findViewById(R.id.counterList) as RecyclerView
