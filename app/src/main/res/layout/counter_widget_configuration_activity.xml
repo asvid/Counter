@@ -32,30 +32,47 @@
       android:layout_height="wrap_content"
       android:text="@string/add_new_counter"
       />
-  <EditText
-      android:id="@+id/name"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:ems="10"
-      android:hint="@string/counter_name"
-      android:inputType="textPersonName"
-      />
+      android:orientation="horizontal"
+      >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+      <EditText
+          android:id="@+id/name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:hint="@string/counter_name"
+          android:inputType="textPersonName"
+          />
 
-  <EditText
-      android:id="@+id/value"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:ems="10"
-      android:hint="@string/starting_value"
-      android:inputType="number"
-      />
+      <EditText
+          android:id="@+id/value"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:hint="@string/starting_value"
+          android:inputType="number"
+          />
+    </LinearLayout>
 
-  <Button
-      android:id="@+id/addButton"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Add"
-      />
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="68dp"
+        android:layout_height="match_parent"
+        android:text="@string/add"
+        android:textColor="@color/colorAccent"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        />
+
+  </LinearLayout>
+
 
   <TextView
       android:layout_width="wrap_content"

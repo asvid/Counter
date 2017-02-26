@@ -5,12 +5,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View.GONE
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
-import com.thebluealliance.spectrum.SpectrumDialog
+import kotlinx.android.synthetic.main.activity_main.availableCountersText
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
 
     private fun setList() {
         val itemList = CounterItemManager.getAllCounterItems()
+        if (itemList.isEmpty()) availableCountersText.visibility = GONE
         counterAdapter = CounterListAdapter(itemList, this)
 
         counterList = findViewById(R.id.counterList) as RecyclerView
