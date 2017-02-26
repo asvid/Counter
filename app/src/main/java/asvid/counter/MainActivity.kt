@@ -41,25 +41,6 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         counterList.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun showColors() {
-        SpectrumDialog.Builder(this).setColors(R.array.demo_colors)
-            .setSelectedColorRes(R.color.md_blue_500)
-            .setDismissOnColorSelected(true)
-            .setOutlineWidth(2)
-            .setOnColorSelectedListener { positiveResult, color ->
-                if (positiveResult) {
-                    Toast.makeText(this@MainActivity,
-                        "Color selected: #" + Integer.toHexString(color).toUpperCase(),
-                        Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@MainActivity, "Dialog cancelled", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-            .build()
-            .show(supportFragmentManager, "dialog_demo_1")
-    }
-
     private fun addItem(name: String, value: String) {
         val counterItem = CounterItem()
         counterItem.name = name

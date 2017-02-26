@@ -1,32 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<asvid.counter.custom_views.WidgetBackground xmlns:android="http://schemas.android.com/apk/res/android"
-                                             android:id="@+id/counterView"
-                                             android:layout_width="68dp"
-                                             android:layout_height="68dp"
-                                             android:background="@drawable/widget_background"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/counterView"
+             android:layout_width="68dp"
+             android:layout_height="68dp"
     >
-
-
-  <TextView
-      android:id="@+id/value"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:ellipsize="end"
-      android:lines="1"
-      android:padding="5dp"
-      android:text="777"
-      android:textColor="@color/widget_value"
-      android:textSize="30dp"
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       />
-  <TextView
-      android:id="@+id/name"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:padding="10dp"
-      android:text="COUNTER Long Name"
-      android:textAlignment="center"
-      android:textColor="@color/widget_name"
-      />
-</asvid.counter.custom_views.WidgetBackground>
+</FrameLayout>

@@ -6,7 +6,7 @@ import kotlin.properties.Delegates
 
 object Di {
 
-    var context: Context by  Delegates.notNull()
+    var context: Context by Delegates.notNull()
 
     fun set(context: Context) {
         this.context = context
@@ -14,5 +14,9 @@ object Di {
 
     val storage: Storage by lazy {
         Storage(context)
+    }
+
+    val utils: Utils by lazy {
+        Utils(context)
     }
 }
