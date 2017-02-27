@@ -45,6 +45,10 @@ class WidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         this.valueView.text = valueText?.toString()
     }
 
+    fun setValueText(valueText: String) {
+        this.valueView.text = valueText
+    }
+
     fun getBitmap(): Bitmap {
         val size = dpToPx(SIZE_IN_DP)
         this.measure(size, size)

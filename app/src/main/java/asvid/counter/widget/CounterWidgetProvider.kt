@@ -68,8 +68,6 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val storage = Storage(context)
         if (widgetId > -1) {
             val widget = storage.getWidget(widgetId.toInt())
-            val item = widget.counterItem!!
-            Timber.d("updating asvid.counter.widget item: $item asvid.counter.widget: $widget")
             updateAppWidget(context, widgetId, widget)
         }
     }
@@ -124,7 +122,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
                 setOnClick(context, mAppWidgetId, views)
             } else {
                 widgetView.setNameText(context.resources.getString(R.string.counter_removed))
-                widgetView.setValueText(0)
+                widgetView.setValueText("X")
                 widgetView.setStrokeColor(item.color)
                 views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
             }
