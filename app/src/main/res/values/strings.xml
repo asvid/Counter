@@ -10,4 +10,7 @@
   <string name="select_color">Select widget color</string>
   <string name="counter_removed">Counter removed</string>
   <string name="cancel">Cancel</string>
+  <string name="edit_counter_dialog_title">Edit Counter</string>
+  <string name="counter_value">Counter value</string>
+  <string name="ok">ok</string>
 </resources>

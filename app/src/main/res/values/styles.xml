@@ -6,23 +6,30 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+    <item name="alertDialogTheme">@style/myDialog</item>
   </style>
-
-
-  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
   <style name="ListButton">
     <item name="android:layout_margin">0dp</item>
     <item name="android:background">@android:color/transparent</item>
     <item name="android:layout_width">30dp</item>
   </style>
+
   <style name="TextShadow">
     <item name="android:shadowColor">#000000</item>
     <item name="android:shadowDx">1</item>
     <item name="android:shadowDy">1</item>
     <item name="android:shadowRadius">1</item>
+  </style>
+
+  <style name="myDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorControlNormal">@color/colorAccent</item>
+    <item name="android:textColorPrimary">@color/md_grey_900</item>
+    <item name="android:textColor">@color/md_grey_900</item>
+    <item name="android:editTextColor">@color/md_grey_900</item>
+    <item name="android:color">@color/md_grey_900</item>
+    <item name="android:colorActivatedHighlight">@color/md_grey_900</item>
   </style>
 
 </resources>

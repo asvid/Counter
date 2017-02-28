@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
+import asvid.counter.dialogs.DialogCallback
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Di.setDialogManager(this@MainActivity)
         Di.analyticsHelper.sendScreenName(this, "MainActivity")
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
@@ -59,7 +61,15 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     }
 
     override fun onItemClicked(item: CounterItem, position: Int) {
-//        TODO("show edit dialog")
+        Di.dialogManager?.showCounterEditDialog(item, object : DialogCallback {
+            override fun onPositiveClicked() {
+                counterAdapter.notifyItemChanged(position)
+            }
+
+            override fun onNegativeClicked() {
+            }
+
+        })
     }
 
     override fun onItemIncrement(item: CounterItem, position: Int) {
