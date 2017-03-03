@@ -15,7 +15,6 @@ import asvid.counter.dialogs.DialogCallback
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
-
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
     private var availableCountersText: TextView by Delegates.notNull()
@@ -60,7 +59,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         counterAdapter.removeItem(position)
     }
 
-    override fun onItemClicked(item: CounterItem, position: Int) {
+    override fun onItemEdit(item: CounterItem, position: Int) {
         Di.dialogManager?.showCounterEditDialog(item, object : DialogCallback {
             override fun onPositiveClicked() {
                 counterAdapter.notifyItemChanged(position)
@@ -80,6 +79,10 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     override fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
+    }
+
+    override fun onItemClicked(item: CounterItem, position: Int) {
+//NOOP
     }
 
     override fun onResume() {

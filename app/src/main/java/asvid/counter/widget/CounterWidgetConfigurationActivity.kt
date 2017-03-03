@@ -1,6 +1,7 @@
 package asvid.counter.widget
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,9 +10,11 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import asvid.counter.CounterListAdapter
 import asvid.counter.CounterListListener
 import asvid.counter.Di
@@ -142,6 +145,35 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     override fun onItemDelete(item: CounterItem, position: Int) {
         CounterItemManager.deleteCounterItem(item)
         counterAdapter.removeItem(position)
+    }
+
+    override fun onItemEdit(counter: CounterItem, position: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(Di.context.resources.getString(R.string.edit_counter_dialog_title))
+
+        val view = LayoutInflater.from(this).inflate(R.layout.edit_counter_dialog, null)
+        val counterName = view.findViewById(R.id.counterName) as TextView
+        val counterValue = view.findViewById(R.id.counterValue) as TextView
+
+        counterName.text = counter.name
+        counterValue.text = counter.value.toString()
+
+        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { dialog, which ->
+            if (TextUtils.isEmpty(counterValue.text)) {
+                counterValue.text = "0"
+            }
+            if (!TextUtils.isEmpty(counterName.text)) {
+                counter.name = counterName.text.toString()
+                counter.value = (counterValue.text.toString()).toInt()
+                CounterItemManager.saveAndUpdateWidget(counter)
+            }
+            counterAdapter.notifyItemChanged(position)
+        })
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+            ->
+        })
+        builder.setView(view)
+        builder.show()
     }
 
     override fun onItemClicked(item: CounterItem, position: Int) {
