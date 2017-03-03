@@ -6,7 +6,6 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
-    <item name="alertDialogTheme">@style/myDialog</item>
   </style>
 
   <style name="ListButton">
@@ -22,14 +21,8 @@
     <item name="android:shadowRadius">1</item>
   </style>
 
-  <style name="myDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorControlNormal">@color/colorAccent</item>
-    <item name="android:textColorPrimary">@color/md_grey_900</item>
-    <item name="android:textColor">@color/md_grey_900</item>
-    <item name="android:editTextColor">@color/md_grey_900</item>
-    <item name="android:color">@color/md_grey_900</item>
-    <item name="android:colorActivatedHighlight">@color/md_grey_900</item>
-  </style>
 
+  <style name="dialogEditText">
+    <item name="android:textColor">#000000</item>
+  </style>
 </resources>

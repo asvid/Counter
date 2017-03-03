@@ -1,7 +1,7 @@
 package asvid.counter.dialogs
 
+import android.app.AlertDialog
 import android.content.Context
-import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.widget.TextView
@@ -18,7 +18,7 @@ class DialogManager(val context: Context) {
         val builder: AlertDialog.Builder = getBuilder()
         builder.setTitle(Di.context.resources.getString(R.string.edit_counter_dialog_title))
 
-        val view = LayoutInflater.from(Di.context).inflate(R.layout.edit_counter_dialog, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.edit_counter_dialog, null)
         val counterName = view.findViewById(R.id.counterName) as TextView
         val counterValue = view.findViewById(R.id.counterValue) as TextView
 

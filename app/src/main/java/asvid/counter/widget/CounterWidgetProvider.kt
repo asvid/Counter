@@ -9,11 +9,11 @@ import android.content.Intent
 import android.widget.RemoteViews
 import asvid.counter.Di
 import asvid.counter.R
+import asvid.counter.analytics.enums.Action
+import asvid.counter.analytics.enums.Category
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
-import asvid.counter.analytics.enums.Action
-import asvid.counter.analytics.enums.Category
 import timber.log.Timber
 
 /**
@@ -71,8 +71,6 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val storage = Storage(context)
         if (widgetId > -1) {
             val widget = storage.getWidget(widgetId.toInt())
-            val item = widget.counterItem!!
-            Timber.d("updating asvid.counter.widget item: $item asvid.counter.widget: $widget")
             updateAppWidget(context, widgetId, widget)
         }
     }
