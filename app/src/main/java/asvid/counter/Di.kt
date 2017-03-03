@@ -4,7 +4,6 @@ import android.content.Context
 import asvid.counter.analytics.AnalyticsHelper
 import asvid.counter.data.Storage
 import asvid.counter.dialogs.DialogManager
-import com.aswiderski.frigo.analytics.AnalyticsHelper
 import kotlin.properties.Delegates
 
 object Di {
