@@ -25,16 +25,13 @@ class CounterWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray) {
-        // Get all ids
         val thisWidget = ComponentName(context,
             CounterWidgetProvider::class.java)
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
-            // create some random data
             val remoteViews = RemoteViews(context.packageName,
                 R.layout.counter_appwidget)
 
-            // Register an onClickListener
             setOnClick(context, widgetId.toLong(), remoteViews)
             appWidgetManager.updateAppWidget(widgetId, remoteViews)
         }
@@ -125,7 +122,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
                 setOnClick(context, mAppWidgetId, views)
             } else {
                 widgetView.setNameText(context.resources.getString(R.string.counter_removed))
-                widgetView.setValueText(0)
+                widgetView.setValueText("X")
                 widgetView.setStrokeColor(item.color)
                 views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
             }
