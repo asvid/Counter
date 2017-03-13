@@ -64,7 +64,12 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         value.addTextChangedListener(this)
 
         val addButton = findViewById(id.addButton) as Button
-        addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
+        addButton.setOnClickListener { addItem(name.text.toString(), getValue()) }
+    }
+
+    private fun getValue(): String {
+        if (TextUtils.isEmpty(value.text)) return "0"
+        return value.text.toString()
     }
 
     private fun handleIntent() {
