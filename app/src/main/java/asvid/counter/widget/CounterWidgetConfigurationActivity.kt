@@ -1,6 +1,7 @@
 package asvid.counter.widget
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,25 +10,24 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import asvid.counter.CounterListAdapter
 import asvid.counter.CounterListListener
 import asvid.counter.Di
 import asvid.counter.R
+import asvid.counter.R.color
+import asvid.counter.R.id
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
-/**
- * Created by adam on 15.01.17.
- */
-
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
-
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
@@ -46,32 +46,42 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
 
         Di.analyticsHelper.sendScreenName(this, "CounterWidgetConfigurationActivity")
 
-        widgetColor = findViewById(R.id.widgetColor) as ImageView
+        setView()
+        handleIntent()
+        setList()
+    }
+
+    private fun setView() {
+        widgetColor = findViewById(id.widgetColor) as ImageView
         widgetColor.setOnClickListener {
             showColors()
         }
-        widgetColorValue = resources.getColor(R.color.colorAccent)
-        name = findViewById(R.id.name) as EditText
-        value = findViewById(R.id.value) as EditText
-        val addButton = findViewById(R.id.addButton) as Button
-
+        widgetColorValue = resources.getColor(color.colorAccent)
+        name = findViewById(id.name) as EditText
         name.addTextChangedListener(this)
+
+        value = findViewById(id.value) as EditText
         value.addTextChangedListener(this)
 
-        addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
+        val addButton = findViewById(id.addButton) as Button
+        addButton.setOnClickListener { addItem(name.text.toString(), getValue()) }
+    }
 
+    private fun getValue(): String {
+        if (TextUtils.isEmpty(value.text)) return "0"
+        return value.text.toString()
+    }
+
+    private fun handleIntent() {
         val intent = intent
         val extras = intent.extras
         if (extras != null) {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID)
         }
-
-        // If they gave us an intent without the asvid.counter.widget id, just bail.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish()
         }
-        setList()
     }
 
     private fun setList() {
@@ -99,7 +109,6 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.color = widgetColorValue
         Di.storage.saveWidget(widget)
 
-        // Request asvid.counter.widget update
         CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
 
         setResult(RESULT_OK)
@@ -141,6 +150,35 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     override fun onItemDelete(item: CounterItem, position: Int) {
         CounterItemManager.deleteCounterItem(item)
         counterAdapter.removeItem(position)
+    }
+
+    override fun onItemEdit(counter: CounterItem, position: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle(Di.context.resources.getString(R.string.edit_counter_dialog_title))
+
+        val view = LayoutInflater.from(this).inflate(R.layout.edit_counter_dialog, null)
+        val counterName = view.findViewById(R.id.counterName) as TextView
+        val counterValue = view.findViewById(R.id.counterValue) as TextView
+
+        counterName.text = counter.name
+        counterValue.text = counter.value.toString()
+
+        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { dialog, which ->
+            if (TextUtils.isEmpty(counterValue.text)) {
+                counterValue.text = "0"
+            }
+            if (!TextUtils.isEmpty(counterName.text)) {
+                counter.name = counterName.text.toString()
+                counter.value = (counterValue.text.toString()).toInt()
+                CounterItemManager.saveAndUpdateWidget(counter)
+            }
+            counterAdapter.notifyItemChanged(position)
+        })
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+            ->
+        })
+        builder.setView(view)
+        builder.show()
     }
 
     override fun onItemClicked(item: CounterItem, position: Int) {

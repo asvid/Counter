@@ -1,4 +1,4 @@
-package com.aswiderski.frigo.analytics
+package asvid.counter.analytics
 
 import android.app.Activity
 import android.content.Context

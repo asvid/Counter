@@ -28,7 +28,7 @@ object CounterItemManager {
         saveAndUpdateWidget(item)
     }
 
-    private fun saveAndUpdateWidget(item: CounterItem) {
+    fun saveAndUpdateWidget(item: CounterItem) {
         Di.storage.saveItem(item)
         Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
     }

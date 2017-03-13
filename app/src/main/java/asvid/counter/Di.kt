@@ -1,9 +1,9 @@
 package asvid.counter
 
 import android.content.Context
+import asvid.counter.analytics.AnalyticsHelper
 import asvid.counter.data.Storage
-import asvid.counter.Config
-import com.aswiderski.frigo.analytics.AnalyticsHelper
+import asvid.counter.dialogs.DialogManager
 import kotlin.properties.Delegates
 
 object Di {
@@ -21,4 +21,10 @@ object Di {
     val analyticsHelper: AnalyticsHelper by lazy {
         AnalyticsHelper.Builder(context).setDebug(Config.isDevelop).build()
     }
+
+    fun setDialogManager(ctx: Context) {
+        dialogManager = DialogManager(ctx)
+    }
+
+    var dialogManager: DialogManager? = null
 }

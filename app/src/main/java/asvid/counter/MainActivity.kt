@@ -11,10 +11,10 @@ import android.widget.EditText
 import android.widget.TextView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
+import asvid.counter.dialogs.DialogCallback
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
-
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
     private var availableCountersText: TextView by Delegates.notNull()
@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Di.setDialogManager(this@MainActivity)
         Di.analyticsHelper.sendScreenName(this, "MainActivity")
         val name = findViewById(R.id.name) as EditText
         val value = findViewById(R.id.value) as EditText
@@ -58,8 +59,16 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         counterAdapter.removeItem(position)
     }
 
-    override fun onItemClicked(item: CounterItem, position: Int) {
-//        TODO("show edit dialog")
+    override fun onItemEdit(item: CounterItem, position: Int) {
+        Di.dialogManager?.showCounterEditDialog(item, object : DialogCallback {
+            override fun onPositiveClicked() {
+                counterAdapter.notifyItemChanged(position)
+            }
+
+            override fun onNegativeClicked() {
+            }
+
+        })
     }
 
     override fun onItemIncrement(item: CounterItem, position: Int) {
@@ -70,6 +79,10 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     override fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
+    }
+
+    override fun onItemClicked(item: CounterItem, position: Int) {
+//NOOP
     }
 
     override fun onResume() {

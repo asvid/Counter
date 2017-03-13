@@ -9,11 +9,11 @@ import android.content.Intent
 import android.widget.RemoteViews
 import asvid.counter.Di
 import asvid.counter.R
+import asvid.counter.analytics.enums.Action
+import asvid.counter.analytics.enums.Category
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
-import asvid.counter.analytics.enums.Action
-import asvid.counter.analytics.enums.Category
 import timber.log.Timber
 
 /**
@@ -25,16 +25,13 @@ class CounterWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray) {
-        // Get all ids
         val thisWidget = ComponentName(context,
             CounterWidgetProvider::class.java)
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
-            // create some random data
             val remoteViews = RemoteViews(context.packageName,
                 R.layout.counter_appwidget)
 
-            // Register an onClickListener
             setOnClick(context, widgetId.toLong(), remoteViews)
             appWidgetManager.updateAppWidget(widgetId, remoteViews)
         }
@@ -71,8 +68,6 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val storage = Storage(context)
         if (widgetId > -1) {
             val widget = storage.getWidget(widgetId.toInt())
-            val item = widget.counterItem!!
-            Timber.d("updating asvid.counter.widget item: $item asvid.counter.widget: $widget")
             updateAppWidget(context, widgetId, widget)
         }
     }
@@ -127,7 +122,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
                 setOnClick(context, mAppWidgetId, views)
             } else {
                 widgetView.setNameText(context.resources.getString(R.string.counter_removed))
-                widgetView.setValueText(0)
+                widgetView.setValueText("X")
                 widgetView.setStrokeColor(item.color)
                 views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
             }

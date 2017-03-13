@@ -6,7 +6,6 @@
                                     android:layout_height="wrap_content"
                                     card_view:cardCornerRadius="4dp"
                                     card_view:cardUseCompatPadding="true"
-                                    card_view:contentPadding="5dp"
     >
   <LinearLayout
       android:layout_width="match_parent"
@@ -23,49 +22,79 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:ellipsize="end"
           android:maxLines="1"
+          android:padding="5dp"
           android:text="ITEM NAME"
           android:textColor="@color/colorAccent"
-          />
-      <com.mikepenz.iconics.view.IconicsButton
-          android:id="@+id/deleteButton"
-          android:layout_height="20dp"
-          android:layout_gravity="right"
-          android:text="{faw-trash}"
-          android:textColor="@color/md_grey_900"
-          style="@style/ListButton"
+          android:textSize="@dimen/counterName"
           />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
         >
-      <TextView
-          android:id="@+id/value"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginRight="10dp"
-          android:text="VALUE "
-          android:textColor="@android:color/black"
-          android:textSize="30dp"
-          />
 
       <com.mikepenz.iconics.view.IconicsButton
-          android:id="@+id/incrementButton"
-          android:layout_height="wrap_content"
-          android:layout_marginRight="10dp"
-          android:text="{faw-plus-square-o}"
-          android:textColor="@color/md_grey_900"
-          android:textSize="30dp"
-          style="@style/ListButton"
-          />
-      <com.mikepenz.iconics.view.IconicsButton
           android:id="@+id/decrementButton"
+          android:layout_width="50dp"
           android:layout_height="wrap_content"
           android:text="{faw-minus-square-o}"
           android:textColor="@color/md_grey_900"
           android:textSize="30dp"
           style="@style/ListButton"
+          />
+      <TextView
+          android:id="@+id/value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:gravity="center"
+          android:text="8"
+          android:textColor="@android:color/black"
+          android:textSize="30dp"
+          />
+      <com.mikepenz.iconics.view.IconicsButton
+          android:id="@+id/incrementButton"
+          android:layout_width="50dp"
+          android:layout_height="wrap_content"
+          android:text="{faw-plus-square-o}"
+          android:textColor="@color/md_grey_900"
+          android:textSize="30dp"
+          style="@style/ListButton"
+          />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/md_grey_200"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal"
+        >
+      <Button
+          android:id="@+id/editButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="edit"
+          android:textColor="@color/colorAccent"
+          style="?android:attr/borderlessButtonStyle"
+          />
+      <Button
+          android:id="@+id/deleteButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="delete"
+          android:textColor="@color/md_grey_500"
+          style="?android:attr/borderlessButtonStyle"
           />
     </LinearLayout>
   </LinearLayout>
