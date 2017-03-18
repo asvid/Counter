@@ -7,12 +7,14 @@ import asvid.counter.Di.context
 import asvid.counter.analytics.enums.Action
 import asvid.counter.analytics.enums.Category
 import asvid.counter.widget.CounterWidgetProvider
+import timber.log.Timber
 
 object CounterItemManager {
 
     fun incrementAndSave(item: CounterItem) {
         item.incrementValue()
         saveAndUpdateWidget(item)
+        Timber.i("incrementAndSave: $item")
     }
 
     private fun updateWidget(id: Long?) {

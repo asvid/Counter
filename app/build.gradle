@@ -84,11 +84,13 @@ dependencies {
   compile 'com.wada811:android-material-design-colors:3.0.0'
   //  logging
   compile 'com.jakewharton.timber:timber:4.5.1'
-  //  auto-scale text view
-  compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
   //  vector icons
   compile 'com.mikepenz:iconics-core:2.8.1@aar'
   compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
+  //  charts
+  compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+  //  pretty time
+  compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
   testCompile 'junit:junit:4.12'
   debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'

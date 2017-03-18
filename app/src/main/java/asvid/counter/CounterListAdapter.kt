@@ -7,8 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import asvid.counter.charts.DayAxisValueFormatter
+import asvid.counter.data.Change
 import asvid.counter.data.CounterItem
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.mikepenz.iconics.view.IconicsButton
+import io.realm.RealmList
+import org.ocpsoft.prettytime.PrettyTime
 
 /**
  * Created by adam on 15.01.17.
@@ -28,6 +36,14 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
             holder.item = item
             holder.name.text = item.name
             holder.value.text = item.value.toString()
+            if (item.changes.isNotEmpty()) {
+                holder.changeDate.text = PrettyTime().format(
+                    item.changes[item.changes.lastIndex].date)
+            } else {
+                holder.changeDate.visibility = View.GONE
+            }
+
+            setChart(holder.chart, item.changes)
 
             holder.deleteButton.setOnClickListener { listener.onItemDelete(item, position) }
             holder.editButton.setOnClickListener { listener.onItemEdit(item, position) }
@@ -35,6 +51,22 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
             holder.incrementButton.setOnClickListener { listener.onItemIncrement(item, position) }
             holder.cardView.setOnClickListener { listener.onItemClicked(item, position) }
         }
+    }
+
+    private fun setChart(chart: LineChart, changes: RealmList<Change>) {
+        val entries = ArrayList<Entry>()
+        val refTime = changes[0].date!!.time
+        for (change: Change in changes) {
+            val calculatedTime = (change.date!!.time) - (refTime)
+            entries.add(Entry(calculatedTime.toFloat(), change.postValue!!.toFloat()))
+        }
+        val dataSet = LineDataSet(entries, "data")
+        val lineData = LineData(dataSet)
+        chart.data = lineData
+        val xAxisFormatter = DayAxisValueFormatter(chart)
+        val xAxis = chart.xAxis
+        xAxis.valueFormatter = xAxisFormatter
+        chart.invalidate()
     }
 
     override fun getItemId(i: Int): Long {
@@ -65,5 +97,7 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
         var editButton = itemView.findViewById(R.id.editButton) as Button
         var incrementButton = itemView.findViewById(R.id.incrementButton) as IconicsButton
         var decrementButton = itemView.findViewById(R.id.decrementButton) as IconicsButton
+        var changeDate = itemView.findViewById(R.id.changeDate) as TextView
+        var chart = itemView.findViewById(R.id.chart) as LineChart
     }
 }
