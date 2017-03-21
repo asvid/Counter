@@ -1,5 +1,6 @@
 package asvid.counter
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import asvid.counter.dialogs.DialogCallback
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), CounterListListener {
+
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
     private var availableCountersText: TextView by Delegates.notNull()
@@ -83,6 +85,11 @@ class MainActivity : AppCompatActivity(), CounterListListener {
 
     override fun onItemClicked(item: CounterItem, position: Int) {
 //NOOP
+    }
+
+    override fun onDetailsClicked(item: CounterItem, position: Int) {
+        val intent = Intent(this, CounterDetailsActivity::class.java)
+        startActivity(Intent(this, CounterDetailsActivity::class.java))
     }
 
     override fun onResume() {

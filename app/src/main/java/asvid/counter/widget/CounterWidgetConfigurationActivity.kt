@@ -28,6 +28,10 @@ import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
+    override fun onDetailsClicked(item: CounterItem, position: Int) {
+        TODO(
+            "not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()

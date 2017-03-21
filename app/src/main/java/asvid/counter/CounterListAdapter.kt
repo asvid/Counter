@@ -43,13 +43,12 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
                 holder.changeDate.visibility = View.GONE
             }
 
-            setChart(holder.chart, item.changes)
-
             holder.deleteButton.setOnClickListener { listener.onItemDelete(item, position) }
             holder.editButton.setOnClickListener { listener.onItemEdit(item, position) }
             holder.decrementButton.setOnClickListener { listener.onItemDecrement(item, position) }
             holder.incrementButton.setOnClickListener { listener.onItemIncrement(item, position) }
             holder.cardView.setOnClickListener { listener.onItemClicked(item, position) }
+            holder.detailsButton.setOnClickListener { listener.onDetailsClicked(item, position) }
         }
     }
 
@@ -95,9 +94,9 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
         var value = itemView.findViewById(R.id.value) as TextView
         var deleteButton = itemView.findViewById(R.id.deleteButton) as Button
         var editButton = itemView.findViewById(R.id.editButton) as Button
+        var detailsButton = itemView.findViewById(R.id.detailsButton) as Button
         var incrementButton = itemView.findViewById(R.id.incrementButton) as IconicsButton
         var decrementButton = itemView.findViewById(R.id.decrementButton) as IconicsButton
         var changeDate = itemView.findViewById(R.id.changeDate) as TextView
-        var chart = itemView.findViewById(R.id.chart) as LineChart
     }
 }
