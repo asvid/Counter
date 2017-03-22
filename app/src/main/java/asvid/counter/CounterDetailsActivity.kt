@@ -7,7 +7,15 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.LinearLayout
-import android.widget.TextView
+import asvid.counter.custom_views.WidgetView
+import asvid.counter.data.CounterItem
+import asvid.counter.data.CounterItemManager
+import kotlinx.android.synthetic.main.activity_counter_details.changeDate
+import kotlinx.android.synthetic.main.activity_counter_details.decrementButton
+import kotlinx.android.synthetic.main.activity_counter_details.image
+import kotlinx.android.synthetic.main.activity_counter_details.incrementButton
+import kotlinx.android.synthetic.main.activity_counter_details.toolbarTitle
+import org.ocpsoft.prettytime.PrettyTime
 import kotlin.properties.Delegates
 
 class CounterDetailsActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
@@ -17,25 +25,64 @@ class CounterDetailsActivity : AppCompatActivity(), AppBarLayout.OnOffsetChanged
     private var isButtonsLayoutVisible = true
 
     private var mTitleContainer: LinearLayout by Delegates.notNull()
-    private var mTitle: TextView by Delegates.notNull()
     private var mAppBarLayout: AppBarLayout by Delegates.notNull()
     private var mToolbar: Toolbar by Delegates.notNull()
     private var buttonsLayout: View by Delegates.notNull()
+
+    private var counterItem: CounterItem by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_counter_details)
 
+        val counterId = intent.extras.getLong(EXTRA_COUNTER)
+        counterItem = CounterItemManager.getCounterItem(counterId)
+
         bindActivity()
 
-        mAppBarLayout!!.addOnOffsetChangedListener(this)
+        mAppBarLayout.addOnOffsetChangedListener(this)
 
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE)
+        startAlphaAnimation(toolbarTitle, 0, View.INVISIBLE)
+
+        setView()
+    }
+
+    private fun setView() {
+        toolbarTitle.text = counterItem.name
+        changeDate.text = PrettyTime().format(
+            counterItem.changes[counterItem.changes.lastIndex].date)
+
+        incrementButton.setOnClickListener {
+            CounterItemManager.incrementAndSave(counterItem)
+            updateData()
+        }
+        decrementButton.setOnClickListener {
+            CounterItemManager.decrementAndSave(counterItem)
+            updateData()
+        }
+
+        setImage()
+
+    }
+
+    private fun updateData() {
+        toolbarTitle.text = counterItem.name
+        changeDate.text = PrettyTime().format(
+            counterItem.changes[counterItem.changes.lastIndex].date)
+        setImage()
+    }
+
+    private fun setImage() {
+        val widgetView = WidgetView(this)
+        widgetView.setNameText(counterItem.name)
+        widgetView.setValueText(counterItem.value)
+        widgetView.setStrokeColor(R.color.colorAccent)
+
+        image.setImageBitmap(widgetView.getBitmap())
     }
 
     private fun bindActivity() {
         mToolbar = findViewById(R.id.main_toolbar) as Toolbar
-        mTitle = findViewById(R.id.main_textview_title) as TextView
         mTitleContainer = findViewById(R.id.main_linearlayout_title) as LinearLayout
         mAppBarLayout = findViewById(R.id.main_appbar) as AppBarLayout
         buttonsLayout = findViewById(R.id.buttonsLayout)
@@ -72,13 +119,14 @@ class CounterDetailsActivity : AppCompatActivity(), AppBarLayout.OnOffsetChanged
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
             if (!mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION.toLong(), View.VISIBLE)
+                startAlphaAnimation(toolbarTitle, ALPHA_ANIMATIONS_DURATION.toLong(), View.VISIBLE)
                 mIsTheTitleVisible = true
             }
         } else {
 
             if (mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION.toLong(), View.INVISIBLE)
+                startAlphaAnimation(toolbarTitle, ALPHA_ANIMATIONS_DURATION.toLong(),
+                    View.INVISIBLE)
                 mIsTheTitleVisible = false
             }
         }
@@ -115,5 +163,7 @@ class CounterDetailsActivity : AppCompatActivity(), AppBarLayout.OnOffsetChanged
             alphaAnimation.fillAfter = true
             v.startAnimation(alphaAnimation)
         }
+
+        val EXTRA_COUNTER: String = "EXTRA_COUNTER"
     }
 }

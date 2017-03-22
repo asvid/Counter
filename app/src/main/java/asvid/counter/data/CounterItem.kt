@@ -8,13 +8,13 @@ import java.util.Date
 /**
  * Created by adam on 15.01.17.
  */
-
 open class CounterItem : RealmObject() {
 
 
     @PrimaryKey var id: Long? = null
     var name: String? = null
     var value: Int = 0
+
     var changes: RealmList<Change> = RealmList()
 
     fun incrementValue() {

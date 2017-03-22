@@ -75,7 +75,6 @@
             android:text="8"
             android:textColor="@android:color/black"
             android:textSize="20dp"
-            android:transitionName="counterValueTransition"
             />
         <com.mikepenz.iconics.view.IconicsButton
             android:id="@+id/incrementButton"

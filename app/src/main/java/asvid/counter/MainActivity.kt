@@ -2,14 +2,17 @@ package asvid.counter
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View
 import android.view.View.GONE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import asvid.counter.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.DialogCallback
@@ -87,9 +90,17 @@ class MainActivity : AppCompatActivity(), CounterListListener {
 //NOOP
     }
 
-    override fun onDetailsClicked(item: CounterItem, position: Int) {
+    override fun onDetailsClicked(item: CounterItem, position: Int,
+        holder: CounterItemViewHolder) {
         val intent = Intent(this, CounterDetailsActivity::class.java)
-        startActivity(Intent(this, CounterDetailsActivity::class.java))
+        intent.putExtra(CounterDetailsActivity.EXTRA_COUNTER, item.id)
+        val p1: android.support.v4.util.Pair<View, String> = android.support.v4.util.Pair.create(
+            holder.name, "counterNameTransition")
+        val p2: android.support.v4.util.Pair<View, String> = android.support.v4.util.Pair.create(
+            holder.changeDate, "counterChangeDateTransition")
+        val options = ActivityOptionsCompat.
+            makeSceneTransitionAnimation(this, p1, p2)
+        startActivity(intent, options.toBundle())
     }
 
     override fun onResume() {

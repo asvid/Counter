@@ -48,7 +48,9 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
             holder.decrementButton.setOnClickListener { listener.onItemDecrement(item, position) }
             holder.incrementButton.setOnClickListener { listener.onItemIncrement(item, position) }
             holder.cardView.setOnClickListener { listener.onItemClicked(item, position) }
-            holder.detailsButton.setOnClickListener { listener.onDetailsClicked(item, position) }
+            holder.detailsButton.setOnClickListener {
+                listener.onDetailsClicked(item, position, holder)
+            }
         }
     }
 

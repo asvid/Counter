@@ -1,5 +1,6 @@
 package asvid.counter
 
+import asvid.counter.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.data.CounterItem
 
 interface CounterListListener {
@@ -8,5 +9,6 @@ interface CounterListListener {
     fun onItemClicked(item: CounterItem, position: Int)
     fun onItemIncrement(item: CounterItem, position: Int)
     fun onItemDecrement(item: CounterItem, position: Int)
-    fun onDetailsClicked(item: CounterItem, position: Int)
+    fun onDetailsClicked(item: CounterItem, position: Int,
+        holder: CounterItemViewHolder)
 }
