@@ -10,7 +10,7 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
     <activity
-        android:name=".MainActivity"
+        android:name=".modules.main.MainActivity"
         android:windowSoftInputMode="stateAlwaysHidden">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
     </activity>
     <activity
         android:name=".widget.CounterWidgetConfigurationActivity"
-        android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        android:windowSoftInputMode="stateAlwaysHidden" />
 
     <receiver android:name=".widget.CounterWidgetProvider">
       <intent-filter>
@@ -32,7 +32,7 @@
           android:resource="@xml/counter_appwidget_info" />
     </receiver>
 
-    <service android:name=".MyFirebaseMessagingService">
+    <service android:name=".communication.MyFirebaseMessagingService">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
@@ -50,8 +50,12 @@
         android:resource="@color/colorAccent" />
 
     <activity
-        android:name=".CounterDetailsActivity"
+        android:name=".modules.counter_details.CounterDetailsActivity"
         android:label="@string/title_activity_counter_details"
+        android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+        android:name=".modules.counter_details.Test"
+        android:label="@string/title_activity_test"
         android:theme="@style/AppTheme.NoActionBar"></activity>
   </application>
 

@@ -4,7 +4,7 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 tools:context=".CounterDetailsActivity"
+                                                 tools:context=".modules.counter_details.CounterDetailsActivity"
                                                  tools:ignore="RtlHardcoded"
     >
 
@@ -57,7 +57,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center_horizontal"
-              android:layout_marginTop="20dp"
+              android:layout_marginTop="40dp"
               android:text="last change date"
               android:textColor="@android:color/white"
               android:transitionName="counterChangeDateTransition"
@@ -65,12 +65,42 @@
 
         </LinearLayout>
       </FrameLayout>
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/main.toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="@color/colorPrimary"
+          app:layout_anchor="@id/main.framelayout.title"
+          >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+          <Space
+              android:layout_width="54dp"
+              android:layout_height="54dp"
+              />
+
+          <TextView
+              android:id="@+id/toolbarTitle"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="8dp"
+              android:gravity="center_vertical"
+              android:text="counter title"
+              android:textColor="@android:color/white"
+              android:textSize="20sp"
+              />
+
+        </LinearLayout>
+      </android.support.v7.widget.Toolbar>
     </android.support.design.widget.CollapsingToolbarLayout>
   </android.support.design.widget.AppBarLayout>
 
-
   <include layout="@layout/content_counter_details" />
-
   <android.support.v7.widget.Toolbar
       android:id="@+id/main.toolbar"
       android:layout_width="match_parent"
@@ -103,6 +133,7 @@
 
     </LinearLayout>
   </android.support.v7.widget.Toolbar>
+
   <ImageView
       android:id="@+id/image"
       android:layout_width="@dimen/image_width"
@@ -116,6 +147,7 @@
       app:startToolbarPosition="2dp"
       app:startXPosition="2dp"
       />
+
   <FrameLayout
       android:id="@+id/buttonsLayout"
       android:layout_width="match_parent"
@@ -137,7 +169,7 @@
           android:layout_alignParentTop="true"
           android:text="{faw-plus-square-o}"
           android:textColor="@color/white"
-          android:textSize="30dp"
+          android:textSize="40dp"
           style="@style/ListButton"
           />
       <com.mikepenz.iconics.view.IconicsButton
@@ -148,7 +180,7 @@
           android:layout_alignParentTop="true"
           android:text="{faw-minus-square-o}"
           android:textColor="@color/white"
-          android:textSize="30dp"
+          android:textSize="40dp"
           style="@style/ListButton"
           />
     </RelativeLayout>

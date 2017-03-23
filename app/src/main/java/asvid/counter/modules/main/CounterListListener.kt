@@ -1,6 +1,6 @@
-package asvid.counter
+package asvid.counter.modules.main
 
-import asvid.counter.CounterListAdapter.CounterItemViewHolder
+import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.data.CounterItem
 
 interface CounterListListener {

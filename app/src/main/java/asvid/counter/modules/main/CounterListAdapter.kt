@@ -1,15 +1,20 @@
-package asvid.counter
+package asvid.counter.modules.main
 
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.Adapter
+import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import asvid.counter.R.id
+import asvid.counter.R.layout
 import asvid.counter.charts.DayAxisValueFormatter
 import asvid.counter.data.Change
 import asvid.counter.data.CounterItem
+import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -22,11 +27,11 @@ import org.ocpsoft.prettytime.PrettyTime
  * Created by adam on 15.01.17.
  */
 class CounterListAdapter(private val items: MutableList<CounterItem>,
-    private val listener: CounterListListener) : RecyclerView.Adapter<CounterListAdapter.CounterItemViewHolder>() {
+    private val listener: CounterListListener) : Adapter<CounterItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterItemViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.counter_item_card, parent, false)
+            .inflate(layout.counter_item_card, parent, false)
         return CounterItemViewHolder(view)
     }
 
@@ -54,22 +59,6 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
         }
     }
 
-    private fun setChart(chart: LineChart, changes: RealmList<Change>) {
-        val entries = ArrayList<Entry>()
-        val refTime = changes[0].date!!.time
-        for (change: Change in changes) {
-            val calculatedTime = (change.date!!.time) - (refTime)
-            entries.add(Entry(calculatedTime.toFloat(), change.postValue!!.toFloat()))
-        }
-        val dataSet = LineDataSet(entries, "data")
-        val lineData = LineData(dataSet)
-        chart.data = lineData
-        val xAxisFormatter = DayAxisValueFormatter(chart)
-        val xAxis = chart.xAxis
-        xAxis.valueFormatter = xAxisFormatter
-        chart.invalidate()
-    }
-
     override fun getItemId(i: Int): Long {
         return items[i].id!!
     }
@@ -88,17 +77,17 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
         notifyItemRemoved(position)
     }
 
-    inner class CounterItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CounterItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
         var item: CounterItem? = null
-        var cardView = itemView.findViewById(R.id.card_view) as CardView
-        var name = itemView.findViewById(R.id.name) as TextView
-        var value = itemView.findViewById(R.id.value) as TextView
-        var deleteButton = itemView.findViewById(R.id.deleteButton) as Button
-        var editButton = itemView.findViewById(R.id.editButton) as Button
-        var detailsButton = itemView.findViewById(R.id.detailsButton) as Button
-        var incrementButton = itemView.findViewById(R.id.incrementButton) as IconicsButton
-        var decrementButton = itemView.findViewById(R.id.decrementButton) as IconicsButton
-        var changeDate = itemView.findViewById(R.id.changeDate) as TextView
+        var cardView = itemView.findViewById(id.card_view) as CardView
+        var name = itemView.findViewById(id.name) as TextView
+        var value = itemView.findViewById(id.value) as TextView
+        var deleteButton = itemView.findViewById(id.deleteButton) as Button
+        var editButton = itemView.findViewById(id.editButton) as Button
+        var detailsButton = itemView.findViewById(id.detailsButton) as Button
+        var incrementButton = itemView.findViewById(id.incrementButton) as IconicsButton
+        var decrementButton = itemView.findViewById(id.decrementButton) as IconicsButton
+        var changeDate = itemView.findViewById(id.changeDate) as TextView
     }
 }

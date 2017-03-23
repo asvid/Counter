@@ -1,4 +1,4 @@
-package asvid.counter;
+package asvid.counter.modules.counter_details;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import asvid.counter.R;
 
 @SuppressWarnings("unused") public class AvatarImageBehavior
     extends CoordinatorLayout.Behavior<ImageView> {

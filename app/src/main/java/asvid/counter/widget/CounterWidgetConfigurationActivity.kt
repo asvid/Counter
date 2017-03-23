@@ -15,9 +15,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import asvid.counter.CounterListAdapter
-import asvid.counter.CounterListAdapter.CounterItemViewHolder
-import asvid.counter.CounterListListener
+import asvid.counter.modules.main.CounterListAdapter
+import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
+import asvid.counter.modules.main.CounterListListener
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
