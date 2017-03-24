@@ -53,10 +53,6 @@
         android:name=".modules.counter_details.CounterDetailsActivity"
         android:label="@string/title_activity_counter_details"
         android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-        android:name=".modules.counter_details.Test"
-        android:label="@string/title_activity_test"
-        android:theme="@style/AppTheme.NoActionBar"></activity>
   </application>
 
 </manifest>

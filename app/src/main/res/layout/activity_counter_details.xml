@@ -21,22 +21,11 @@
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         >
 
-      <View
-          android:id="@+id/main.imageview.placeholder"
-          android:layout_width="match_parent"
-          android:layout_height="160dp"
-          android:background="@color/colorPrimary"
-          android:scaleType="centerCrop"
-          android:tint="#11000000"
-          app:layout_collapseMode="parallax"
-          app:layout_collapseParallaxMultiplier="0.9"
-          />
-
 
       <FrameLayout
           android:id="@+id/main.framelayout.title"
           android:layout_width="match_parent"
-          android:layout_height="70dp"
+          android:layout_height="150dp"
           android:layout_gravity="bottom|center_horizontal"
           android:background="@color/colorPrimary"
           android:orientation="vertical"
@@ -44,20 +33,61 @@
           app:layout_collapseParallaxMultiplier="0.3"
           >
 
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_width"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/icon_512x512"
+            />
         <LinearLayout
-            android:id="@+id/main.linearlayout.title"
-            android:layout_width="wrap_content"
+            android:id="@+id/mainTitleContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom"
             android:orientation="vertical"
             >
+          <FrameLayout
+              android:id="@+id/buttonsLayout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="bottom"
+              >
 
+            <RelativeLayout
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                >
+              <com.mikepenz.iconics.view.IconicsButton
+                  android:id="@+id/incrementButton"
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+                  android:layout_alignParentEnd="true"
+                  android:layout_alignParentTop="true"
+                  android:text="{faw-plus-square-o}"
+                  android:textColor="@color/white"
+                  android:textSize="40dp"
+                  style="@style/ListButton"
+                  />
+              <com.mikepenz.iconics.view.IconicsButton
+                  android:id="@+id/decrementButton"
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+                  android:layout_alignParentStart="true"
+                  android:layout_alignParentTop="true"
+                  android:text="{faw-minus-square-o}"
+                  android:textColor="@color/white"
+                  android:textSize="40dp"
+                  style="@style/ListButton"
+                  />
+            </RelativeLayout>
+          </FrameLayout>
           <TextView
               android:id="@+id/changeDate"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center_horizontal"
-              android:layout_marginTop="40dp"
               android:text="last change date"
               android:textColor="@android:color/white"
               android:transitionName="counterChangeDateTransition"
@@ -65,12 +95,14 @@
 
         </LinearLayout>
       </FrameLayout>
+
       <android.support.v7.widget.Toolbar
-          android:id="@+id/main.toolbar"
+          android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           android:background="@color/colorPrimary"
-          app:layout_anchor="@id/main.framelayout.title"
+          android:visibility="invisible"
+          app:layout_collapseMode="pin"
           >
 
         <LinearLayout
@@ -79,9 +111,11 @@
             android:orientation="horizontal"
             >
 
-          <Space
-              android:layout_width="54dp"
-              android:layout_height="54dp"
+          <ImageView
+              android:id="@+id/imageToolbar"
+              android:layout_width="@dimen/image_final_width"
+              android:layout_height="@dimen/image_final_width"
+              android:layout_gravity="center_horizontal"
               />
 
           <TextView
@@ -101,89 +135,5 @@
   </android.support.design.widget.AppBarLayout>
 
   <include layout="@layout/content_counter_details" />
-  <android.support.v7.widget.Toolbar
-      android:id="@+id/main.toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="?attr/actionBarSize"
-      android:background="@color/colorPrimary"
-      app:layout_anchor="@id/main.framelayout.title"
-      >
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
-
-      <Space
-          android:layout_width="54dp"
-          android:layout_height="54dp"
-          />
-
-      <TextView
-          android:id="@+id/toolbarTitle"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_marginLeft="8dp"
-          android:gravity="center_vertical"
-          android:text="counter title"
-          android:textColor="@android:color/white"
-          android:textSize="20sp"
-          />
-
-    </LinearLayout>
-  </android.support.v7.widget.Toolbar>
-
-  <ImageView
-      android:id="@+id/image"
-      android:layout_width="@dimen/image_width"
-      android:layout_height="@dimen/image_width"
-      android:layout_gravity="center_horizontal"
-      android:src="@drawable/icon_512x512"
-      app:finalHeight="@dimen/image_final_width"
-      app:finalYPosition="2dp"
-      app:layout_behavior=".AvatarImageBehavior"
-      app:startHeight="2dp"
-      app:startToolbarPosition="2dp"
-      app:startXPosition="2dp"
-      />
-
-  <FrameLayout
-      android:id="@+id/buttonsLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom"
-      app:layout_anchor="@id/main.framelayout.title"
-      >
-
-    <RelativeLayout
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        >
-      <com.mikepenz.iconics.view.IconicsButton
-          android:id="@+id/incrementButton"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          android:layout_alignParentEnd="true"
-          android:layout_alignParentTop="true"
-          android:text="{faw-plus-square-o}"
-          android:textColor="@color/white"
-          android:textSize="40dp"
-          style="@style/ListButton"
-          />
-      <com.mikepenz.iconics.view.IconicsButton
-          android:id="@+id/decrementButton"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          android:layout_alignParentStart="true"
-          android:layout_alignParentTop="true"
-          android:text="{faw-minus-square-o}"
-          android:textColor="@color/white"
-          android:textSize="40dp"
-          style="@style/ListButton"
-          />
-    </RelativeLayout>
-  </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
