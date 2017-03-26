@@ -84,6 +84,6 @@ class Storage(context: Context) {
     }
 
     fun getAllWidgets(): MutableList<CounterWidget> {
-        return realm.where(CounterWidget::class.java).findAll()
+        return realm.copyFromRealm(realm.where(CounterWidget::class.java).findAll())
     }
 }

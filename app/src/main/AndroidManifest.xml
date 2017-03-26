@@ -11,6 +11,7 @@
       android:theme="@style/AppTheme">
     <activity
         android:name=".modules.main.MainActivity"
+        android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateAlwaysHidden">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -41,6 +42,8 @@
     <activity
         android:name=".modules.counter_details.CounterDetailsActivity"
         android:theme="@style/AppTheme.NoActionBar" />
+    <activity android:name=".modules.widget_list.WidgetListActivity" />
+    <activity android:name=".modules.app_info.AppInfoActivity"></activity>
   </application>
 
 </manifest>

@@ -21,6 +21,8 @@ import org.ocpsoft.prettytime.PrettyTime
 class CounterListAdapter(private val items: MutableList<CounterItem>,
     private val listener: CounterListListener) : Adapter<CounterItemViewHolder>() {
 
+    val prettyTime = PrettyTime()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(layout.counter_item_card, parent, false)
@@ -34,7 +36,7 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
             holder.name.text = item.name
             holder.value.text = item.value.toString()
             if (item.changes.isNotEmpty()) {
-                holder.changeDate.text = PrettyTime().format(
+                holder.changeDate.text = prettyTime.format(
                     item.changes[item.changes.lastIndex].date)
             } else {
                 holder.changeDate.visibility = View.GONE

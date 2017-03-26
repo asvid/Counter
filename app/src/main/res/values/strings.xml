@@ -22,4 +22,6 @@
   <string name="delete_counter_dialog_content">If you delete counter, all widgets connected to it won\'t work.</string>
   <string name="more">more</string>
   <string name="edit">edit</string>
+  <string name="widget_list">Widgets list</string>
+  <string name="app_info">About app</string>
 </resources>
