@@ -15,20 +15,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
       <TextView
           android:id="@+id/name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="5dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="5dp"
           android:layout_weight="1"
           android:ellipsize="end"
           android:maxLines="1"
-          android:padding="5dp"
           android:text="ITEM NAME"
           android:textColor="@color/colorAccent"
           android:textSize="@dimen/counterName"
+          android:transitionName="counterNameTransition"
+          />
+      <TextView
+          android:id="@+id/changeDate"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_weight="1"
+          android:ellipsize="end"
+          android:maxLines="1"
+          android:text="ITEM NAME"
+          android:textColor="@color/md_grey_500"
+          android:textSize="@dimen/counterChangeDateSize"
+          android:transitionName="counterChangeDateTransition"
           />
     </LinearLayout>
     <LinearLayout
@@ -72,32 +86,50 @@
             style="@style/ListButton"
             />
       </LinearLayout>
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="end"
-          android:orientation="horizontal"
-          android:padding="0dp"
-          >
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="edit"
-            android:textColor="@color/colorAccent"
-            style="?android:attr/borderlessButtonStyle"
-            />
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="delete"
-            android:textColor="@color/md_grey_500"
-            style="?android:attr/borderlessButtonStyle"
-            />
-      </LinearLayout>
     </LinearLayout>
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/md_grey_100"
+        />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="0dp"
+        >
+
+      <Button
+          android:id="@+id/detailsButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/more"
+          android:textColor="@color/colorAccent"
+          style="?android:borderlessButtonStyle"
+          />
+      <Button
+          android:id="@+id/editButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_toEndOf="@+id/detailsButton"
+          android:text="@string/edit"
+          android:textColor="@color/colorAccent"
+          style="?android:borderlessButtonStyle"
+          />
+      <com.mikepenz.iconics.view.IconicsButton
+          android:id="@+id/deleteButton"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentTop="true"
+          android:layout_gravity="end"
+          android:text="{faw-trash-o}"
+          android:textColor="@color/md_grey_500"
+          style="@style/iconButton"
+          />
+    </RelativeLayout>
   </LinearLayout>
 
 </android.support.v7.widget.CardView>

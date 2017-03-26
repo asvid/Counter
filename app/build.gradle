@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-crash'
 
@@ -78,17 +79,20 @@ dependencies {
   compile "com.android.support:design:$supportLibraryVersion"
   compile 'com.google.firebase:firebase-core:10.2.0'
   compile 'com.google.firebase:firebase-crash:10.2.0'
+  compile 'com.google.firebase:firebase-messaging:10.2.0'
   //  color picker
   compile 'com.thebluealliance:spectrum:0.7.1'
   //  colors for color picker
   compile 'com.wada811:android-material-design-colors:3.0.0'
   //  logging
   compile 'com.jakewharton.timber:timber:4.5.1'
-  //  auto-scale text view
-  compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
   //  vector icons
   compile 'com.mikepenz:iconics-core:2.8.1@aar'
   compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
+  //  charts
+  compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+  //  pretty time
+  compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
   testCompile 'junit:junit:4.12'
   debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'

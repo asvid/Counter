@@ -15,8 +15,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import asvid.counter.CounterListAdapter
-import asvid.counter.CounterListListener
+import asvid.counter.modules.main.CounterListAdapter
+import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
+import asvid.counter.modules.main.CounterListListener
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
@@ -28,6 +29,11 @@ import com.thebluealliance.spectrum.SpectrumDialog
 import kotlin.properties.Delegates
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
+    override fun onDetailsClicked(item: CounterItem, position: Int,
+        holder: CounterItemViewHolder) {
+        TODO(
+            "not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
