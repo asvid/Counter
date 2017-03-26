@@ -11,4 +11,15 @@
   <string name="counter_removed">Licznik usunięty</string>
   <string name="cancel">Anuluj</string>
   <string name="select_color">Wybierz kolor widgetu</string>
+  <string name="action_edit">edytuj</string>
+  <string name="action_delete">usuń</string>
+  <string name="counter_value">Wartość licznika</string>
+  <string name="delete_counter_dialog_content">Jeśli usuniesz licznik, wszystkie połączone z nim widgety przestaną działać.</string>
+  <string name="delete_counter_dialog_title">Usunąć licznik?</string>
+  <string name="edit_counter_dialog_title">Edytuj licznik</string>
+  <string name="ok">OK</string>
+  <string name="value_decremented">Wartość spadła</string>
+  <string name="value_incremented">Wartość wzrosła</string>
+  <string name="edit">Edytuj</string>
+  <string name="more">Więcej</string>
 </resources>

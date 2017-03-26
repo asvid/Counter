@@ -105,7 +105,7 @@
           android:id="@+id/detailsButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="more"
+          android:text="@string/more"
           android:textColor="@color/colorAccent"
           style="?android:borderlessButtonStyle"
           />
@@ -115,7 +115,7 @@
           android:layout_height="wrap_content"
           android:layout_alignParentTop="true"
           android:layout_toEndOf="@+id/detailsButton"
-          android:text="edit"
+          android:text="@string/edit"
           android:textColor="@color/colorAccent"
           style="?android:borderlessButtonStyle"
           />

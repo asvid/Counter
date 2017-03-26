@@ -1,18 +1,21 @@
 package asvid.counter.modules.counter_details
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView.Adapter
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import asvid.counter.R
 import asvid.counter.R.id
 import asvid.counter.R.layout
 import asvid.counter.data.Change
 import asvid.counter.modules.counter_details.ChangeHistoryAdapter.ChangeViewHolder
 import org.ocpsoft.prettytime.PrettyTime
 
-class ChangeHistoryAdapter(private val items: List<Change>) : Adapter<ChangeViewHolder>() {
+class ChangeHistoryAdapter(private val items: List<Change>,
+    val context: Context) : Adapter<ChangeViewHolder>() {
 
     override fun getItemCount(): Int {
         return items.size
@@ -29,7 +32,11 @@ class ChangeHistoryAdapter(private val items: List<Change>) : Adapter<ChangeView
     }
 
     private fun getChange(item: Change): CharSequence? {
-        return "some change I duno Im busy"
+        if (item.preValue!! > item.postValue!!) return context.getString(
+            R.string.value_decremented)
+        if (item.preValue!! < item.postValue!!) return context.getString(
+            R.string.value_incremented)
+        return ""
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChangeViewHolder {

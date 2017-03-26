@@ -17,6 +17,7 @@ import asvid.counter.R.layout
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.DialogCallback
+import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.counter_details.CounterDetailsActivity
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import kotlinx.android.synthetic.main.activity_main.availableCountersText
@@ -30,8 +31,6 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-
-        Di.setDialogManager(this@MainActivity)
         Di.analyticsHelper.sendScreenName(this, "MainActivity")
         val name = findViewById(id.name) as EditText
         val value = findViewById(id.value) as EditText
@@ -61,12 +60,20 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {
-        CounterItemManager.deleteCounterItem(item)
-        counterAdapter.removeItem(position)
+        DialogManager.showCounterDeleteDialog(this, item, object : DialogCallback {
+            override fun onPositiveClicked() {
+                CounterItemManager.deleteCounterItem(item)
+                counterAdapter.removeItem(position)
+            }
+
+            override fun onNegativeClicked() {
+
+            }
+        })
     }
 
     override fun onItemEdit(item: CounterItem, position: Int) {
-        Di.dialogManager?.showCounterEditDialog(item, object : DialogCallback {
+        DialogManager.showCounterEditDialog(this, item, object : DialogCallback {
             override fun onPositiveClicked() {
                 counterAdapter.notifyItemChanged(position)
             }

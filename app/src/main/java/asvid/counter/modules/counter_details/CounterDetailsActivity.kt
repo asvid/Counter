@@ -4,16 +4,24 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.AppBarLayout.OnOffsetChangedListener
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar.OnMenuItemClickListener
+import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
+import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
 import asvid.counter.R.layout
+import asvid.counter.charts.MyXAxisValueFormatter
 import asvid.counter.custom_views.WidgetView
-import asvid.counter.data.Change
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
+import asvid.counter.dialogs.DialogCallback
+import asvid.counter.dialogs.DialogManager
 import asvid.counter.utils.startAlphaAnimation
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -27,9 +35,10 @@ import kotlinx.android.synthetic.main.activity_counter_details.toolbarTitle
 import kotlinx.android.synthetic.main.content_counter_details.changesChart
 import kotlinx.android.synthetic.main.content_counter_details.changesList
 import org.ocpsoft.prettytime.PrettyTime
+import timber.log.Timber
 import kotlin.properties.Delegates
 
-class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener {
+class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnMenuItemClickListener {
 
     private var mIsTheTitleVisible = false
     private var isButtonsLayoutVisible = true
@@ -58,23 +67,32 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener {
     private fun setChart() {
         val entries = ArrayList<Entry>()
         val refTime = counterItem.changes[0].date!!.time
-        for (change: Change in counterItem.changes) {
-            val calculatedTime = (change.date!!.time) - (refTime)
-            entries.add(Entry(calculatedTime.toFloat(), change.postValue!!.toFloat()))
+        counterItem.changes.mapTo(entries) {
+            Entry((it.date!!.time - refTime).toFloat(), it.postValue!!.toFloat())
         }
+        val xAxis = changesChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = MyXAxisValueFormatter(refTime)
         val dataSet = LineDataSet(entries, "data")
+        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        dataSet.setDrawFilled(true)
         val lineData = LineData(dataSet)
         changesChart.data = lineData
+        changesChart.description.text = ""
+        changesChart.legend.isEnabled = false
+
         changesChart.invalidate()
     }
 
     private fun setHistoryList() {
-        changesList.adapter = ChangeHistoryAdapter(counterItem.changes)
+        changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
         changesList.layoutManager = LinearLayoutManager(this)
+        changesList.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
     }
 
     private fun setView() {
         toolbarTitle.text = counterItem.name
+        toolbarTitle.onTextContextMenuItem(R.attr.menu)
         if (counterItem.changes.isEmpty()) {
             changeDate.visibility = View.GONE
         } else changeDate.text = PrettyTime().format(
@@ -88,9 +106,9 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener {
             CounterItemManager.decrementAndSave(counterItem)
             updateData()
         }
-
         setImage()
-
+        toolbar.inflateMenu(R.menu.menu_counter_details)
+        toolbar.setOnMenuItemClickListener(this)
     }
 
     private fun updateData() {
@@ -98,6 +116,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener {
         changeDate.text = PrettyTime().format(
             counterItem.changes[counterItem.changes.lastIndex].date)
         setImage()
+        changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
     }
 
     private fun setImage() {
@@ -123,6 +142,41 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener {
 
         handleToolbarTitleVisibility(percentage)
         handleButtonLayoutVisibility(percentage)
+    }
+
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        val id = item.itemId
+        Timber.d("item id: $id")
+        when (id) {
+            R.id.action_edit -> editCounter()
+            R.id.action_delete -> deleteCounter()
+        }
+        return true
+    }
+
+    private fun deleteCounter() {
+        DialogManager.showCounterDeleteDialog(this, counterItem, object : DialogCallback {
+            override fun onPositiveClicked() {
+                CounterItemManager.deleteCounterItem(counterItem)
+                finish()
+            }
+
+            override fun onNegativeClicked() {
+
+            }
+        })
+    }
+
+    private fun editCounter() {
+        DialogManager.showCounterEditDialog(this, counterItem, object : DialogCallback {
+            override fun onPositiveClicked() {
+                updateData()
+            }
+
+            override fun onNegativeClicked() {
+
+            }
+        })
     }
 
     private fun handleButtonLayoutVisibility(percentage: Float) {

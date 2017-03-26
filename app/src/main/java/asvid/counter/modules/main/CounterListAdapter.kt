@@ -1,7 +1,6 @@
 package asvid.counter.modules.main
 
 import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
@@ -11,16 +10,9 @@ import android.widget.Button
 import android.widget.TextView
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.charts.DayAxisValueFormatter
-import asvid.counter.data.Change
 import asvid.counter.data.CounterItem
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.mikepenz.iconics.view.IconicsButton
-import io.realm.RealmList
 import org.ocpsoft.prettytime.PrettyTime
 
 /**

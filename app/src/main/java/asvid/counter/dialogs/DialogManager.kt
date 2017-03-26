@@ -10,13 +10,13 @@ import asvid.counter.R
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 
-class DialogManager(val context: Context) {
+object DialogManager {
 
-    private fun getBuilder() = AlertDialog.Builder(context)
+    private fun getBuilder(context: Context) = AlertDialog.Builder(context)
 
-    fun showCounterEditDialog(counter: CounterItem, callback: DialogCallback) {
-        val builder: AlertDialog.Builder = getBuilder()
-        builder.setTitle(Di.context.resources.getString(R.string.edit_counter_dialog_title))
+    fun showCounterEditDialog(context: Context, counter: CounterItem, callback: DialogCallback) {
+        val builder = getBuilder(context)
+        builder.setTitle(context.resources.getString(R.string.edit_counter_dialog_title))
 
         val view = LayoutInflater.from(context).inflate(R.layout.edit_counter_dialog, null)
         val counterName = view.findViewById(R.id.counterName) as TextView
@@ -42,6 +42,23 @@ class DialogManager(val context: Context) {
         })
         builder.setView(view)
         builder.show()
+    }
+
+    fun showCounterDeleteDialog(context: Context,
+        counterItem: CounterItem, dialogCallback: DialogCallback) {
+        val builder = getBuilder(context)
+        builder.setTitle(context.resources.getString(R.string.delete_counter_dialog_title))
+        builder.setMessage(context.resources.getString(R.string.delete_counter_dialog_content))
+
+        builder.setPositiveButton(context.resources.getString(R.string.ok), { dialog, which ->
+            dialogCallback.onPositiveClicked()
+        })
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+            ->
+            dialogCallback.onNegativeClicked()
+        })
+        builder.show()
+
     }
 
 }
