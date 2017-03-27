@@ -22,4 +22,10 @@
   <string name="delete_counter_dialog_content">If you delete counter, all widgets connected to it won\'t work.</string>
   <string name="more">more</string>
   <string name="edit">edit</string>
+  <string name="widget_list">Widgets list</string>
+  <string name="app_info">About app</string>
+  <string name="mail_me">mail me</string>
+  <string name="rate_me">rate me</string>
+  <string name="about_text">Hi user! \nThis is just a simple app to play with Android technologies. I may or may not develop it over time. If you like it, you can rate it in Google Play. If you have ideas what can be improved, feel free to mail me.</string>
+  <string name="email_text">I love your app, BUT: \n</string>
 </resources>

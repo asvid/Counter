@@ -9,6 +9,7 @@ import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
+import com.thebluealliance.spectrum.SpectrumDialog
 
 object DialogManager {
 
@@ -58,7 +59,23 @@ object DialogManager {
             dialogCallback.onNegativeClicked()
         })
         builder.show()
+    }
 
+    fun showColors(context: Context, fragmentManager: android.support.v4.app.FragmentManager,
+        callback: ColorDialogCallback) {
+        SpectrumDialog.Builder(context).setColors(R.array.demo_colors)
+            .setSelectedColorRes(R.color.md_blue_500)
+            .setDismissOnColorSelected(true)
+            .setOutlineWidth(2)
+            .setTitle(context.resources.getString(R.string.select_widget_color))
+            .setNegativeButtonText(R.string.cancel)
+            .setOnColorSelectedListener { positiveResult, color ->
+                if (positiveResult) {
+                    callback.onPositiveClicked(color)
+                }
+            }
+            .build()
+            .show(fragmentManager, "dialog_demo_1")
     }
 
 }

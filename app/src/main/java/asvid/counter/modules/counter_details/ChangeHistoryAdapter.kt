@@ -17,6 +17,8 @@ import org.ocpsoft.prettytime.PrettyTime
 class ChangeHistoryAdapter(private val items: List<Change>,
     val context: Context) : Adapter<ChangeViewHolder>() {
 
+    val prettyTime = PrettyTime()
+
     override fun getItemCount(): Int {
         return items.size
     }
@@ -27,7 +29,7 @@ class ChangeHistoryAdapter(private val items: List<Change>,
             holder.item = item
             holder.indexView.text = "${position + 1}"
             holder.changeNameView.text = getChange(item)
-            holder.changeDateView.text = PrettyTime().format(item.date)
+            holder.changeDateView.text = prettyTime.format(item.date)
         }
     }
 
