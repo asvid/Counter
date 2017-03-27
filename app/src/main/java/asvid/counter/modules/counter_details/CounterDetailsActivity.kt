@@ -116,6 +116,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
         changeDate.text = PrettyTime().format(
             counterItem.changes[counterItem.changes.lastIndex].date)
         setImage()
+        setChart()
         changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
     }
 

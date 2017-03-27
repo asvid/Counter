@@ -22,4 +22,9 @@
   <string name="value_incremented">Wartość wzrosła</string>
   <string name="edit">Edytuj</string>
   <string name="more">Więcej</string>
+  <string name="app_info">O aplikacji</string>
+  <string name="mail_me">napisz do mnie</string>
+  <string name="rate_me">oceń</string>
+  <string name="widget_list">Lista widgetów</string>
+  <string name="about_text">Witaj użytkowniku!\nTo jest prosta aplikacja pozwalająca mi testować różne technologie na Androidzie. Możliwe, że będę ją rozwijał w przyszłości. Jeśli Ci się podoba, oceń ją w sklepie Google Play. Jesli masz jakieś pomysły na nowe funkcjonalności, napisz mi maila.</string>
 </resources>
