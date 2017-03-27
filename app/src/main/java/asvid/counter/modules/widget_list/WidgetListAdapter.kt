@@ -19,6 +19,7 @@ import asvid.counter.dialogs.DialogManager
 import asvid.counter.widget.CounterWidget
 import com.mikepenz.iconics.view.IconicsButton
 import org.ocpsoft.prettytime.PrettyTime
+import timber.log.Timber
 
 class WidgetListAdapter(
     private val items: List<CounterWidget>,
@@ -29,6 +30,7 @@ class WidgetListAdapter(
 
     override fun onBindViewHolder(holder: CounterWidgetViewHolder, position: Int) {
         val item = items[position]
+        Timber.d("counter widget: $item")
         if (item.isValid) {
             holder.item = item
             holder.counterName.text = item.counterItem?.name

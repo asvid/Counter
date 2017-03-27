@@ -19,7 +19,7 @@ open class CounterWidget : RealmObject() {
     var createDate: Date = Date()
 
     override fun toString(): String {
-        return "CounterWidget(id=$id, color=$color, counterItem=$counterItem, createDate=$createDate)"
+        return "CounterWidget(id=$id, color=$color, counterItem=$counterItem, createDate=$createDate')"
     }
 
 }

@@ -1,6 +1,8 @@
 package asvid.counter.data
 
 import android.content.Context
+import asvid.counter.BuildConfig
+import asvid.counter.data.data_migration.Migration
 import asvid.counter.widget.CounterWidget
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -17,7 +19,10 @@ class Storage(context: Context) {
     init {
         Realm.init(context)
         realm = Realm.getInstance(
-            RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build())
+            RealmConfiguration.Builder()
+                .schemaVersion(BuildConfig.REALM_SCHEMA_VERSION)
+                .migration(Migration())
+                .build())
     }
 
     fun saveItem(item: CounterItem) {

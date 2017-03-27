@@ -35,8 +35,31 @@ open class CounterItem : RealmObject() {
         changes.add(change)
     }
 
+
     override fun toString(): String {
         return "CounterItem(id=$id, name=$name, value=$value, changes=$changes)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as CounterItem
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (value != other.value) return false
+        if (changes != other.changes) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + value
+        result = 31 * result + changes.hashCode()
+        return result
     }
 
 }
