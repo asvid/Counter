@@ -6,12 +6,15 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.widget.RemoteViews
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.analytics.enums.Action
 import asvid.counter.analytics.enums.Category
-import asvid.counter.custom_views.WidgetView
+import asvid.counter.custom_views.BaseWidgetView
+import asvid.counter.custom_views.WidgetView1x1
+import asvid.counter.custom_views.WidgetView1x2
 import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
 import timber.log.Timber
@@ -27,13 +30,11 @@ class CounterWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray) {
         val thisWidget = ComponentName(context,
             CounterWidgetProvider::class.java)
+        val storage = Storage(context)
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
-            val remoteViews = RemoteViews(context.packageName,
-                R.layout.counter_appwidget)
-
-            setOnClick(context, widgetId.toLong(), remoteViews)
-            appWidgetManager.updateAppWidget(widgetId, remoteViews)
+            val widget = storage.getWidget(widgetId)
+            updateAppWidget(context, widgetId.toLong(), widget)
         }
     }
 
@@ -85,6 +86,39 @@ class CounterWidgetProvider : AppWidgetProvider() {
         updateAppWidget(context, widgetId, widget)
     }
 
+    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
+        appWidgetId: Int, newOptions: Bundle?) {
+        val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+
+        val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+        val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+
+        Timber.d("${getCellsForSize(minHeight)} ${getCellsForSize(minWidth)} ")
+
+        val newSize = getNewSize(getCellsForSize(minHeight), getCellsForSize(minWidth))
+
+        val storage = Storage(context)
+        val widget = storage.getWidget(appWidgetId)
+        widget.size = newSize
+        storage.saveWidget(widget)
+        Timber.d("new size: $newSize")
+        updateAppWidget(context, appWidgetId.toLong(), widget)
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+
+    }
+
+    private fun getNewSize(height: Int, width: Int): String {
+        return "${height}x$width"
+    }
+
+    fun getCellsForSize(size: Int): Int {
+        var n = 2
+        while (70 * n - 30 < size) {
+            ++n
+        }
+        return n - 1
+    }
+
     companion object {
 
         val UPDATE: String = "UPDATE"
@@ -109,25 +143,23 @@ class CounterWidgetProvider : AppWidgetProvider() {
             mAppWidgetId: Long, item: CounterWidget) {
             val appWidgetManager = AppWidgetManager
                 .getInstance(context)
-            val views = RemoteViews(context.packageName,
+            val remoteView = RemoteViews(context.packageName,
                 R.layout.counter_appwidget)
 
-            val widgetView = WidgetView(context)
+            val widgetView = getWidgetView(context, item.size)
             if (item.counterItem != null) {
-                widgetView.setNameText(item.counterItem?.name)
-                widgetView.setValueText(item.counterItem?.value)
-                widgetView.setStrokeColor(item.color)
-                views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
-
-                setOnClick(context, mAppWidgetId, views)
+                widgetView.update(appWidgetManager, mAppWidgetId.toInt(), item, remoteView)
             } else {
-                widgetView.setNameText(context.resources.getString(R.string.counter_removed))
-                widgetView.setValueText("X")
-                widgetView.setStrokeColor(item.color)
-                views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
+                widgetView.setInactive(appWidgetManager, mAppWidgetId.toInt(), item, remoteView)
             }
+        }
 
-            appWidgetManager.updateAppWidget(mAppWidgetId.toInt(), views)
+        private fun getWidgetView(context: Context, size: String?): BaseWidgetView {
+            when (size) {
+                "1x1" -> return WidgetView1x1(context)
+                "1x2" -> return WidgetView1x2(context)
+            }
+            return WidgetView1x1(context)
         }
     }
 }

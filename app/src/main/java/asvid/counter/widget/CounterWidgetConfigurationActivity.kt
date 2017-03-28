@@ -19,7 +19,7 @@ import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
-import asvid.counter.custom_views.WidgetView
+import asvid.counter.custom_views.WidgetView1x2
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.ColorDialogCallback
@@ -114,6 +114,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.counterItem = counterItem
         widget.id = mAppWidgetId.toLong()
         widget.color = widgetColorValue
+        widget.size = "1x1"
         Di.storage.saveWidget(widget)
 
         CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
@@ -136,7 +137,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     }
 
     private fun drawWidgetImage() {
-        val myView = WidgetView(this)
+        val myView = WidgetView1x2(this)
         val nameString = name.text.toString()
         var valueString = value.text.toString()
 
@@ -166,7 +167,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         counterName.text = counter.name
         counterValue.text = counter.value.toString()
 
-        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { dialog, which ->
+        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { _, _ ->
             if (TextUtils.isEmpty(counterValue.text)) {
                 counterValue.text = "0"
             }
@@ -177,7 +178,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             }
             counterAdapter.notifyItemChanged(position)
         })
-        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { _, _
             ->
         })
         builder.setView(view)

@@ -12,7 +12,7 @@ import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.layout
-import asvid.counter.custom_views.WidgetView
+import asvid.counter.custom_views.WidgetView1x2
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
@@ -43,7 +43,7 @@ class WidgetListAdapter(
     }
 
     private fun getWidgetBitmap(item: CounterWidget): Bitmap? {
-        val widgetView = WidgetView(context)
+        val widgetView = WidgetView1x2(context)
         widgetView.setNameText(item.counterItem?.name)
         widgetView.setValueText(item.counterItem?.value)
         widgetView.setStrokeColor(item.color)

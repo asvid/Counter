@@ -14,6 +14,13 @@ class Migration : RealmMigration {
             val recipeSchema = getObjectSchema(realm)
             recipeSchema.addField(CounterWidgetFields.CREATE_DATE, Date::class.java)
                 .transform { obj -> obj.setDate(CounterWidgetFields.CREATE_DATE, Date()) }
+            Timber.d("migration 0 complete")
+            version++
+        }
+        if (version == 1L) {
+            val recipeSchema = getObjectSchema(realm)
+            recipeSchema.addField(CounterWidgetFields.SIZE, String::class.java)
+                .transform { obj -> obj.setString(CounterWidgetFields.SIZE, "1x1") }
             Timber.d("migration 1 complete")
             version++
         }
@@ -36,6 +43,7 @@ class Migration : RealmMigration {
         var COLOR = "color"
         var COUNTER_ITEM = "counterItem"
         var CREATE_DATE = "createDate"
+        var SIZE = "size"
     }
 
     companion object {

@@ -49,7 +49,7 @@ android {
     multiDexEnabled false
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
-    buildConfigField "long", "REALM_SCHEMA_VERSION", "0"
+    buildConfigField "long", "REALM_SCHEMA_VERSION", "1"
   }
   buildTypes {
     release {

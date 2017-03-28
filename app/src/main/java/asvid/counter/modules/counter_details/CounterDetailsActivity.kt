@@ -15,7 +15,7 @@ import asvid.counter.R.color
 import asvid.counter.R.id
 import asvid.counter.R.layout
 import asvid.counter.charts.MyXAxisValueFormatter
-import asvid.counter.custom_views.WidgetView
+import asvid.counter.custom_views.WidgetView1x2
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.DialogCallback
@@ -121,7 +121,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
     }
 
     private fun setImage() {
-        val widgetView = WidgetView(this)
+        val widgetView = WidgetView1x2(this)
         widgetView.setNameText(counterItem.name)
         widgetView.setValueText(counterItem.value)
         widgetView.setStrokeColor(color.colorAccent)
