@@ -1,24 +1,31 @@
-package asvid.counter
+package asvid.counter.modules.main
 
 import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.Adapter
+import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import asvid.counter.R.id
+import asvid.counter.R.layout
 import asvid.counter.data.CounterItem
+import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import com.mikepenz.iconics.view.IconicsButton
+import org.ocpsoft.prettytime.PrettyTime
 
 /**
  * Created by adam on 15.01.17.
  */
 class CounterListAdapter(private val items: MutableList<CounterItem>,
-    private val listener: CounterListListener) : RecyclerView.Adapter<CounterListAdapter.CounterItemViewHolder>() {
+    private val listener: CounterListListener) : Adapter<CounterItemViewHolder>() {
+
+    val prettyTime = PrettyTime()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterItemViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.counter_item_card, parent, false)
+            .inflate(layout.counter_item_card, parent, false)
         return CounterItemViewHolder(view)
     }
 
@@ -28,12 +35,21 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
             holder.item = item
             holder.name.text = item.name
             holder.value.text = item.value.toString()
+            if (item.changes.isNotEmpty()) {
+                holder.changeDate.text = prettyTime.format(
+                    item.changes[item.changes.lastIndex].date)
+            } else {
+                holder.changeDate.visibility = View.GONE
+            }
 
             holder.deleteButton.setOnClickListener { listener.onItemDelete(item, position) }
             holder.editButton.setOnClickListener { listener.onItemEdit(item, position) }
             holder.decrementButton.setOnClickListener { listener.onItemDecrement(item, position) }
             holder.incrementButton.setOnClickListener { listener.onItemIncrement(item, position) }
             holder.cardView.setOnClickListener { listener.onItemClicked(item, position) }
+            holder.detailsButton.setOnClickListener {
+                listener.onDetailsClicked(item, position, holder)
+            }
         }
     }
 
@@ -55,15 +71,17 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
         notifyItemRemoved(position)
     }
 
-    inner class CounterItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CounterItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
         var item: CounterItem? = null
-        var cardView = itemView.findViewById(R.id.card_view) as CardView
-        var name = itemView.findViewById(R.id.name) as TextView
-        var value = itemView.findViewById(R.id.value) as TextView
-        var deleteButton = itemView.findViewById(R.id.deleteButton) as Button
-        var editButton = itemView.findViewById(R.id.editButton) as Button
-        var incrementButton = itemView.findViewById(R.id.incrementButton) as IconicsButton
-        var decrementButton = itemView.findViewById(R.id.decrementButton) as IconicsButton
+        var cardView = itemView.findViewById(id.card_view) as CardView
+        var name = itemView.findViewById(id.name) as TextView
+        var value = itemView.findViewById(id.value) as TextView
+        var deleteButton = itemView.findViewById(id.deleteButton) as Button
+        var editButton = itemView.findViewById(id.editButton) as Button
+        var detailsButton = itemView.findViewById(id.detailsButton) as Button
+        var incrementButton = itemView.findViewById(id.incrementButton) as IconicsButton
+        var decrementButton = itemView.findViewById(id.decrementButton) as IconicsButton
+        var changeDate = itemView.findViewById(id.changeDate) as TextView
     }
 }

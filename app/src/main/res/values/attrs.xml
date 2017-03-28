@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="AvatarImageBehavior">
+    <attr format="dimension" name="finalYPosition" />
+    <attr format="dimension" name="startXPosition" />
+    <attr format="dimension" name="startToolbarPosition" />
+    <attr format="dimension" name="startHeight" />
+    <attr format="dimension" name="finalHeight" />
+  </declare-styleable>
+</resources>

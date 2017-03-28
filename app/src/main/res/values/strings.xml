@@ -12,5 +12,20 @@
   <string name="cancel">Cancel</string>
   <string name="edit_counter_dialog_title">Edit Counter</string>
   <string name="counter_value">Counter value</string>
-  <string name="ok">ok</string>
+  <string name="ok">OK</string>
+
+  <string name="value_decremented">Value was decremented</string>
+  <string name="value_incremented">Value was incremented</string>
+  <string name="action_edit">edit</string>
+  <string name="action_delete">delete</string>
+  <string name="delete_counter_dialog_title">Delete counter?</string>
+  <string name="delete_counter_dialog_content">If you delete counter, all widgets connected to it won\'t work.</string>
+  <string name="more">more</string>
+  <string name="edit">edit</string>
+  <string name="widget_list">Widgets list</string>
+  <string name="app_info">About app</string>
+  <string name="mail_me">mail me</string>
+  <string name="rate_me">rate me</string>
+  <string name="about_text">Hi user! \nThis is just a simple app to play with Android technologies. I may or may not develop it over time. If you like it, you can rate it in Google Play. If you have ideas what can be improved, feel free to mail me.</string>
+  <string name="email_text">I love your app, BUT: \n</string>
 </resources>

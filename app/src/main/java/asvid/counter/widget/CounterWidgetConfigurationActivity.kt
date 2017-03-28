@@ -15,8 +15,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import asvid.counter.CounterListAdapter
-import asvid.counter.CounterListListener
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
@@ -24,10 +22,19 @@ import asvid.counter.R.id
 import asvid.counter.custom_views.WidgetView
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
-import com.thebluealliance.spectrum.SpectrumDialog
+import asvid.counter.dialogs.ColorDialogCallback
+import asvid.counter.dialogs.DialogManager
+import asvid.counter.modules.main.CounterListAdapter
+import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
+import asvid.counter.modules.main.CounterListListener
 import kotlin.properties.Delegates
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
+    override fun onDetailsClicked(item: CounterItem, position: Int,
+        holder: CounterItemViewHolder) {
+        TODO(
+            "not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
     private var counterList: RecyclerView by Delegates.notNull()
@@ -116,20 +123,16 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     }
 
     private fun showColors() {
-        SpectrumDialog.Builder(this).setColors(R.array.demo_colors)
-            .setSelectedColorRes(R.color.md_blue_500)
-            .setDismissOnColorSelected(true)
-            .setOutlineWidth(2)
-            .setTitle(resources.getString(R.string.select_widget_color))
-            .setNegativeButtonText(R.string.cancel)
-            .setOnColorSelectedListener { positiveResult, color ->
-                if (positiveResult) {
-                    widgetColorValue = color
-                    drawWidgetImage()
-                }
+        DialogManager.showColors(this, supportFragmentManager, object : ColorDialogCallback {
+            override fun onPositiveClicked(color: Int) {
+                widgetColorValue = color
+                drawWidgetImage()
             }
-            .build()
-            .show(supportFragmentManager, "dialog_demo_1")
+
+            override fun onNegativeClicked() {
+            }
+
+        })
     }
 
     private fun drawWidgetImage() {
