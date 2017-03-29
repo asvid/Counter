@@ -7,16 +7,20 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.RemoteViews
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.analytics.enums.Action
 import asvid.counter.analytics.enums.Category
-import asvid.counter.custom_views.BaseWidgetView
-import asvid.counter.custom_views.WidgetView1x1
-import asvid.counter.custom_views.WidgetView1x2
 import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
+import asvid.counter.widget.views.BUTTON_ACTION
+import asvid.counter.widget.views.BaseWidgetView
+import asvid.counter.widget.views.DECREMENT_CLICKED
+import asvid.counter.widget.views.INCREMENT_CLICKED
+import asvid.counter.widget.views.WidgetView1x1
+import asvid.counter.widget.views.WidgetView1x2
 import timber.log.Timber
 
 /**
@@ -42,8 +46,10 @@ class CounterWidgetProvider : AppWidgetProvider() {
         super.onReceive(context, intent)
         val widgetId = intent
             .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1).toLong()
+        val buttonAction = intent.getStringExtra(BUTTON_ACTION)
+        Timber.d("onReceive $widgetId $buttonAction ${intent.action}")
         when (intent.action) {
-            CLICKED -> widgetClicked(context, widgetId)
+            CLICKED -> widgetClicked(context, widgetId, buttonAction)
             UPDATE -> widgetUpdate(context, widgetId)
             APPWIDGET_DELETED -> widgetDeleted(context, widgetId)
             APPWIDGET_UPDATE -> updateAllWidgets(context)
@@ -73,7 +79,9 @@ class CounterWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    private fun widgetClicked(context: Context, widgetId: Long) {
+    //  TODO move to other service
+    private fun widgetClicked(context: Context, widgetId: Long,
+        buttonAction: String) {
         Di.analyticsHelper.sendEvent(Category.WIDGET, Action.CLICKED, "")
         val storage = Storage(context)
         Timber.d("widgetClicked: $widgetId")
@@ -81,7 +89,13 @@ class CounterWidgetProvider : AppWidgetProvider() {
 
         val item = widget.counterItem
         if (item != null) {
-            CounterItemManager.incrementAndSave(item)
+            if (TextUtils.isEmpty(buttonAction)) CounterItemManager.incrementAndSave(item)
+            else {
+                when (buttonAction) {
+                    INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
+                    DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
+                }
+            }
         }
         updateAppWidget(context, widgetId, widget)
     }
@@ -126,21 +140,8 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val APPWIDGET_DELETED = "android.appwidget.action.APPWIDGET_DELETED"
         val APPWIDGET_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE"
 
-        private fun setOnClick(context: Context, widgetId: Long,
-            remoteViews: RemoteViews) {
-            val intent = Intent(context, CounterWidgetProvider::class.java)
-
-            intent.action = CLICKED
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId.toInt())
-
-            val pendingIntent = PendingIntent
-                .getBroadcast(context, widgetId.toInt(), intent, 0)
-            remoteViews
-                .setOnClickPendingIntent(R.id.counterView, pendingIntent)
-        }
-
         fun updateAppWidget(context: Context,
-            mAppWidgetId: Long, item: CounterWidget) {
+            widgetId: Long, item: CounterWidget) {
             val appWidgetManager = AppWidgetManager
                 .getInstance(context)
             val remoteView = RemoteViews(context.packageName,
@@ -148,9 +149,9 @@ class CounterWidgetProvider : AppWidgetProvider() {
 
             val widgetView = getWidgetView(context, item.size)
             if (item.counterItem != null) {
-                widgetView.update(appWidgetManager, mAppWidgetId.toInt(), item, remoteView)
+                widgetView.update(appWidgetManager, widgetId.toInt(), item, remoteView)
             } else {
-                widgetView.setInactive(appWidgetManager, mAppWidgetId.toInt(), item, remoteView)
+                widgetView.setInactive(appWidgetManager, widgetId.toInt(), item, remoteView)
             }
         }
 

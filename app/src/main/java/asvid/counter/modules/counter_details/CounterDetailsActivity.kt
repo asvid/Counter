@@ -15,7 +15,7 @@ import asvid.counter.R.color
 import asvid.counter.R.id
 import asvid.counter.R.layout
 import asvid.counter.charts.MyXAxisValueFormatter
-import asvid.counter.custom_views.WidgetView1x2
+import asvid.counter.widget.views.WidgetView1x2
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.DialogCallback

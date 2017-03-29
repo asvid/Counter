@@ -1,8 +1,9 @@
-package asvid.counter.custom_views
+package asvid.counter.widget.views
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Bitmap.Config.ARGB_8888
 import android.graphics.Canvas
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
@@ -14,6 +15,9 @@ import asvid.counter.widget.CounterWidget
 import kotlin.properties.Delegates
 
 val STROKE_SIZE_IN_ID = 5
+val INCREMENT_CLICKED = "INCREMENT_CLICKED"
+val DECREMENT_CLICKED = "DECREMENT_CLICKED"
+val BUTTON_ACTION = "BUTTON_ACTION"
 
 abstract class BaseWidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     defStyleRes: Int) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
@@ -35,7 +39,7 @@ abstract class BaseWidgetView(context: Context, attrs: AttributeSet?, defStyleAt
         val height = dpToPx(HEIGHT_IN_DP)
         this.measure(width, height)
         this.layout(0, 0, width, height)
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(width, height, ARGB_8888)
         this.draw(Canvas(bitmap))
         return bitmap
     }

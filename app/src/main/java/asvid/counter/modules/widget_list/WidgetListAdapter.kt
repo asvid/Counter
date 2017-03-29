@@ -12,7 +12,7 @@ import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.layout
-import asvid.counter.custom_views.WidgetView1x2
+import asvid.counter.widget.views.WidgetView1x2
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
