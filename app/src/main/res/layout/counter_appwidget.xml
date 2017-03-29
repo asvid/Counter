@@ -9,18 +9,18 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
-  <!--<ImageView-->
-      <!--android:id="@+id/incrementButton"-->
-      <!--android:layout_width="26dp"-->
-      <!--android:layout_height="26dp"-->
-      <!--android:layout_gravity="right|center_vertical"-->
-      <!--android:src="@mipmap/ic_add"-->
-      <!--/>-->
-  <!--<ImageView-->
-      <!--android:id="@+id/decrementButton"-->
-      <!--android:layout_width="26dp"-->
-      <!--android:layout_height="26dp"-->
-      <!--android:layout_gravity="left|center_vertical"-->
-      <!--android:src="@mipmap/ic_minus"-->
-      <!--/>-->
+  <ImageView
+      android:id="@+id/widgetAddButton"
+      android:layout_width="@dimen/widget_button_size"
+      android:layout_height="@dimen/widget_button_size"
+      android:layout_gravity="right|center_vertical"
+      android:src="@mipmap/ic_add"
+      />
+  <ImageView
+      android:id="@+id/widgetMinusButton"
+      android:layout_width="@dimen/widget_button_size"
+      android:layout_height="@dimen/widget_button_size"
+      android:layout_gravity="left|center_vertical"
+      android:src="@mipmap/ic_minus"
+      />
 </FrameLayout>

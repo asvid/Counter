@@ -28,14 +28,16 @@ class WidgetView1x1(context: Context) : BaseWidgetView(context) {
         setStrokeColor(widget.color)
         remoteView.setImageViewBitmap(R.id.imageView, getBitmap())
 
-        appWidgetManager.updateAppWidget(widgetId, remoteView)
         hideButtons(remoteView)
+        remoteView.setOnClickPendingIntent(R.id.counterView,
+            getPendingIntent(widgetId, INCREMENT_CLICKED))
+        appWidgetManager.updateAppWidget(widgetId, remoteView)
     }
 
     private fun hideButtons(remoteView: RemoteViews) {
         Timber.d("hiding buttons")
-        remoteView.setViewVisibility(R.id.incrementButton, View.INVISIBLE)
-        remoteView.setViewVisibility(R.id.decrementButton, View.INVISIBLE)
+        remoteView.setViewVisibility(R.id.widgetAddButton, View.GONE)
+        remoteView.setViewVisibility(R.id.widgetMinusButton, View.GONE)
     }
 
     override fun setInactive(appWidgetManager: AppWidgetManager, widgetId: Int,

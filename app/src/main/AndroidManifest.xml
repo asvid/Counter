@@ -26,9 +26,6 @@
     <receiver android:name=".widget.CounterWidgetProvider">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-        <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
-        <action android:name="UPDATE" />
-        <action android:name="CLICKED" />
       </intent-filter>
       <meta-data
           android:name="android.appwidget.provider"

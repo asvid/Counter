@@ -1,9 +1,7 @@
 package asvid.counter.widget.views
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RemoteViews
@@ -12,7 +10,6 @@ import asvid.counter.R
 import asvid.counter.R.layout
 import asvid.counter.R.string
 import asvid.counter.widget.CounterWidget
-import asvid.counter.widget.CounterWidgetProvider
 import timber.log.Timber
 
 class WidgetView1x2(context: Context) : BaseWidgetView(context) {
@@ -29,8 +26,8 @@ class WidgetView1x2(context: Context) : BaseWidgetView(context) {
 
     private fun showButtons(remoteView: RemoteViews) {
         Timber.d("showing buttons")
-        remoteView.setViewVisibility(R.id.incrementButton, View.VISIBLE)
-        remoteView.setViewVisibility(R.id.decrementButton, View.VISIBLE)
+        remoteView.setViewVisibility(R.id.widgetAddButton, View.VISIBLE)
+        remoteView.setViewVisibility(R.id.widgetMinusButton, View.VISIBLE)
     }
 
     override fun update(appWidgetManager: AppWidgetManager, widgetId: Int,
@@ -40,26 +37,14 @@ class WidgetView1x2(context: Context) : BaseWidgetView(context) {
         setStrokeColor(widget.color)
         remoteView.setImageViewBitmap(R.id.imageView, getBitmap())
 
-        appWidgetManager.updateAppWidget(widgetId, remoteView)
         showButtons(remoteView)
-        remoteView.setOnClickPendingIntent(R.id.incrementButton,
+        remoteView.setOnClickPendingIntent(R.id.widgetAddButton,
             getPendingIntent(widgetId, INCREMENT_CLICKED))
-        remoteView.setOnClickPendingIntent(R.id.decrementButton,
+
+        remoteView.setOnClickPendingIntent(R.id.widgetMinusButton,
             getPendingIntent(widgetId, DECREMENT_CLICKED))
 
-        remoteView.setOnClickPendingIntent(widgetId, getPendingIntent(widgetId, ""))
-    }
-
-    private fun getPendingIntent(widgetId: Int, action: String): PendingIntent {
-        val intent = Intent(context, CounterWidgetProvider::class.java)
-
-        intent.action = CounterWidgetProvider.CLICKED
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        intent.putExtra(BUTTON_ACTION, action)
-
-        val pendingIntent = PendingIntent
-            .getBroadcast(context, widgetId, intent, 0)
-        return pendingIntent
+        appWidgetManager.updateAppWidget(widgetId, remoteView)
     }
 
     override fun setInactive(appWidgetManager: AppWidgetManager, widgetId: Int,

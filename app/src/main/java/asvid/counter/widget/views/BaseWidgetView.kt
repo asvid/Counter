@@ -1,7 +1,10 @@
 package asvid.counter.widget.views
 
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_ONE_SHOT
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.Config.ARGB_8888
 import android.graphics.Canvas
@@ -12,11 +15,14 @@ import android.widget.RemoteViews
 import android.widget.TextView
 import asvid.counter.dpToPx
 import asvid.counter.widget.CounterWidget
+import asvid.counter.widget.CounterWidgetProvider
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 val STROKE_SIZE_IN_ID = 5
 val INCREMENT_CLICKED = "INCREMENT_CLICKED"
 val DECREMENT_CLICKED = "DECREMENT_CLICKED"
+val SINGLE_ACTION = "SINGLE_ACTION"
 val BUTTON_ACTION = "BUTTON_ACTION"
 
 abstract class BaseWidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
@@ -59,6 +65,18 @@ abstract class BaseWidgetView(context: Context, attrs: AttributeSet?, defStyleAt
     fun setStrokeColor(value: Int?) {
         val drawable = counterView.background as GradientDrawable
         drawable.setStroke(dpToPx(STROKE_SIZE_IN_ID), value!!)
+    }
+
+    fun getPendingIntent(widgetId: Int, action: String): PendingIntent {
+        Timber.d("getPendingIntent action: $action")
+        val intent = Intent(context, CounterWidgetProvider::class.java)
+
+        intent.action = CounterWidgetProvider.CLICKED
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+        intent.putExtra(BUTTON_ACTION, action)
+
+        return PendingIntent.getBroadcast(context, System.currentTimeMillis().toInt(), intent,
+            FLAG_ONE_SHOT)
     }
 
     abstract fun update(appWidgetManager: AppWidgetManager, widgetId: Int,

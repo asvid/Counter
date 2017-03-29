@@ -1,6 +1,5 @@
 package asvid.counter.widget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -84,19 +83,17 @@ class CounterWidgetProvider : AppWidgetProvider() {
         buttonAction: String) {
         Di.analyticsHelper.sendEvent(Category.WIDGET, Action.CLICKED, "")
         val storage = Storage(context)
-        Timber.d("widgetClicked: $widgetId")
+        Timber.d("widgetClicked: $buttonAction")
         val widget = storage.getWidget(widgetId.toInt())
 
         val item = widget.counterItem
-        if (item != null) {
-            if (TextUtils.isEmpty(buttonAction)) CounterItemManager.incrementAndSave(item)
-            else {
-                when (buttonAction) {
-                    INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
-                    DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
-                }
+        if (item != null && !TextUtils.isEmpty(buttonAction)) {
+            when (buttonAction) {
+                INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
+                DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
             }
         }
+
         updateAppWidget(context, widgetId, widget)
     }
 
