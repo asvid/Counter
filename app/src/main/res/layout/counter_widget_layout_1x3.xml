@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/counterView"
-             android:layout_width="136dp"
+             android:layout_width="204dp"
              android:layout_height="68dp"
     >
+
   <ImageView
       android:id="@+id/imageView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
-
   <TextView
       android:id="@+id/name"
       android:layout_width="match_parent"
@@ -20,22 +20,43 @@
       android:padding="10dp"
       android:text="Cycki na plaży"
       android:textColor="@color/md_grey_200"
-      android:textSize="8dp"
+      android:textSize="12dp"
       />
-  <TextView
-      android:id="@+id/value"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|center"
-      android:ellipsize="end"
-      android:gravity="center"
-      android:lines="1"
-      android:maxLines="1"
-      android:padding="5dp"
-      android:text="7777"
-      android:textColor="@color/md_grey_50"
-      android:textSize="26dp"
-      />
+      >
+
+    <TextView
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:text="7777"
+        android:textColor="@color/md_grey_50"
+        android:textSize="26dp"
+        />
+    <TextView
+        android:id="@+id/lastChange"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="5dp"
+        android:text="3 days ago"
+        android:textColor="@color/md_grey_50"
+        android:textSize="12dp"
+        />
+  </LinearLayout>
 
   <ImageView
       android:id="@+id/widgetAddButton"

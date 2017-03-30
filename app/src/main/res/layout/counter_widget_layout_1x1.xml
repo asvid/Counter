@@ -3,9 +3,12 @@
              android:id="@+id/counterView"
              android:layout_width="68dp"
              android:layout_height="68dp"
-             android:background="@drawable/widget_background"
     >
-
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
   <TextView
       android:id="@+id/name"
       android:layout_width="match_parent"

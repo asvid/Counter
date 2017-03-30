@@ -3,6 +3,8 @@ package asvid.counter
 import android.graphics.Color
 import android.util.DisplayMetrics
 import asvid.counter.Di.context
+import asvid.counter.data.Change
+import io.realm.RealmList
 
 fun dpToPx(dp: Int): Int {
     val resources = context.resources
@@ -20,4 +22,8 @@ fun addAlphaToColor(color: Int, alpha: Int): Int {
     return Color.argb(alpha, Color.red(color),
         Color.green(color),
         Color.blue(color))
+}
+
+fun RealmList<Change>.getLastItem(): Change {
+    return this[this.lastIndex]
 }

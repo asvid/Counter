@@ -19,7 +19,6 @@ import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
-import asvid.counter.widget.views.WidgetView1x2
 import asvid.counter.data.CounterItem
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.ColorDialogCallback
@@ -27,6 +26,7 @@ import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.main.CounterListAdapter
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.main.CounterListListener
+import asvid.counter.widget.views.CounterWidgetView
 import kotlin.properties.Delegates
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
@@ -117,7 +117,8 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.size = "1x1"
         Di.storage.saveWidget(widget)
 
-        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
+        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget,
+            CounterWidgetProvider.getRemoteViews(this, widget.size!!))
 
         setResult(RESULT_OK)
         finish()
@@ -137,7 +138,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     }
 
     private fun drawWidgetImage() {
-        val myView = WidgetView1x2(this)
+        val myView = CounterWidgetView(this)
         val nameString = name.text.toString()
         var valueString = value.text.toString()
 
@@ -145,8 +146,6 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             valueString = "0"
         }
 
-        myView.setNameText(nameString)
-        myView.setValueText(valueString.toInt())
         myView.setStrokeColor(widgetColorValue)
         widgetColor.setImageBitmap(myView.getBitmap())
     }

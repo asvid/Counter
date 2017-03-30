@@ -12,11 +12,11 @@ import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.layout
-import asvid.counter.widget.views.WidgetView1x2
 import asvid.counter.data.CounterItemManager
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.widget.CounterWidget
+import asvid.counter.widget.views.CounterWidgetView
 import com.mikepenz.iconics.view.IconicsButton
 import org.ocpsoft.prettytime.PrettyTime
 import timber.log.Timber
@@ -43,10 +43,8 @@ class WidgetListAdapter(
     }
 
     private fun getWidgetBitmap(item: CounterWidget): Bitmap? {
-        val widgetView = WidgetView1x2(context)
-        widgetView.setNameText(item.counterItem?.name)
-        widgetView.setValueText(item.counterItem?.value)
-        widgetView.setStrokeColor(item.color)
+        val widgetView = CounterWidgetView(context)
+        widgetView.setStrokeColor(item.color!!)
 
         return widgetView.getBitmap()
     }
