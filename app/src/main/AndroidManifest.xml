@@ -27,7 +27,6 @@
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
-
       <meta-data
           android:name="android.appwidget.provider"
           android:resource="@xml/counter_appwidget_info" />
@@ -43,7 +42,7 @@
         android:name=".modules.counter_details.CounterDetailsActivity"
         android:theme="@style/AppTheme.NoActionBar" />
     <activity android:name=".modules.widget_list.WidgetListActivity" />
-    <activity android:name=".modules.app_info.AppInfoActivity"></activity>
+    <activity android:name=".modules.app_info.AppInfoActivity" />
   </application>
 
 </manifest>

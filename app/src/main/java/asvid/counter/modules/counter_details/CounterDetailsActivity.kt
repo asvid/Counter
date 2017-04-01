@@ -11,16 +11,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import asvid.counter.R
-import asvid.counter.R.color
 import asvid.counter.R.id
 import asvid.counter.R.layout
 import asvid.counter.charts.MyXAxisValueFormatter
-import asvid.counter.custom_views.WidgetView
-import asvid.counter.data.CounterItem
-import asvid.counter.data.CounterItemManager
+import asvid.counter.data.counter.CounterItem
+import asvid.counter.data.counter.CounterItemManager
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.utils.startAlphaAnimation
+import asvid.counter.widget.views.WidgetPreview
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -121,10 +120,11 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
     }
 
     private fun setImage() {
-        val widgetView = WidgetView(this)
+        val widgetView = WidgetPreview(this)
+
         widgetView.setNameText(counterItem.name)
         widgetView.setValueText(counterItem.value)
-        widgetView.setStrokeColor(color.colorAccent)
+        widgetView.setStrokeColor(resources.getColor(R.color.colorAccent))
 
         val imageBitmap = widgetView.getBitmap()
 

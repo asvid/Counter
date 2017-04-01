@@ -6,7 +6,7 @@ apply plugin: 'com.google.firebase.firebase-crash'
 
 def versionMajor = 0
 def versionMinor = 2
-def versionPatch = 1
+def versionPatch = 2
 def versionBuild = 0
 
 buildscript {
@@ -49,7 +49,7 @@ android {
     multiDexEnabled false
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
-    buildConfigField "long", "REALM_SCHEMA_VERSION", "0"
+    buildConfigField "long", "REALM_SCHEMA_VERSION", "1"
   }
   buildTypes {
     release {

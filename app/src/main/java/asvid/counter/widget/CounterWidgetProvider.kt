@@ -1,24 +1,27 @@
 package asvid.counter.widget
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.text.TextUtils
 import android.widget.RemoteViews
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.analytics.enums.Action
 import asvid.counter.analytics.enums.Category
-import asvid.counter.custom_views.WidgetView
-import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
+import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.widget.CounterWidget
+import asvid.counter.data.widget.WidgetSize
+import asvid.counter.widget.views.BUTTON_ACTION
+import asvid.counter.widget.views.CounterWidgetView
+import asvid.counter.widget.views.DECREMENT_CLICKED
+import asvid.counter.widget.views.INCREMENT_CLICKED
+import asvid.counter.widget.views.SINGLE_ACTION
 import timber.log.Timber
-
-/**
- * Created by adam on 14.01.17.
- */
 
 
 class CounterWidgetProvider : AppWidgetProvider() {
@@ -27,13 +30,11 @@ class CounterWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray) {
         val thisWidget = ComponentName(context,
             CounterWidgetProvider::class.java)
+        val storage = Storage(context)
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
-            val remoteViews = RemoteViews(context.packageName,
-                R.layout.counter_appwidget)
-
-            setOnClick(context, widgetId.toLong(), remoteViews)
-            appWidgetManager.updateAppWidget(widgetId, remoteViews)
+            val widget = storage.getWidget(widgetId)
+            updateAppWidget(context, widgetId.toLong(), widget)
         }
     }
 
@@ -41,8 +42,10 @@ class CounterWidgetProvider : AppWidgetProvider() {
         super.onReceive(context, intent)
         val widgetId = intent
             .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1).toLong()
+        val buttonAction = intent.getStringExtra(BUTTON_ACTION)
+        Timber.d("onReceive $widgetId $buttonAction ${intent.action}")
         when (intent.action) {
-            CLICKED -> widgetClicked(context, widgetId)
+            CLICKED -> widgetClicked(context, widgetId, buttonAction)
             UPDATE -> widgetUpdate(context, widgetId)
             APPWIDGET_DELETED -> widgetDeleted(context, widgetId)
             APPWIDGET_UPDATE -> updateAllWidgets(context)
@@ -72,17 +75,60 @@ class CounterWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    private fun widgetClicked(context: Context, widgetId: Long) {
+    //  TODO move to other service
+    private fun widgetClicked(context: Context, widgetId: Long,
+        buttonAction: String) {
         Di.analyticsHelper.sendEvent(Category.WIDGET, Action.CLICKED, "")
         val storage = Storage(context)
-        Timber.d("widgetClicked: $widgetId")
+        Timber.d("widgetClicked: $buttonAction")
         val widget = storage.getWidget(widgetId.toInt())
 
         val item = widget.counterItem
-        if (item != null) {
-            CounterItemManager.incrementAndSave(item)
+        if (item != null && !TextUtils.isEmpty(buttonAction)) {
+            when (buttonAction) {
+                INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
+                DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
+                SINGLE_ACTION -> CounterItemManager.incrementAndSave(item)
+            }
         }
+
         updateAppWidget(context, widgetId, widget)
+    }
+
+    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
+        appWidgetId: Int, newOptions: Bundle?) {
+        val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+
+        val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+        val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+
+        Timber.d("${getCellsForSize(minHeight)} ${getCellsForSize(minWidth)} ")
+
+        val newSize = getNewSize(getCellsForSize(minHeight), getCellsForSize(minWidth))
+
+        val storage = Storage(context)
+        val widget = storage.getWidget(appWidgetId)
+        val size = WidgetSize()
+        size.heightFactor = getCellsForSize(minHeight)
+        size.widthFactor = getCellsForSize(minWidth)
+        widget.size = size
+        storage.saveWidget(widget)
+        Timber.d("new size: $newSize")
+        updateAppWidget(context, appWidgetId.toLong(), widget)
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+
+    }
+
+    private fun getNewSize(height: Int, width: Int): String {
+        return "${height}x$width"
+    }
+
+    fun getCellsForSize(size: Int): Int {
+        var n = 2
+        while (70 * n - 30 < size) {
+            ++n
+        }
+        return n - 1
     }
 
     companion object {
@@ -92,42 +138,30 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val APPWIDGET_DELETED = "android.appwidget.action.APPWIDGET_DELETED"
         val APPWIDGET_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE"
 
-        private fun setOnClick(context: Context, widgetId: Long,
-            remoteViews: RemoteViews) {
-            val intent = Intent(context, CounterWidgetProvider::class.java)
-
-            intent.action = CLICKED
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId.toInt())
-
-            val pendingIntent = PendingIntent
-                .getBroadcast(context, widgetId.toInt(), intent, 0)
-            remoteViews
-                .setOnClickPendingIntent(R.id.counterView, pendingIntent)
+        fun getRemoteViews(context: Context, size: WidgetSize): RemoteViews {
+            when (size.widthFactor) {
+                1 -> return RemoteViews(context.packageName,
+                    R.layout.counter_widget_layout_1x1)
+                2 -> return RemoteViews(context.packageName,
+                    R.layout.counter_widget_layout_1x2)
+            }
+            if (size.widthFactor!! >= 3) return RemoteViews(context.packageName,
+                R.layout.counter_widget_layout_1x3)
+            return RemoteViews(context.packageName, R.layout.counter_widget_layout_1x1)
         }
 
         fun updateAppWidget(context: Context,
-            mAppWidgetId: Long, item: CounterWidget) {
+            widgetId: Long, item: CounterWidget) {
+            val remoteView = getRemoteViews(context, item.size!!)
             val appWidgetManager = AppWidgetManager
                 .getInstance(context)
-            val views = RemoteViews(context.packageName,
-                R.layout.counter_appwidget)
 
-            val widgetView = WidgetView(context)
+            val widgetView = CounterWidgetView(context)
             if (item.counterItem != null) {
-                widgetView.setNameText(item.counterItem?.name)
-                widgetView.setValueText(item.counterItem?.value)
-                widgetView.setStrokeColor(item.color)
-                views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
-
-                setOnClick(context, mAppWidgetId, views)
+                widgetView.update(appWidgetManager, widgetId.toInt(), item, remoteView)
             } else {
-                widgetView.setNameText(context.resources.getString(R.string.counter_removed))
-                widgetView.setValueText("X")
-                widgetView.setStrokeColor(item.color)
-                views.setImageViewBitmap(R.id.imageView, widgetView.getBitmap())
+                widgetView.setInactive(appWidgetManager, widgetId.toInt(), item, remoteView)
             }
-
-            appWidgetManager.updateAppWidget(mAppWidgetId.toInt(), views)
         }
     }
 }

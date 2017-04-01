@@ -1,4 +1,4 @@
-package asvid.counter.custom_views
+package asvid.counter.widget.views
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -10,11 +10,13 @@ import android.widget.TextView
 import asvid.counter.R
 import asvid.counter.dpToPx
 
-val SIZE_IN_DP = 68
-val STROKE_SIZE_IN_ID = 5
 
-class WidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
+class WidgetPreview(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     defStyleRes: Int) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
+
+
+    val SIZE_IN_DP = 72
+    val STROKE_SIZE_IN_ID = 5
 
     var nameView: TextView
     var valueView: TextView
@@ -26,7 +28,7 @@ class WidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         defStyleAttr, 0)
 
     init {
-        inflate(getContext(), R.layout.counter_widget_layout, this)
+        inflate(getContext(), R.layout.counter_widget_preview_layout, this)
         this.nameView = findViewById(R.id.name) as TextView
         this.valueView = findViewById(R.id.value) as TextView
         this.counterView = findViewById(R.id.counterView) as FrameLayout
@@ -57,4 +59,5 @@ class WidgetView(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         this.draw(Canvas(bitmap))
         return bitmap
     }
+
 }

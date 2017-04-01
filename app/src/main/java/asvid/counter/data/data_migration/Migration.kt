@@ -1,5 +1,6 @@
 package asvid.counter.data.data_migration
 
+import asvid.counter.data.widget.WidgetSize
 import io.realm.DynamicRealm
 import io.realm.RealmMigration
 import io.realm.RealmObjectSchema
@@ -14,6 +15,16 @@ class Migration : RealmMigration {
             val recipeSchema = getObjectSchema(realm)
             recipeSchema.addField(CounterWidgetFields.CREATE_DATE, Date::class.java)
                 .transform { obj -> obj.setDate(CounterWidgetFields.CREATE_DATE, Date()) }
+            Timber.d("migration 0 complete")
+            version++
+        }
+        if (version == 1L) {
+            val recipeSchema = getObjectSchema(realm)
+            val size = WidgetSize()
+            size.widthFactor = 1
+            size.heightFactor = 1
+            recipeSchema.addField(CounterWidgetFields.SIZE, WidgetSize::class.java)
+                .transform { obj -> obj.set(CounterWidgetFields.SIZE, size) }
             Timber.d("migration 1 complete")
             version++
         }
@@ -36,6 +47,7 @@ class Migration : RealmMigration {
         var COLOR = "color"
         var COUNTER_ITEM = "counterItem"
         var CREATE_DATE = "createDate"
+        var SIZE = "size"
     }
 
     companion object {
