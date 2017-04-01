@@ -1,6 +1,6 @@
-package asvid.counter.widget
+package asvid.counter.data.widget
 
-import asvid.counter.data.CounterItem
+import asvid.counter.data.counter.CounterItem
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.util.Date

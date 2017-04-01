@@ -19,8 +19,9 @@ import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
-import asvid.counter.data.CounterItem
-import asvid.counter.data.CounterItemManager
+import asvid.counter.data.counter.CounterItem
+import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.widget.CounterWidget
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.main.CounterListAdapter
@@ -117,8 +118,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.size = "1x1"
         Di.storage.saveWidget(widget)
 
-        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget,
-            CounterWidgetProvider.getRemoteViews(this, widget.size!!))
+        CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
 
         setResult(RESULT_OK)
         finish()

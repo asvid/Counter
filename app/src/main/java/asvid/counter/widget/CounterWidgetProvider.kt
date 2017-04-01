@@ -12,17 +12,14 @@ import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.analytics.enums.Action
 import asvid.counter.analytics.enums.Category
-import asvid.counter.data.CounterItemManager
 import asvid.counter.data.Storage
+import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.widget.CounterWidget
 import asvid.counter.widget.views.BUTTON_ACTION
 import asvid.counter.widget.views.CounterWidgetView
 import asvid.counter.widget.views.DECREMENT_CLICKED
 import asvid.counter.widget.views.INCREMENT_CLICKED
 import timber.log.Timber
-
-/**
- * Created by adam on 14.01.17.
- */
 
 
 class CounterWidgetProvider : AppWidgetProvider() {
@@ -35,8 +32,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
         for (widgetId in allWidgetIds) {
             val widget = storage.getWidget(widgetId)
-            updateAppWidget(context, widgetId.toLong(), widget,
-                getRemoteViews(context, widget.size!!))
+            updateAppWidget(context, widgetId.toLong(), widget)
         }
     }
 
@@ -57,8 +53,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
     private fun updateAllWidgets(context: Context) {
         val storage = Storage(context)
         storage.getAllWidgets().map {
-            CounterWidgetProvider.updateAppWidget(context, it.id!!, it,
-                getRemoteViews(context, it.size!!))
+            CounterWidgetProvider.updateAppWidget(context, it.id!!, it)
         }
     }
 
@@ -74,7 +69,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val storage = Storage(context)
         if (widgetId > -1) {
             val widget = storage.getWidget(widgetId.toInt())
-            updateAppWidget(context, widgetId, widget, getRemoteViews(context, widget.size!!))
+            updateAppWidget(context, widgetId, widget)
         }
     }
 
@@ -94,7 +89,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
             }
         }
 
-        updateAppWidget(context, widgetId, widget, getRemoteViews(context, widget.size!!))
+        updateAppWidget(context, widgetId, widget)
     }
 
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
@@ -113,8 +108,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
         widget.size = newSize
         storage.saveWidget(widget)
         Timber.d("new size: $newSize")
-        updateAppWidget(context, appWidgetId.toLong(), widget,
-            getRemoteViews(context, newSize))
+        updateAppWidget(context, appWidgetId.toLong(), widget)
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
 
     }
@@ -129,18 +123,6 @@ class CounterWidgetProvider : AppWidgetProvider() {
             ++n
         }
         return n - 1
-    }
-
-    fun getRemoteViews(context: Context, size: String): RemoteViews {
-        when (size) {
-            "1x1" -> return RemoteViews(context.packageName,
-                R.layout.counter_widget_layout_1x1)
-            "1x2" -> return RemoteViews(context.packageName,
-                R.layout.counter_widget_layout_1x2)
-            "1x3" -> return RemoteViews(context.packageName,
-                R.layout.counter_widget_layout_1x3)
-        }
-        return RemoteViews(context.packageName, R.layout.counter_widget_layout_1x1)
     }
 
     companion object {
@@ -163,7 +145,8 @@ class CounterWidgetProvider : AppWidgetProvider() {
         }
 
         fun updateAppWidget(context: Context,
-            widgetId: Long, item: CounterWidget, remoteView: RemoteViews) {
+            widgetId: Long, item: CounterWidget) {
+            val remoteView = getRemoteViews(context, item.size!!)
             val appWidgetManager = AppWidgetManager
                 .getInstance(context)
 

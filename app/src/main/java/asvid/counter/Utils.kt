@@ -3,7 +3,7 @@ package asvid.counter
 import android.graphics.Color
 import android.util.DisplayMetrics
 import asvid.counter.Di.context
-import asvid.counter.data.Change
+import asvid.counter.data.counter.Change
 import io.realm.RealmList
 
 fun dpToPx(dp: Int): Int {

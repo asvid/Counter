@@ -12,10 +12,10 @@ import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.layout
-import asvid.counter.data.CounterItemManager
+import asvid.counter.data.counter.CounterItemManager
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
-import asvid.counter.widget.CounterWidget
+import asvid.counter.data.widget.CounterWidget
 import asvid.counter.widget.views.CounterWidgetView
 import com.mikepenz.iconics.view.IconicsButton
 import org.ocpsoft.prettytime.PrettyTime

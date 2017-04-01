@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
-import asvid.counter.data.CounterItem
-import asvid.counter.data.CounterItemManager
+import asvid.counter.data.counter.CounterItem
+import asvid.counter.data.counter.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
 
 object DialogManager {

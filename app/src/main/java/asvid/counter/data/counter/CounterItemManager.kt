@@ -1,12 +1,17 @@
-package asvid.counter.data
+package asvid.counter.data.counter
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import asvid.counter.Di
 import asvid.counter.Di.context
 import asvid.counter.analytics.enums.Action
+import asvid.counter.analytics.enums.Action.ADD
+import asvid.counter.analytics.enums.Action.ALL_ITEMS
+import asvid.counter.analytics.enums.Action.DELETE
 import asvid.counter.analytics.enums.Category
+import asvid.counter.analytics.enums.Category.COUNTER
 import asvid.counter.widget.CounterWidgetProvider
+import asvid.counter.widget.CounterWidgetProvider.Companion
 import timber.log.Timber
 
 object CounterItemManager {
@@ -37,7 +42,7 @@ object CounterItemManager {
 
     fun getAllCounterItems(): MutableList<CounterItem> {
         val allItems = Di.storage.allItems()
-        Di.analyticsHelper.sendEvent(Category.COUNTER, Action.ALL_ITEMS, "${allItems.size}")
+        Di.analyticsHelper.sendEvent(COUNTER, ALL_ITEMS, "${allItems.size}")
         return allItems
     }
 
@@ -47,11 +52,11 @@ object CounterItemManager {
 
     fun saveCounterItem(counterItem: CounterItem) {
         Di.storage.saveItem(counterItem)
-        Di.analyticsHelper.sendEvent(Category.COUNTER, Action.ADD, "")
+        Di.analyticsHelper.sendEvent(COUNTER, ADD, "")
     }
 
     fun deleteCounterItem(item: CounterItem) {
-        Di.analyticsHelper.sendEvent(Category.COUNTER, Action.DELETE, "")
+        Di.analyticsHelper.sendEvent(COUNTER, DELETE, "")
         Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
         Di.storage.deleteCounter(item)
     }

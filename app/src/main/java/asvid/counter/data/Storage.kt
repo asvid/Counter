@@ -2,8 +2,9 @@ package asvid.counter.data
 
 import android.content.Context
 import asvid.counter.BuildConfig
+import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.data_migration.Migration
-import asvid.counter.widget.CounterWidget
+import asvid.counter.data.widget.CounterWidget
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmObject

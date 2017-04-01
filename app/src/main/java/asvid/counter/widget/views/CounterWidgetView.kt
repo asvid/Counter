@@ -14,7 +14,7 @@ import asvid.counter.R
 import asvid.counter.R.string
 import asvid.counter.dpToPx
 import asvid.counter.getLastItem
-import asvid.counter.widget.CounterWidget
+import asvid.counter.data.widget.CounterWidget
 import asvid.counter.widget.CounterWidgetProvider
 import org.ocpsoft.prettytime.PrettyTime
 import timber.log.Timber
@@ -25,6 +25,7 @@ val INCREMENT_CLICKED = "INCREMENT_CLICKED"
 val DECREMENT_CLICKED = "DECREMENT_CLICKED"
 val SINGLE_ACTION = "SINGLE_ACTION"
 val BUTTON_ACTION = "BUTTON_ACTION"
+val STD_SIZE = 68
 
 class CounterWidgetView(val context: Context) {
 
@@ -38,10 +39,10 @@ class CounterWidgetView(val context: Context) {
 
     fun getBitmap(): Bitmap {
         val canvas = Canvas()
-        val bitmap = Bitmap.createBitmap(68, 68,
+        val bitmap = Bitmap.createBitmap(dpToPx(STD_SIZE * 3), dpToPx(STD_SIZE),
             Bitmap.Config.ARGB_8888)
         canvas.setBitmap(bitmap)
-        drawable.setBounds(0, 0, 68, 68)
+        drawable.setBounds(0, 0, dpToPx(STD_SIZE * 3), dpToPx(STD_SIZE))
         drawable.draw(canvas)
 
         return bitmap
@@ -63,7 +64,8 @@ class CounterWidgetView(val context: Context) {
         widget: CounterWidget, remoteView: RemoteViews) {
         remoteView.setTextViewText(R.id.name, widget.counterItem?.name)
         remoteView.setTextViewText(R.id.value, widget.counterItem?.value.toString())
-        remoteView.setTextViewText(R.id.lastChange, getLastChangePretyTime(widget))
+        if (widget.counterItem!!.changes.isNotEmpty()) remoteView.setTextViewText(R.id.lastChange,
+            getLastChangePretyTime(widget))
         setStrokeColor(widget.color!!)
         Timber.d("bitmap: ${getBitmap().byteCount}")
         remoteView.setImageViewBitmap(R.id.imageView, getBitmap())

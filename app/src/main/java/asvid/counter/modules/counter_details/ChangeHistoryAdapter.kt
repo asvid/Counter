@@ -10,7 +10,7 @@ import android.widget.TextView
 import asvid.counter.R
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.data.Change
+import asvid.counter.data.counter.Change
 import asvid.counter.modules.counter_details.ChangeHistoryAdapter.ChangeViewHolder
 import org.ocpsoft.prettytime.PrettyTime
 

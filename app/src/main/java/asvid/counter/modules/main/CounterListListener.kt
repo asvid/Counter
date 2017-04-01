@@ -1,7 +1,7 @@
 package asvid.counter.modules.main
 
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
-import asvid.counter.data.CounterItem
+import asvid.counter.data.counter.CounterItem
 
 interface CounterListListener {
     fun onItemDelete(item: CounterItem, position: Int)
