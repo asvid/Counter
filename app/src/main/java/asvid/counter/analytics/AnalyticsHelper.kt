@@ -11,11 +11,15 @@ class AnalyticsHelper private constructor(builder: Builder) {
     var analytics = FirebaseAnalytics.getInstance(builder.context)
     var isDebug = builder.isDebug
 
+    init {
+        analytics.setAnalyticsCollectionEnabled(!isDebug)
+    }
+
     fun sendEvent(category: Category, action: Action, label: String) {
         if (!isDebug) {
             val params = Bundle()
-            params.putString("ACTION", action.toString())
-            params.putString("LABEL", label)
+            params.putString(FirebaseAnalytics.Param.CONTENT, "$action")
+            params.putString(FirebaseAnalytics.Param.VALUE, label)
             analytics.logEvent(category.toString(), params)
         }
     }

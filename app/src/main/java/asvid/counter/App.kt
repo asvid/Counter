@@ -1,6 +1,7 @@
 package asvid.counter
 
 import android.app.Application
+import android.support.v7.app.AppCompatDelegate
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -20,6 +21,17 @@ class App : Application() {
         initLeakCanary()
         initTimber()
         Di.set(this)
+        setCrashReporting()
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+    }
+
+    private fun setCrashReporting() {
+        if (BuildConfig.DEBUG) {
+            Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
+                Timber.wtf("Alert", throwable.message, throwable)
+                System.exit(2)
+            }
+        }
     }
 
     private fun initTimber() {

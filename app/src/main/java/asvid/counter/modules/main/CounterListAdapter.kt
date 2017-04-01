@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.data.CounterItem
+import asvid.counter.data.counter.CounterItem
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import com.mikepenz.iconics.view.IconicsButton
 import org.ocpsoft.prettytime.PrettyTime

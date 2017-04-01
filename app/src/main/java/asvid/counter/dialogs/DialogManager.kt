@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
-import asvid.counter.data.CounterItem
-import asvid.counter.data.CounterItemManager
+import asvid.counter.data.counter.CounterItem
+import asvid.counter.data.counter.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
 
 object DialogManager {
@@ -26,7 +26,7 @@ object DialogManager {
         counterName.text = counter.name
         counterValue.text = counter.value.toString()
 
-        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { dialog, which ->
+        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { _, _ ->
             if (TextUtils.isEmpty(counterValue.text)) {
                 counterValue.text = "0"
             }
@@ -37,7 +37,7 @@ object DialogManager {
             }
             callback.onPositiveClicked()
         })
-        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { _, _
             ->
             callback.onNegativeClicked()
         })
@@ -51,10 +51,10 @@ object DialogManager {
         builder.setTitle(context.resources.getString(R.string.delete_counter_dialog_title))
         builder.setMessage(context.resources.getString(R.string.delete_counter_dialog_content))
 
-        builder.setPositiveButton(context.resources.getString(R.string.ok), { dialog, which ->
+        builder.setPositiveButton(context.resources.getString(R.string.ok), { _, _ ->
             dialogCallback.onPositiveClicked()
         })
-        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { _, _
             ->
             dialogCallback.onNegativeClicked()
         })

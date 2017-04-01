@@ -1,4 +1,4 @@
-package asvid.counter.data
+package asvid.counter.data.counter
 
 import io.realm.RealmObject
 import java.util.Date

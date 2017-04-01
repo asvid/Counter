@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/counterView"
-             android:layout_width="@dimen/widget_base_width"
+             android:layout_width="match_parent"
              android:layout_height="@dimen/widget_base_height"
-             android:background="@drawable/widget_background"
     >
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
 
   <TextView
       android:id="@+id/name"
@@ -28,8 +32,23 @@
       android:lines="1"
       android:maxLines="1"
       android:padding="5dp"
-      android:text="777"
+      android:text="7777"
       android:textColor="@color/md_grey_50"
       android:textSize="26dp"
+      />
+
+  <ImageView
+      android:id="@+id/widgetAddButton"
+      android:layout_width="@dimen/widget_button_size"
+      android:layout_height="@dimen/widget_button_size"
+      android:layout_gravity="right|center_vertical"
+      android:src="@mipmap/ic_add"
+      />
+  <ImageView
+      android:id="@+id/widgetMinusButton"
+      android:layout_width="@dimen/widget_button_size"
+      android:layout_height="@dimen/widget_button_size"
+      android:layout_gravity="left|center_vertical"
+      android:src="@mipmap/ic_minus"
       />
 </FrameLayout>

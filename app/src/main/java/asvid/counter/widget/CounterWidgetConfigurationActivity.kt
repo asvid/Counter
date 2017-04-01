@@ -19,14 +19,16 @@ import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
-import asvid.counter.custom_views.WidgetView
-import asvid.counter.data.CounterItem
-import asvid.counter.data.CounterItemManager
+import asvid.counter.data.counter.CounterItem
+import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.widget.CounterWidget
+import asvid.counter.data.widget.WidgetSize
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.main.CounterListAdapter
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.main.CounterListListener
+import asvid.counter.widget.views.WidgetPreview
 import kotlin.properties.Delegates
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
@@ -114,6 +116,10 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.counterItem = counterItem
         widget.id = mAppWidgetId.toLong()
         widget.color = widgetColorValue
+        val size = WidgetSize()
+        size.heightFactor = 1
+        size.widthFactor = 1
+        widget.size = size
         Di.storage.saveWidget(widget)
 
         CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
@@ -136,18 +142,20 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     }
 
     private fun drawWidgetImage() {
-        val myView = WidgetView(this)
+        val widgetView = WidgetPreview(this)
+        val imageBitmap = widgetView.getBitmap()
+
         val nameString = name.text.toString()
         var valueString = value.text.toString()
 
         if (TextUtils.isEmpty(valueString)) {
             valueString = "0"
         }
+        widgetView.setNameText(nameString)
+        widgetView.setValueText(valueString)
+        widgetView.setStrokeColor(widgetColorValue)
 
-        myView.setNameText(nameString)
-        myView.setValueText(valueString.toInt())
-        myView.setStrokeColor(widgetColorValue)
-        widgetColor.setImageBitmap(myView.getBitmap())
+        widgetColor.setImageBitmap(widgetView.getBitmap())
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {
@@ -166,7 +174,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         counterName.text = counter.name
         counterValue.text = counter.value.toString()
 
-        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { dialog, which ->
+        builder.setPositiveButton(Di.context.resources.getString(R.string.ok), { _, _ ->
             if (TextUtils.isEmpty(counterValue.text)) {
                 counterValue.text = "0"
             }
@@ -177,7 +185,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             }
             counterAdapter.notifyItemChanged(position)
         })
-        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { dialog, which
+        builder.setNegativeButton(Di.context.resources.getString(R.string.cancel), { _, _
             ->
         })
         builder.setView(view)
