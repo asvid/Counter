@@ -4,6 +4,7 @@ import android.content.Context
 import asvid.counter.BuildConfig
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.data_migration.Migration
+import asvid.counter.data.down_counter.DownCounterWidget
 import asvid.counter.data.widget.CounterWidget
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -34,6 +35,12 @@ class Storage(context: Context) {
     }
 
     fun saveWidget(widget: CounterWidget) {
+        realm.beginTransaction()
+        realm.copyToRealmOrUpdate(widget)
+        realm.commitTransaction()
+    }
+
+    fun saveDownCounter(widget: DownCounterWidget) {
         realm.beginTransaction()
         realm.copyToRealmOrUpdate(widget)
         realm.commitTransaction()

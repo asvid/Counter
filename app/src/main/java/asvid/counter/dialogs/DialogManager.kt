@@ -1,6 +1,9 @@
 package asvid.counter.dialogs
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -10,6 +13,9 @@ import asvid.counter.R
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
 import com.thebluealliance.spectrum.SpectrumDialog
+import timber.log.Timber
+import java.util.Calendar
+import java.util.Date
 
 object DialogManager {
 
@@ -76,6 +82,34 @@ object DialogManager {
             }
             .build()
             .show(fragmentManager, "dialog_demo_1")
+    }
+
+    fun showDateTimeDialog(
+        context: Context,
+        callback: DateTimeDialogCallback) {
+        val currentTime = Date()
+        val calendar = Calendar.getInstance()
+
+        Timber.d("current time: ${currentTime.year} ${currentTime.month} ${currentTime.day}")
+
+        val dialog = DatePickerDialog(context,
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                val newDate = Calendar.getInstance()
+                newDate.set(year, monthOfYear, dayOfMonth)
+                val date = newDate.time
+                TimePickerDialog(context,
+                    OnTimeSetListener { _, hour, minute ->
+                        date.hours = hour
+                        date.minutes = minute
+                        callback.onDateSelected(date)
+                    }, date.hours,
+                    date.minutes, true).show()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH))
+
+        dialog.show()
     }
 
 }

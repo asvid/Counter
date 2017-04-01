@@ -30,4 +30,8 @@
   <string name="email_text">I love your app, BUT: \n</string>
   <string name="no_changes_yet">no changes yet</string>
   <string name="name">NAME</string>
+  <string name="counter_widget_name">Counter</string>
+  <string name="down_counter_widget_name">Down Counter</string>
+  <string name="down_counter_time">Count time till?</string>
+  <string name="set_date">Set</string>
 </resources>
