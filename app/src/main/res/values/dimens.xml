@@ -10,7 +10,7 @@
   <dimen name="image_final_width">54dp</dimen>
   <dimen name="widget_button_size">30dp</dimen>
   <dimen name="widget_base_height">72dp</dimen>
-  <dimen name="widget_base_width">72dp</dimen>
+  <dimen name="widget_base_width">68dp</dimen>
   <dimen name="widget_base_width_x2">144dp</dimen>
   <dimen name="widget_base_width_x3">216dp</dimen>
 </resources>

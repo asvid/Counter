@@ -28,7 +28,7 @@ import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.main.CounterListAdapter
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.main.CounterListListener
-import asvid.counter.widget.views.CounterWidgetView
+import asvid.counter.widget.views.WidgetPreview
 import kotlin.properties.Delegates
 
 class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
@@ -142,16 +142,20 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     }
 
     private fun drawWidgetImage() {
-        val myView = CounterWidgetView(this)
+        val widgetView = WidgetPreview(this)
+        val imageBitmap = widgetView.getBitmap()
+
         val nameString = name.text.toString()
         var valueString = value.text.toString()
 
         if (TextUtils.isEmpty(valueString)) {
             valueString = "0"
         }
+        widgetView.setNameText(nameString)
+        widgetView.setValueText(valueString)
+        widgetView.setStrokeColor(widgetColorValue)
 
-        myView.setStrokeColor(widgetColorValue)
-        widgetColor.setImageBitmap(myView.getBitmap(1))
+        widgetColor.setImageBitmap(widgetView.getBitmap())
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {

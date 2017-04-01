@@ -20,6 +20,7 @@ import asvid.counter.widget.views.BUTTON_ACTION
 import asvid.counter.widget.views.CounterWidgetView
 import asvid.counter.widget.views.DECREMENT_CLICKED
 import asvid.counter.widget.views.INCREMENT_CLICKED
+import asvid.counter.widget.views.SINGLE_ACTION
 import timber.log.Timber
 
 
@@ -87,6 +88,7 @@ class CounterWidgetProvider : AppWidgetProvider() {
             when (buttonAction) {
                 INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
                 DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
+                SINGLE_ACTION -> CounterItemManager.incrementAndSave(item)
             }
         }
 
