@@ -15,6 +15,7 @@ import asvid.counter.analytics.enums.Category
 import asvid.counter.data.Storage
 import asvid.counter.data.counter.CounterItemManager
 import asvid.counter.data.widget.CounterWidget
+import asvid.counter.data.widget.WidgetSize
 import asvid.counter.widget.views.BUTTON_ACTION
 import asvid.counter.widget.views.CounterWidgetView
 import asvid.counter.widget.views.DECREMENT_CLICKED
@@ -105,7 +106,10 @@ class CounterWidgetProvider : AppWidgetProvider() {
 
         val storage = Storage(context)
         val widget = storage.getWidget(appWidgetId)
-        widget.size = newSize
+        val size = WidgetSize()
+        size.heightFactor = getCellsForSize(minHeight)
+        size.widthFactor = getCellsForSize(minWidth)
+        widget.size = size
         storage.saveWidget(widget)
         Timber.d("new size: $newSize")
         updateAppWidget(context, appWidgetId.toLong(), widget)
@@ -132,15 +136,15 @@ class CounterWidgetProvider : AppWidgetProvider() {
         val APPWIDGET_DELETED = "android.appwidget.action.APPWIDGET_DELETED"
         val APPWIDGET_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE"
 
-        fun getRemoteViews(context: Context, size: String): RemoteViews {
-            when (size) {
-                "1x1" -> return RemoteViews(context.packageName,
+        fun getRemoteViews(context: Context, size: WidgetSize): RemoteViews {
+            when (size.widthFactor) {
+                1 -> return RemoteViews(context.packageName,
                     R.layout.counter_widget_layout_1x1)
-                "1x2" -> return RemoteViews(context.packageName,
+                2 -> return RemoteViews(context.packageName,
                     R.layout.counter_widget_layout_1x2)
-                "1x3" -> return RemoteViews(context.packageName,
-                    R.layout.counter_widget_layout_1x3)
             }
+            if (size.widthFactor!! >= 3) return RemoteViews(context.packageName,
+                R.layout.counter_widget_layout_1x3)
             return RemoteViews(context.packageName, R.layout.counter_widget_layout_1x1)
         }
 

@@ -125,7 +125,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
 
         widgetView.setStrokeColor(color.colorAccent)
 
-        val imageBitmap = widgetView.getBitmap()
+        val imageBitmap = widgetView.getBitmap(1)
 
         image.setImageBitmap(imageBitmap)
         imageToolbar.setImageBitmap(imageBitmap)

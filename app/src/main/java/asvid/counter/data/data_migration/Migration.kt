@@ -1,5 +1,6 @@
 package asvid.counter.data.data_migration
 
+import asvid.counter.data.widget.WidgetSize
 import io.realm.DynamicRealm
 import io.realm.RealmMigration
 import io.realm.RealmObjectSchema
@@ -19,8 +20,11 @@ class Migration : RealmMigration {
         }
         if (version == 1L) {
             val recipeSchema = getObjectSchema(realm)
-            recipeSchema.addField(CounterWidgetFields.SIZE, String::class.java)
-                .transform { obj -> obj.setString(CounterWidgetFields.SIZE, "1x1") }
+            val size = WidgetSize()
+            size.widthFactor = 1
+            size.heightFactor = 1
+            recipeSchema.addField(CounterWidgetFields.SIZE, WidgetSize::class.java)
+                .transform { obj -> obj.set(CounterWidgetFields.SIZE, size) }
             Timber.d("migration 1 complete")
             version++
         }

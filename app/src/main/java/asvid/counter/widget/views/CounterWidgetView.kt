@@ -11,10 +11,11 @@ import android.graphics.drawable.GradientDrawable
 import android.support.v4.content.ContextCompat
 import android.widget.RemoteViews
 import asvid.counter.R
+import asvid.counter.R.id
 import asvid.counter.R.string
+import asvid.counter.data.widget.CounterWidget
 import asvid.counter.dpToPx
 import asvid.counter.getLastItem
-import asvid.counter.data.widget.CounterWidget
 import asvid.counter.widget.CounterWidgetProvider
 import org.ocpsoft.prettytime.PrettyTime
 import timber.log.Timber
@@ -25,7 +26,8 @@ val INCREMENT_CLICKED = "INCREMENT_CLICKED"
 val DECREMENT_CLICKED = "DECREMENT_CLICKED"
 val SINGLE_ACTION = "SINGLE_ACTION"
 val BUTTON_ACTION = "BUTTON_ACTION"
-val STD_SIZE = 68
+val STD_SIZE = 72
+val STD_PADDING_SIZE = 10
 
 class CounterWidgetView(val context: Context) {
 
@@ -37,12 +39,14 @@ class CounterWidgetView(val context: Context) {
         drawable.setStroke(dpToPx(STROKE_SIZE_IN_ID), color)
     }
 
-    fun getBitmap(): Bitmap {
+    fun getBitmap(widthFactor: Int): Bitmap {
         val canvas = Canvas()
-        val bitmap = Bitmap.createBitmap(dpToPx(STD_SIZE * 3), dpToPx(STD_SIZE),
+        val bitmap = Bitmap.createBitmap(
+            dpToPx(STD_SIZE * widthFactor + STD_PADDING_SIZE * (widthFactor - 1)), dpToPx(STD_SIZE),
             Bitmap.Config.ARGB_8888)
         canvas.setBitmap(bitmap)
-        drawable.setBounds(0, 0, dpToPx(STD_SIZE * 3), dpToPx(STD_SIZE))
+        drawable.setBounds(0, 0,
+            dpToPx(STD_SIZE * widthFactor + STD_PADDING_SIZE * (widthFactor - 1)), dpToPx(STD_SIZE))
         drawable.draw(canvas)
 
         return bitmap
@@ -67,16 +71,25 @@ class CounterWidgetView(val context: Context) {
         if (widget.counterItem!!.changes.isNotEmpty()) remoteView.setTextViewText(R.id.lastChange,
             getLastChangePretyTime(widget))
         setStrokeColor(widget.color!!)
-        Timber.d("bitmap: ${getBitmap().byteCount}")
-        remoteView.setImageViewBitmap(R.id.imageView, getBitmap())
+        remoteView.setImageViewBitmap(R.id.imageView, getBitmap(widget.size!!.widthFactor!!))
 
-        remoteView.setOnClickPendingIntent(R.id.widgetAddButton,
-            getPendingIntent(widgetId, INCREMENT_CLICKED))
-
-        remoteView.setOnClickPendingIntent(R.id.widgetMinusButton,
-            getPendingIntent(widgetId, DECREMENT_CLICKED))
+        setActions(remoteView, widget, widgetId)
 
         appWidgetManager.updateAppWidget(widgetId, remoteView)
+    }
+
+    private fun setActions(remoteView: RemoteViews,
+        widget: CounterWidget, widgetId: Int) {
+        if (widget.size!!.widthFactor == 1) {
+            remoteView.setOnClickPendingIntent(id.counterView,
+                getPendingIntent(widgetId, SINGLE_ACTION))
+        } else {
+            remoteView.setOnClickPendingIntent(id.widgetAddButton,
+                getPendingIntent(widgetId, INCREMENT_CLICKED))
+
+            remoteView.setOnClickPendingIntent(id.widgetMinusButton,
+                getPendingIntent(widgetId, DECREMENT_CLICKED))
+        }
     }
 
     private fun getLastChangePretyTime(widget: CounterWidget) = PrettyTime().format(
@@ -87,7 +100,7 @@ class CounterWidgetView(val context: Context) {
         remoteView.setTextViewText(R.id.name, context.resources.getString(string.counter_removed))
         remoteView.setTextViewText(R.id.value, "X")
         setStrokeColor(widget.color!!)
-        remoteView.setImageViewBitmap(R.id.imageView, getBitmap())
+        remoteView.setImageViewBitmap(R.id.imageView, getBitmap(widget.size!!.widthFactor!!))
         appWidgetManager.updateAppWidget(widgetId, remoteView)
     }
 }

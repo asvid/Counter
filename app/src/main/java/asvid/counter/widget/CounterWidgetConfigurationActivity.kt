@@ -22,6 +22,7 @@ import asvid.counter.R.id
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
 import asvid.counter.data.widget.CounterWidget
+import asvid.counter.data.widget.WidgetSize
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.main.CounterListAdapter
@@ -115,7 +116,10 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widget.counterItem = counterItem
         widget.id = mAppWidgetId.toLong()
         widget.color = widgetColorValue
-        widget.size = "1x1"
+        val size = WidgetSize()
+        size.heightFactor = 1
+        size.widthFactor = 1
+        widget.size = size
         Di.storage.saveWidget(widget)
 
         CounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), widget)
@@ -147,7 +151,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         }
 
         myView.setStrokeColor(widgetColorValue)
-        widgetColor.setImageBitmap(myView.getBitmap())
+        widgetColor.setImageBitmap(myView.getBitmap(1))
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {

@@ -13,7 +13,7 @@ open class CounterWidget : RealmObject() {
     var color: Int? = null
     var counterItem: CounterItem? = null
     var createDate: Date = Date()
-    var size: String? = null
+    var size: WidgetSize? = null
 
     override fun toString(): String {
         return "CounterWidget(id=$id, color=$color, counterItem=$counterItem, createDate=$createDate, size=$size)"

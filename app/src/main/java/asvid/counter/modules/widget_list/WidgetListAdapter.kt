@@ -46,7 +46,7 @@ class WidgetListAdapter(
         val widgetView = CounterWidgetView(context)
         widgetView.setStrokeColor(item.color!!)
 
-        return widgetView.getBitmap()
+        return widgetView.getBitmap(1)
     }
 
     private fun openColorDialog(holder: CounterWidgetViewHolder) {
