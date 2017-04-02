@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
@@ -43,16 +44,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
-      <EditText
-          android:id="@+id/counterName"
-          android:layout_width="match_parent"
+      <android.support.design.widget.TextInputLayout
+          android:id="@+id/counterNameLayout"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:ems="10"
-          android:hint="@string/counter_name"
-          android:inputType="textPersonName"
-          />
-
+          app:hintAnimationEnabled="true"
+          >
+        <EditText
+            android:id="@+id/counterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/counter_name"
+            android:inputType="textPersonName"
+            />
+      </android.support.design.widget.TextInputLayout>
       <Button
           android:id="@+id/addButton"
           android:layout_width="68dp"
@@ -65,14 +73,21 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/counterStartValue"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/counterStartValueLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/starting_value"
-        android:inputType="number"
-        />
+        app:hintAnimationEnabled="true"
+        >
+      <EditText
+          android:id="@+id/counterStartValue"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:hint="@string/starting_value"
+          android:inputType="number"
+          />
+    </android.support.design.widget.TextInputLayout>
   </LinearLayout>
 
 

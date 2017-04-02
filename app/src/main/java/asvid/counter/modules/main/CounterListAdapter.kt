@@ -11,15 +11,26 @@ import android.widget.TextView
 import asvid.counter.R.id
 import asvid.counter.R.layout
 import asvid.counter.data.counter.CounterItem
+import asvid.counter.modules.main.ACTION.DECREMENT
+import asvid.counter.modules.main.ACTION.DELETE
+import asvid.counter.modules.main.ACTION.DETAILS
+import asvid.counter.modules.main.ACTION.EDIT
+import asvid.counter.modules.main.ACTION.INCREMENT
+import asvid.counter.modules.main.ACTION.ITEM_CLICKED
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import com.mikepenz.iconics.view.IconicsButton
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import org.ocpsoft.prettytime.PrettyTime
+import kotlin.properties.Delegates
 
 /**
  * Created by adam on 15.01.17.
  */
-class CounterListAdapter(private val items: MutableList<CounterItem>,
-    private val listener: CounterListListener) : Adapter<CounterItemViewHolder>() {
+class CounterListAdapter(
+    private val items: MutableList<CounterItem>) : Adapter<CounterItemViewHolder>() {
+
+    val onClickSubject: PublishSubject<OnClickAction> = PublishSubject.create()
 
     val prettyTime = PrettyTime()
 
@@ -42,13 +53,23 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
                 holder.changeDate.visibility = View.GONE
             }
 
-            holder.deleteButton.setOnClickListener { listener.onItemDelete(item, position) }
-            holder.editButton.setOnClickListener { listener.onItemEdit(item, position) }
-            holder.decrementButton.setOnClickListener { listener.onItemDecrement(item, position) }
-            holder.incrementButton.setOnClickListener { listener.onItemIncrement(item, position) }
-            holder.cardView.setOnClickListener { listener.onItemClicked(item, position) }
+            holder.deleteButton.setOnClickListener {
+                onClickSubject.onNext(OnClickAction(DELETE, holder.item, position, holder))
+            }
+            holder.editButton.setOnClickListener {
+                onClickSubject.onNext(OnClickAction(EDIT, holder.item, position, holder))
+            }
+            holder.decrementButton.setOnClickListener {
+                onClickSubject.onNext(OnClickAction(DECREMENT, holder.item, position, holder))
+            }
+            holder.incrementButton.setOnClickListener {
+                onClickSubject.onNext(OnClickAction(INCREMENT, holder.item, position, holder))
+            }
             holder.detailsButton.setOnClickListener {
-                listener.onDetailsClicked(item, position, holder)
+                onClickSubject.onNext(OnClickAction(DETAILS, holder.item, position, holder))
+            }
+            holder.cardView.setOnClickListener {
+                onClickSubject.onNext(OnClickAction(ITEM_CLICKED, holder.item, position, holder))
             }
         }
     }
@@ -71,9 +92,13 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
         notifyItemRemoved(position)
     }
 
+    fun getPositionClicks(): Observable<OnClickAction> {
+        return onClickSubject
+    }
+
     inner class CounterItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
-        var item: CounterItem? = null
+        var item: CounterItem by Delegates.notNull()
         var cardView = itemView.findViewById(id.card_view) as CardView
         var name = itemView.findViewById(id.counterName) as TextView
         var value = itemView.findViewById(id.counterStartValue) as TextView

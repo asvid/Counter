@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.activity_main.counterStartValue
 import timber.log.Timber
 import kotlin.properties.Delegates
 
-class MainActivity : AppCompatActivity(), CounterListListener {
+class MainActivity : AppCompatActivity() {
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
 
@@ -78,10 +78,22 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     private fun setList() {
         val itemList = CounterItemManager.getAllCounterItems()
         if (itemList.isEmpty()) availableCountersText.visibility = GONE
-        counterAdapter = CounterListAdapter(itemList, this)
+        counterAdapter = CounterListAdapter(itemList)
 
         counterList.adapter = counterAdapter
         counterList.layoutManager = LinearLayoutManager(this)
+
+        counterAdapter.getPositionClicks().subscribe {
+            action ->
+            when (action.action) {
+                ACTION.DELETE -> onItemDelete(action.item, action.position)
+                ACTION.ITEM_CLICKED -> onItemClicked(action.item, action.position)
+                ACTION.EDIT -> onItemEdit(action.item, action.position)
+                ACTION.DETAILS -> onDetailsClicked(action.item, action.position, action.holder)
+                ACTION.INCREMENT -> onItemIncrement(action.item, action.position)
+                ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
+            }
+        }
     }
 
     private fun addItem(name: String, value: String) {
@@ -94,7 +106,8 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         counterName.text.clear()
     }
 
-    override fun onItemDelete(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemDelete(item: CounterItem, position: Int) {
         DialogManager.showCounterDeleteDialog(this, item, object : DialogCallback {
             override fun onPositiveClicked() {
                 CounterItemManager.deleteCounterItem(item)
@@ -107,7 +120,8 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         })
     }
 
-    override fun onItemEdit(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemEdit(item: CounterItem, position: Int) {
         DialogManager.showCounterEditDialog(this, item, object : DialogCallback {
             override fun onPositiveClicked() {
                 counterAdapter.notifyItemChanged(position)
@@ -119,21 +133,25 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         })
     }
 
-    override fun onItemIncrement(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemIncrement(item: CounterItem, position: Int) {
         CounterItemManager.incrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemDecrement(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemClicked(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemClicked(item: CounterItem, position: Int) {
 //NOOP
     }
 
-    override fun onDetailsClicked(item: CounterItem, position: Int,
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onDetailsClicked(item: CounterItem, position: Int,
         holder: CounterItemViewHolder) {
         val intent = Intent(this, CounterDetailsActivity::class.java)
         intent.putExtra(CounterDetailsActivity.EXTRA_COUNTER, item.id)
@@ -144,7 +162,6 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         val options = ActivityOptionsCompat.
             makeSceneTransitionAnimation(this, p1, p2)
         startActivity(intent, options.toBundle())
-//        startActivity(Intent(this, Test::class.java))
     }
 
     override fun onResume() {
