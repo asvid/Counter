@@ -80,7 +80,7 @@ class DownCounterWidgetView(val context: Context) {
         Timber.d(
             "diff: $diff days: $daysDiff hourDiff: ${diff - (daysDiff * 24 * 60 * 60 * 1000)} | $hourDiff")
 
-        return "$daysDiff $dayUnit   $hourDiff $hourUnit"
+        return "$daysDiff $dayUnit $hourDiff $hourUnit"
     }
 
 }

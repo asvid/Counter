@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">A_Counter</string>
+  <string name="app_name">Counter</string>
   <string name="counter_name">Counter name</string>
   <string name="starting_value">Starting value</string>
   <string name="add">Add</string>
