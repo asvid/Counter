@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.widget.Button
-import android.widget.EditText
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.id
@@ -27,6 +26,9 @@ import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.widget_list.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.availableCountersText
 import kotlinx.android.synthetic.main.activity_main.counterList
+import kotlinx.android.synthetic.main.activity_main.counterName
+import kotlinx.android.synthetic.main.activity_main.counterNameInputLayer
+import kotlinx.android.synthetic.main.activity_main.counterStartValue
 import timber.log.Timber
 import kotlin.properties.Delegates
 
@@ -38,11 +40,16 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
         Di.analyticsHelper.sendScreenName(this, "MainActivity")
-        val name = findViewById(id.name) as EditText
-        val value = findViewById(id.value) as EditText
         val addButton = findViewById(id.addButton) as Button
 
-        addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
+        addButton.setOnClickListener {
+            if (!TextUtils.isEmpty(counterName.text))
+                addItem(counterName.text.toString(), counterStartValue.text.toString())
+            else {
+                counterNameInputLayer.error = resources.getString(R.string.no_name_error)
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -84,6 +91,7 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         CounterItemManager.saveCounterItem(counterItem)
         counterAdapter.addItem(counterItem)
         counterList.adapter = counterAdapter
+        counterName.text.clear()
     }
 
     override fun onItemDelete(item: CounterItem, position: Int) {

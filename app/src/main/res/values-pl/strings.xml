@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Licznik</string>
+  <string name="app_name">A_Licznik</string>
   <string name="counter_name">Nazwa licznika</string>
   <string name="starting_value">Wartość początkowa</string>
   <string name="add">Dodaj</string>
@@ -30,4 +30,5 @@
   <string name="name">NAZWA</string>
   <string name="no_changes_yet">brak zmian</string>
   <string name="email_text">Uwielbiam Twoją aplikację, ALE:</string>
+  <string name="no_name_error">Podaj nazwę</string>
 </resources>

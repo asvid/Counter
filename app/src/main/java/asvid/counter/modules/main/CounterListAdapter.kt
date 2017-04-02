@@ -75,8 +75,8 @@ class CounterListAdapter(private val items: MutableList<CounterItem>,
 
         var item: CounterItem? = null
         var cardView = itemView.findViewById(id.card_view) as CardView
-        var name = itemView.findViewById(id.name) as TextView
-        var value = itemView.findViewById(id.value) as TextView
+        var name = itemView.findViewById(id.counterName) as TextView
+        var value = itemView.findViewById(id.counterStartValue) as TextView
         var deleteButton = itemView.findViewById(id.deleteButton) as Button
         var editButton = itemView.findViewById(id.editButton) as Button
         var detailsButton = itemView.findViewById(id.detailsButton) as Button

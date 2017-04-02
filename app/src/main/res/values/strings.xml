@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Counter</string>
+  <string name="app_name">A_Counter</string>
   <string name="counter_name">Counter name</string>
   <string name="starting_value">Starting value</string>
   <string name="add">Add</string>
@@ -34,4 +34,7 @@
   <string name="down_counter_widget_name">Down Counter</string>
   <string name="down_counter_time">Count time till?</string>
   <string name="set_date">Set</string>
+  <string name="no_name_error">Enter name</string>
+  <string name="dayUnit">d</string>
+  <string name="hourUnit">h</string>
 </resources>

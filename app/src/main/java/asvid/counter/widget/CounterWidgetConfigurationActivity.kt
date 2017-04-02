@@ -66,10 +66,10 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
             showColors()
         }
         widgetColorValue = resources.getColor(color.colorAccent)
-        name = findViewById(id.name) as EditText
+        name = findViewById(id.counterName) as EditText
         name.addTextChangedListener(this)
 
-        value = findViewById(id.value) as EditText
+        value = findViewById(id.counterStartValue) as EditText
         value.addTextChangedListener(this)
 
         val addButton = findViewById(id.addButton) as Button

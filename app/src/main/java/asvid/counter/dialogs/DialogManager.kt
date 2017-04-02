@@ -6,6 +6,7 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.text.TextUtils
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.widget.TextView
 import asvid.counter.Di
@@ -84,7 +85,7 @@ object DialogManager {
             .show(fragmentManager, "dialog_demo_1")
     }
 
-    fun showDateTimeDialog(
+    fun showDateDialog(
         context: Context,
         callback: DateTimeDialogCallback) {
         val currentTime = Date()
@@ -97,19 +98,24 @@ object DialogManager {
                 val newDate = Calendar.getInstance()
                 newDate.set(year, monthOfYear, dayOfMonth)
                 val date = newDate.time
-                TimePickerDialog(context,
-                    OnTimeSetListener { _, hour, minute ->
-                        date.hours = hour
-                        date.minutes = minute
-                        callback.onDateSelected(date)
-                    }, date.hours,
-                    date.minutes, true).show()
+                callback.onDateSelected(date)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH))
 
         dialog.show()
+    }
+
+    fun showTimeDialog(context: Context, callback: DateTimeDialogCallback) {
+        val date = Date()
+        TimePickerDialog(context,
+            OnTimeSetListener { _, hour, minute ->
+                date.hours = hour
+                date.minutes = minute
+                callback.onDateSelected(date)
+            }, date.hours,
+            date.minutes, DateFormat.is24HourFormat(context)).show()
     }
 
 }

@@ -51,6 +51,11 @@ class Storage(context: Context) {
             realm.where(CounterWidget::class.java).equalTo("id", id).findFirst())
     }
 
+    fun getDownCounterWidget(id: Int): DownCounterWidget {
+        return realm.copyFromRealm(
+            realm.where(DownCounterWidget::class.java).equalTo("id", id).findFirst())
+    }
+
     fun allItems(): MutableList<CounterItem> {
         return realm.copyFromRealm(realm.where(CounterItem::class.java).findAll())
     }

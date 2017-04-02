@@ -11,7 +11,7 @@ import asvid.counter.R
 import asvid.counter.dpToPx
 
 
-class WidgetPreview(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
+class WidgetPreview(val layout: Int, context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     defStyleRes: Int) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
 
@@ -22,15 +22,20 @@ class WidgetPreview(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
     var valueView: TextView
     var counterView: FrameLayout
 
-    constructor(context: Context) : this(context, null, 0, 0)
-    constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0, 0)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : this(context, attrs,
+    constructor(context: Context) : this(R.layout.counter_widget_preview_layout, context, null, 0,
+        0)
+
+    constructor(context: Context, attrs: AttributeSet) : this(
+        R.layout.counter_widget_preview_layout, context, attrs, 0, 0)
+
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : this(
+        R.layout.counter_widget_preview_layout, context, attrs,
         defStyleAttr, 0)
 
     init {
-        inflate(getContext(), R.layout.counter_widget_preview_layout, this)
-        this.nameView = findViewById(R.id.name) as TextView
-        this.valueView = findViewById(R.id.value) as TextView
+        inflate(getContext(), layout, this)
+        this.nameView = findViewById(R.id.counterName) as TextView
+        this.valueView = findViewById(R.id.counterStartValue) as TextView
         this.counterView = findViewById(R.id.counterView) as FrameLayout
     }
 
@@ -56,6 +61,15 @@ class WidgetPreview(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
         this.measure(size, size)
         this.layout(0, 0, size, size)
         val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        this.draw(Canvas(bitmap))
+        return bitmap
+    }
+
+    fun getBitmap(sizeFactor: Int): Bitmap {
+        val size = dpToPx(SIZE_IN_DP)
+        this.measure(size * sizeFactor, size)
+        this.layout(0, 0, size * sizeFactor, size)
+        val bitmap = Bitmap.createBitmap(size * sizeFactor, size, Bitmap.Config.ARGB_8888)
         this.draw(Canvas(bitmap))
         return bitmap
     }

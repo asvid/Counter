@@ -9,6 +9,7 @@ open class DownCounterWidget : RealmObject() {
     @PrimaryKey var id: Long? = null
     var name: String? = null
     var date: Date? = null
+    var color: Int? = null
 
     override fun toString(): String {
         return "DownCounterWidget(id=$id, name=$name, date=$date)"
