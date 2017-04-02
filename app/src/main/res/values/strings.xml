@@ -37,4 +37,6 @@
   <string name="no_name_error">Enter name</string>
   <string name="dayUnit">d</string>
   <string name="hourUnit">h</string>
+  <string name="time">set time (optional)</string>
+  <string name="date">set date</string>
 </resources>

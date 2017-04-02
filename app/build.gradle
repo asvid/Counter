@@ -94,6 +94,8 @@ dependencies {
   compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
   //  pretty time
   compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
+  //  RX
+  compile "io.reactivex.rxjava2:rxjava:2.0.7"
 
   testCompile 'junit:junit:4.12'
   debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'

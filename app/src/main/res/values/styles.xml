@@ -40,7 +40,8 @@
   </style>
 
   <style name="dateTimeTextView" parent="TextAppearance.Design.Counter">
-
+    <item name="android:textColor">@color/md_grey_900</item>
+    <item name="android:textSize">20dp</item>
   </style>
 
   <dimen name="iconButtonWidth">44dp</dimen>

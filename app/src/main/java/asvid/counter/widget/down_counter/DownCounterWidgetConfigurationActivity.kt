@@ -32,6 +32,7 @@ import kotlin.properties.Delegates
 
 class DownCounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
 
+    val PERMISSIONS_REQUEST_READ_CONTACTS = 100
     private var widgetColor: ImageView by Delegates.notNull()
     private var widgetColorValue: Int by Delegates.notNull()
 
@@ -47,11 +48,8 @@ class DownCounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher 
         Di.analyticsHelper.sendScreenName(this, "CounterWidgetConfigurationActivity")
 
         setView()
-        setDatesList()
         handleIntent()
-    }
-
-    private fun setDatesList() {
+        drawWidgetImage()
     }
 
     private fun setView() {
@@ -156,7 +154,8 @@ class DownCounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher 
     private fun drawWidgetImage() {
         val widgetView = WidgetPreview(R.layout.counter_widget_preview_layout_x2, this, null, 0, 0)
 
-        val nameString = downCounterName.text.toString()
+        var nameString = downCounterName.text.toString()
+        if (TextUtils.isEmpty(nameString)) nameString = "your name here"
         val valueString = "134d 4h"
         widgetView.setNameText(nameString)
         widgetView.setValueText(valueString)
