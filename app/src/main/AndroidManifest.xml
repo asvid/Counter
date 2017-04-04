@@ -37,7 +37,7 @@
           android:resource="@xml/counter_appwidget_info" />
     </receiver>
 
-    <!-- Down Counter -->
+    <!-- Date Counter -->
     <activity
         android:name=".widget.down_counter.DownCounterWidgetConfigurationActivity"
         android:windowSoftInputMode="stateAlwaysHidden" />

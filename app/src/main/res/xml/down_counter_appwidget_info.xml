@@ -2,6 +2,6 @@
                     android:configure="asvid.counter.widget.down_counter.DownCounterWidgetConfigurationActivity"
                     android:initialLayout="@layout/down_counter_appwidget"
                     android:minWidth="@dimen/widget_base_width_x2"
-                    android:previewImage="@drawable/icon_512x512"
+                    android:previewImage="@drawable/down_counter"
                     android:resizeMode="none"
                     android:updatePeriodMillis="1800000" />
