@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.widget.Button
-import android.widget.EditText
 import asvid.counter.Di
 import asvid.counter.R
 import asvid.counter.R.id
@@ -27,10 +26,13 @@ import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.widget_list.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.availableCountersText
 import kotlinx.android.synthetic.main.activity_main.counterList
+import kotlinx.android.synthetic.main.activity_main.counterName
+import kotlinx.android.synthetic.main.activity_main.counterNameInputLayer
+import kotlinx.android.synthetic.main.activity_main.counterStartValue
 import timber.log.Timber
 import kotlin.properties.Delegates
 
-class MainActivity : AppCompatActivity(), CounterListListener {
+class MainActivity : AppCompatActivity() {
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
 
@@ -38,11 +40,16 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
         Di.analyticsHelper.sendScreenName(this, "MainActivity")
-        val name = findViewById(id.name) as EditText
-        val value = findViewById(id.value) as EditText
         val addButton = findViewById(id.addButton) as Button
 
-        addButton.setOnClickListener { addItem(name.text.toString(), value.text.toString()) }
+        addButton.setOnClickListener {
+            if (!TextUtils.isEmpty(counterName.text))
+                addItem(counterName.text.toString(), counterStartValue.text.toString())
+            else {
+                counterNameInputLayer.error = resources.getString(R.string.no_name_error)
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,10 +78,22 @@ class MainActivity : AppCompatActivity(), CounterListListener {
     private fun setList() {
         val itemList = CounterItemManager.getAllCounterItems()
         if (itemList.isEmpty()) availableCountersText.visibility = GONE
-        counterAdapter = CounterListAdapter(itemList, this)
+        counterAdapter = CounterListAdapter(itemList)
 
         counterList.adapter = counterAdapter
         counterList.layoutManager = LinearLayoutManager(this)
+
+        counterAdapter.getPositionClicks().subscribe {
+            action ->
+            when (action.action) {
+                ACTION.DELETE -> onItemDelete(action.item, action.position)
+                ACTION.ITEM_CLICKED -> onItemClicked(action.item, action.position)
+                ACTION.EDIT -> onItemEdit(action.item, action.position)
+                ACTION.DETAILS -> onDetailsClicked(action.item, action.position, action.holder)
+                ACTION.INCREMENT -> onItemIncrement(action.item, action.position)
+                ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
+            }
+        }
     }
 
     private fun addItem(name: String, value: String) {
@@ -84,9 +103,11 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         CounterItemManager.saveCounterItem(counterItem)
         counterAdapter.addItem(counterItem)
         counterList.adapter = counterAdapter
+        counterName.text.clear()
     }
 
-    override fun onItemDelete(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemDelete(item: CounterItem, position: Int) {
         DialogManager.showCounterDeleteDialog(this, item, object : DialogCallback {
             override fun onPositiveClicked() {
                 CounterItemManager.deleteCounterItem(item)
@@ -99,7 +120,8 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         })
     }
 
-    override fun onItemEdit(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemEdit(item: CounterItem, position: Int) {
         DialogManager.showCounterEditDialog(this, item, object : DialogCallback {
             override fun onPositiveClicked() {
                 counterAdapter.notifyItemChanged(position)
@@ -111,21 +133,25 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         })
     }
 
-    override fun onItemIncrement(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemIncrement(item: CounterItem, position: Int) {
         CounterItemManager.incrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemDecrement(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemClicked(item: CounterItem, position: Int) {
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onItemClicked(item: CounterItem, position: Int) {
 //NOOP
     }
 
-    override fun onDetailsClicked(item: CounterItem, position: Int,
+    //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
+    fun onDetailsClicked(item: CounterItem, position: Int,
         holder: CounterItemViewHolder) {
         val intent = Intent(this, CounterDetailsActivity::class.java)
         intent.putExtra(CounterDetailsActivity.EXTRA_COUNTER, item.id)
@@ -136,7 +162,6 @@ class MainActivity : AppCompatActivity(), CounterListListener {
         val options = ActivityOptionsCompat.
             makeSceneTransitionAnimation(this, p1, p2)
         startActivity(intent, options.toBundle())
-//        startActivity(Intent(this, Test::class.java))
     }
 
     override fun onResume() {

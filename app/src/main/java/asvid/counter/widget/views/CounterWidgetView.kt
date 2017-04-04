@@ -66,8 +66,8 @@ class CounterWidgetView(val context: Context) {
 
     fun update(appWidgetManager: AppWidgetManager, widgetId: Int,
         widget: CounterWidget, remoteView: RemoteViews) {
-        remoteView.setTextViewText(R.id.name, widget.counterItem?.name)
-        remoteView.setTextViewText(R.id.value, widget.counterItem?.value.toString())
+        remoteView.setTextViewText(R.id.counterName, widget.counterItem?.name)
+        remoteView.setTextViewText(R.id.counterStartValue, widget.counterItem?.value.toString())
         if (widget.counterItem!!.changes.isNotEmpty()) remoteView.setTextViewText(R.id.lastChange,
             getLastChangePretyTime(widget))
         setStrokeColor(widget.color!!)
@@ -97,8 +97,8 @@ class CounterWidgetView(val context: Context) {
 
     fun setInactive(appWidgetManager: AppWidgetManager, widgetId: Int,
         widget: CounterWidget, remoteView: RemoteViews) {
-        remoteView.setTextViewText(R.id.name, context.resources.getString(string.counter_removed))
-        remoteView.setTextViewText(R.id.value, "X")
+        remoteView.setTextViewText(R.id.counterName, context.resources.getString(string.counter_removed))
+        remoteView.setTextViewText(R.id.counterStartValue, "X")
         setStrokeColor(widget.color!!)
         remoteView.setImageViewBitmap(R.id.imageView, getBitmap(widget.size!!.widthFactor!!))
         appWidgetManager.updateAppWidget(widgetId, remoteView)

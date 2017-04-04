@@ -3,17 +3,18 @@ package asvid.counter.widget
 import android.app.Activity
 import android.app.AlertDialog
 import android.appwidget.AppWidgetManager
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import asvid.counter.Di
 import asvid.counter.R
@@ -25,26 +26,24 @@ import asvid.counter.data.widget.CounterWidget
 import asvid.counter.data.widget.WidgetSize
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
+import asvid.counter.modules.counter_details.CounterDetailsActivity
+import asvid.counter.modules.main.ACTION
 import asvid.counter.modules.main.CounterListAdapter
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
-import asvid.counter.modules.main.CounterListListener
 import asvid.counter.widget.views.WidgetPreview
+import kotlinx.android.synthetic.main.counter_widget_configuration_activity.counterList
+import kotlinx.android.synthetic.main.counter_widget_configuration_activity.counterName
+import kotlinx.android.synthetic.main.counter_widget_configuration_activity.counterNameLayout
+import kotlinx.android.synthetic.main.counter_widget_configuration_activity.counterStartValue
+import kotlinx.android.synthetic.main.counter_widget_configuration_activity.widgetColor
 import kotlin.properties.Delegates
 
-class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListener, TextWatcher {
-    override fun onDetailsClicked(item: CounterItem, position: Int,
-        holder: CounterItemViewHolder) {
-        TODO(
-            "not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class CounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
 
     private var counterAdapter: CounterListAdapter by Delegates.notNull()
-    private var counterList: RecyclerView by Delegates.notNull()
-    private var widgetColor: ImageView by Delegates.notNull()
+
     private var widgetColorValue: Int by Delegates.notNull()
 
-    private var name: EditText by Delegates.notNull()
-    private var value: EditText by Delegates.notNull()
 
     private var mAppWidgetId: Int = -1
 
@@ -61,24 +60,26 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
     }
 
     private fun setView() {
-        widgetColor = findViewById(id.widgetColor) as ImageView
         widgetColor.setOnClickListener {
             showColors()
         }
         widgetColorValue = resources.getColor(color.colorAccent)
-        name = findViewById(id.name) as EditText
-        name.addTextChangedListener(this)
-
-        value = findViewById(id.value) as EditText
-        value.addTextChangedListener(this)
+        counterName.addTextChangedListener(this)
+        counterStartValue.addTextChangedListener(this)
 
         val addButton = findViewById(id.addButton) as Button
-        addButton.setOnClickListener { addItem(name.text.toString(), getValue()) }
+        addButton.setOnClickListener {
+            if (!TextUtils.isEmpty(counterName.text))
+                addItem(counterName.text.toString(), getValue())
+            else {
+                counterNameLayout.error = resources.getString(R.string.no_name_error)
+            }
+        }
     }
 
     private fun getValue(): String {
-        if (TextUtils.isEmpty(value.text)) return "0"
-        return value.text.toString()
+        if (TextUtils.isEmpty(counterStartValue.text)) return "0"
+        return counterStartValue.text.toString()
     }
 
     private fun handleIntent() {
@@ -95,11 +96,22 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
 
     private fun setList() {
         val itemList = CounterItemManager.getAllCounterItems()
-        counterAdapter = CounterListAdapter(itemList, this)
+        counterAdapter = CounterListAdapter(itemList)
 
-        counterList = findViewById(R.id.counterList) as RecyclerView
         counterList.adapter = counterAdapter
         counterList.layoutManager = LinearLayoutManager(this)
+
+        counterAdapter.getPositionClicks().subscribe {
+            action ->
+            when (action.action) {
+                ACTION.DELETE -> onItemDelete(action.item, action.position)
+                ACTION.ITEM_CLICKED -> onItemClicked(action.item, action.position)
+                ACTION.EDIT -> onItemEdit(action.item, action.position)
+                ACTION.DETAILS -> onDetailsClicked(action.item, action.position, action.holder)
+                ACTION.INCREMENT -> onItemIncrement(action.item, action.position)
+                ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
+            }
+        }
     }
 
     private fun addItem(name: String, value: String) {
@@ -143,10 +155,9 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
 
     private fun drawWidgetImage() {
         val widgetView = WidgetPreview(this)
-        val imageBitmap = widgetView.getBitmap()
 
-        val nameString = name.text.toString()
-        var valueString = value.text.toString()
+        val nameString = counterName.text.toString()
+        var valueString = counterStartValue.text.toString()
 
         if (TextUtils.isEmpty(valueString)) {
             valueString = "0"
@@ -158,12 +169,12 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         widgetColor.setImageBitmap(widgetView.getBitmap())
     }
 
-    override fun onItemDelete(item: CounterItem, position: Int) {
+    fun onItemDelete(item: CounterItem, position: Int) {
         CounterItemManager.deleteCounterItem(item)
         counterAdapter.removeItem(position)
     }
 
-    override fun onItemEdit(counter: CounterItem, position: Int) {
+    fun onItemEdit(counter: CounterItem, position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle(Di.context.resources.getString(R.string.edit_counter_dialog_title))
 
@@ -192,18 +203,31 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), CounterListListe
         builder.show()
     }
 
-    override fun onItemClicked(item: CounterItem, position: Int) {
+    fun onItemClicked(item: CounterItem, position: Int) {
         createWidget(item)
     }
 
-    override fun onItemIncrement(item: CounterItem, position: Int) {
+    fun onItemIncrement(item: CounterItem, position: Int) {
         CounterItemManager.incrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
     }
 
-    override fun onItemDecrement(item: CounterItem, position: Int) {
+    fun onItemDecrement(item: CounterItem, position: Int) {
         CounterItemManager.decrementAndSave(item)
         counterAdapter.notifyItemChanged(position)
+    }
+
+    fun onDetailsClicked(item: CounterItem, position: Int,
+        holder: CounterItemViewHolder) {
+        val intent = Intent(this, CounterDetailsActivity::class.java)
+        intent.putExtra(CounterDetailsActivity.EXTRA_COUNTER, item.id)
+        val p1: Pair<View, String> = Pair.create(
+            holder.name, "counterNameTransition")
+        val p2: Pair<View, String> = Pair.create(
+            holder.changeDate, "counterChangeDateTransition")
+        val options = ActivityOptionsCompat.
+            makeSceneTransitionAnimation(this, p1, p2)
+        startActivity(intent, options.toBundle())
     }
 
     override fun afterTextChanged(p0: Editable?) {
