@@ -30,4 +30,10 @@
   <string name="name">NAZWA</string>
   <string name="no_changes_yet">brak zmian</string>
   <string name="email_text">Uwielbiam Twoją aplikację, ALE:</string>
+  <string name="no_name_error">Podaj nazwę</string>
+  <string name="date">ustaw datę</string>
+  <string name="set_date">ustaw</string>
+  <string name="time">ustaw czas (opcjonalne)</string>
+  <string name="down_counter_widget_name">Odliczanie do daty</string>
+  <string name="down_counter_time">Odliczać do?</string>
 </resources>

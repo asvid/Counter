@@ -30,4 +30,13 @@
   <string name="email_text">I love your app, BUT: \n</string>
   <string name="no_changes_yet">no changes yet</string>
   <string name="name">NAME</string>
+  <string name="counter_widget_name">Counter</string>
+  <string name="down_counter_widget_name">Date Counter</string>
+  <string name="down_counter_time">Count time till?</string>
+  <string name="set_date">Set</string>
+  <string name="no_name_error">Enter name</string>
+  <string name="dayUnit">d</string>
+  <string name="hourUnit">h</string>
+  <string name="time">set time (optional)</string>
+  <string name="date">set date</string>
 </resources>

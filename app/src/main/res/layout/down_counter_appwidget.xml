@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:id="@+id/counterView"
-             android:layout_width="@dimen/widget_base_width"
+             android:layout_width="match_parent"
              android:layout_height="@dimen/widget_base_height"
     >
   <ImageView
@@ -9,8 +9,9 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
+
   <TextView
-      android:id="@+id/counterName"
+      android:id="@+id/downCounterName"
       android:layout_width="match_parent"
       android:layout_height="44dp"
       android:layout_gravity="top|center"
@@ -22,7 +23,7 @@
       android:textSize="8dp"
       />
   <TextView
-      android:id="@+id/counterStartValue"
+      android:id="@+id/downCounterValue"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|center"
@@ -31,8 +32,8 @@
       android:lines="1"
       android:maxLines="1"
       android:padding="5dp"
-      android:text="777"
+      android:text="7777"
       android:textColor="@color/md_grey_50"
-      android:textSize="26dp"
+      android:textSize="22dp"
       />
 </FrameLayout>

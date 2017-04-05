@@ -19,11 +19,16 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <!-- WIDGETS -->
+    <!-- Counter -->
     <activity
         android:name=".widget.CounterWidgetConfigurationActivity"
         android:windowSoftInputMode="stateAlwaysHidden" />
 
-    <receiver android:name=".widget.CounterWidgetProvider">
+    <receiver
+        android:name=".widget.CounterWidgetProvider"
+        android:label="@string/counter_widget_name">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>
@@ -31,6 +36,24 @@
           android:name="android.appwidget.provider"
           android:resource="@xml/counter_appwidget_info" />
     </receiver>
+
+    <!-- Date Counter -->
+    <activity
+        android:name=".widget.down_counter.DownCounterWidgetConfigurationActivity"
+        android:windowSoftInputMode="stateAlwaysHidden" />
+
+    <receiver
+        android:name=".widget.down_counter.DownCounterWidgetProvider"
+        android:label="@string/down_counter_widget_name">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data
+          android:name="android.appwidget.provider"
+          android:resource="@xml/down_counter_appwidget_info" />
+    </receiver>
+
+    <!-- WIDGETS END -->
 
     <service android:name=".communication.MyFirebaseMessagingService">
       <intent-filter>
