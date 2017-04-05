@@ -5,8 +5,8 @@ apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-crash'
 
 def versionMajor = 0
-def versionMinor = 2
-def versionPatch = 2
+def versionMinor = 3
+def versionPatch = 0
 def versionBuild = 0
 
 buildscript {
