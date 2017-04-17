@@ -56,8 +56,14 @@ class Storage(context: Context) {
             realm.where(DownCounterWidget::class.java).equalTo("id", id).findFirst())
     }
 
+    fun getAllDownCounterWidget(): MutableList<DownCounterWidget> {
+        return realm.copyFromRealm(
+            realm.where(DownCounterWidget::class.java).findAll())
+    }
+
     fun allItems(): MutableList<CounterItem> {
-        return realm.copyFromRealm(realm.where(CounterItem::class.java).findAll())
+        val findAll = realm.where(CounterItem::class.java).findAll()
+        return realm.copyFromRealm(findAll)
     }
 
     fun <C : RealmObject> getId(objectClass: Class<C>): Int {

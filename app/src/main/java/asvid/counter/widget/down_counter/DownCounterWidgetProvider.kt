@@ -31,14 +31,24 @@ class DownCounterWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
         val widgetId = intent
             .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1).toLong()
         Timber.d("onReceive $widgetId ")
+        if (widgetId > -1) {
+            val storage = Storage(context)
+            val widget = storage.getDownCounterWidget(widgetId.toInt())
+            when (intent.action) {
+                CounterWidgetProvider.UPDATE -> updateAppWidget(context, widgetId, widget)
+            }
+        } else {
+            updateAllWidgets(context)
+        }
+    }
+
+    private fun updateAllWidgets(context: Context) {
         val storage = Storage(context)
-        val widget = storage.getDownCounterWidget(widgetId.toInt())
-        when (intent.action) {
-            CounterWidgetProvider.UPDATE -> updateAppWidget(context, widgetId, widget)
+        storage.getAllDownCounterWidget().map {
+            DownCounterWidgetProvider.updateAppWidget(context, it.id!!, it)
         }
     }
 
