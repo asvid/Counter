@@ -2,7 +2,6 @@ package asvid.counter.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,28 +27,26 @@ class CounterWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray) {
-        val thisWidget = ComponentName(context,
-            CounterWidgetProvider::class.java)
         val storage = Storage(context)
-        val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
-        for (widgetId in allWidgetIds) {
+        Timber.d("onUpdate $appWidgetIds")
+        for (widgetId in appWidgetIds) {
+            Timber.d("widgetId $widgetId")
             val widget = storage.getWidget(widgetId)
             updateAppWidget(context, widgetId.toLong(), widget)
         }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
         val widgetId = intent
             .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1).toLong()
         val buttonAction = intent.getStringExtra(BUTTON_ACTION)
-        Timber.d("onReceive $widgetId $buttonAction ${intent.action}")
-        when (intent.action) {
-            CLICKED -> widgetClicked(context, widgetId, buttonAction)
-            UPDATE -> widgetUpdate(context, widgetId)
-            APPWIDGET_DELETED -> widgetDeleted(context, widgetId)
-            APPWIDGET_UPDATE -> updateAllWidgets(context)
-        }
+        if (widgetId > -1)
+            when (intent.action) {
+                CLICKED -> widgetClicked(context, widgetId, buttonAction)
+                UPDATE -> widgetUpdate(context, widgetId)
+                APPWIDGET_DELETED -> widgetDeleted(context, widgetId)
+            }
+        else updateAllWidgets(context)
     }
 
     private fun updateAllWidgets(context: Context) {

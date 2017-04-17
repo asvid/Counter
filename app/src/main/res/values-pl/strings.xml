@@ -36,4 +36,5 @@
   <string name="time">ustaw czas (opcjonalne)</string>
   <string name="down_counter_widget_name">Odliczanie do daty</string>
   <string name="down_counter_time">Odliczać do?</string>
+  <string name="counter_widget_name">Licznik</string>
 </resources>
