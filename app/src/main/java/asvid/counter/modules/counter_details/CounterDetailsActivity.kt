@@ -72,7 +72,16 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
       }
       val xAxis = changesChart.xAxis
       xAxis.position = XAxis.XAxisPosition.BOTTOM
-      xAxis.valueFormatter = MyXAxisValueFormatter(refTime)
+      xAxis.valueFormatter = MyXAxisValueFormatter(refTime, this)
+      xAxis.granularity = 1f
+      xAxis.isGranularityEnabled = true
+      changesChart.extraBottomOffset = 50f
+
+      val leftYAxis = changesChart.axisLeft
+      val rightYAxis = changesChart.axisRight
+      leftYAxis.isGranularityEnabled = true
+      rightYAxis.isGranularityEnabled = true
+
       val dataSet = LineDataSet(entries, "data")
       dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
       dataSet.setDrawFilled(true)
