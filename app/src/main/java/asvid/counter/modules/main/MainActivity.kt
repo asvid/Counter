@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(layout.activity_main)
     Di.analyticsHelper.sendScreenName(this, "MainActivity")
-    val addButton = findViewById(id.addButton) as Button
+    val addButton: Button = findViewById(id.addButton)
 
     addButton.setOnClickListener {
       if (!TextUtils.isEmpty(counterName.text))
@@ -84,8 +84,7 @@ class MainActivity : AppCompatActivity() {
     counterList.adapter = counterAdapter
     counterList.layoutManager = LinearLayoutManager(this)
 
-    counterAdapter.getPositionClicks().subscribe {
-      action ->
+    counterAdapter.getPositionClicks().subscribe { action ->
       when (action.action) {
         ACTION.DELETE -> onItemDelete(action.item, action.position)
         ACTION.ITEM_CLICKED -> onItemClicked(action.item, action.position)

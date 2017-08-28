@@ -6,7 +6,7 @@ apply plugin: 'com.google.firebase.firebase-crash'
 
 def versionMajor = 0
 def versionMinor = 3
-def versionPatch = 2
+def versionPatch = 3
 def versionBuild = 0
 
 buildscript {
@@ -69,9 +69,6 @@ android {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-  })
   compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   compile "com.android.support:appcompat-v7:$supportLibraryVersion"
   compile "com.android.support:preference-v7:$supportLibraryVersion"
@@ -97,15 +94,10 @@ dependencies {
   //  RX
   compile "io.reactivex.rxjava2:rxjava:2.1.0"
 
-  testCompile 'junit:junit:4.12'
   debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
   releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
   testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
-
-  //  Dagger
-  compile 'com.google.dagger:dagger:2.10'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
+  compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
 }
 
 apply plugin: 'com.google.gms.google-services'

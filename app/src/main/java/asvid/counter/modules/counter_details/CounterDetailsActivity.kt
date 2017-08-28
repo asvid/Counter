@@ -158,7 +158,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   }
 
   private fun bindActivity() {
-    mAppBarLayout = findViewById(R.id.main_appbar) as AppBarLayout
+    mAppBarLayout = findViewById(R.id.main_appbar)
     buttonsLayout = findViewById(R.id.buttonsLayout)
   }
 

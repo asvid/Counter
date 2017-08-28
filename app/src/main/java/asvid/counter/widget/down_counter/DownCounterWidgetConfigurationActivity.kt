@@ -53,7 +53,7 @@ class DownCounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher 
   }
 
   private fun setView() {
-    widgetColor = findViewById(id.widgetColor) as ImageView
+    widgetColor = findViewById(id.widgetColor)
     widgetColor.setOnClickListener {
       showColors()
     }
