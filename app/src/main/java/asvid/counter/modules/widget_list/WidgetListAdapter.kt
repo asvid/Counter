@@ -26,64 +26,64 @@ class WidgetListAdapter(
     val context: Context,
     val supportFragmentManager: android.support.v4.app.FragmentManager) : Adapter<CounterWidgetViewHolder>() {
 
-    val prettyTime = PrettyTime()
+  val prettyTime = PrettyTime()
 
-    override fun onBindViewHolder(holder: CounterWidgetViewHolder, position: Int) {
-        val item = items[position]
-        Timber.d("counter widget: $item")
-        if (item.isValid) {
-            holder.item = item
-            holder.counterName.text = item.counterItem?.name
-            holder.widgetAdded.text = prettyTime.format(item.createDate)
-            holder.widgetEdit.setOnClickListener {
-                openColorDialog(holder)
-            }
-            holder.widgetImage.setImageBitmap(getWidgetBitmap(item))
-        }
+  override fun onBindViewHolder(holder: CounterWidgetViewHolder, position: Int) {
+    val item = items[position]
+    Timber.d("counter widget: $item")
+    if (item.isValid) {
+      holder.item = item
+      holder.counterName.text = item.counterItem?.name
+      holder.widgetAdded.text = prettyTime.format(item.createDate)
+      holder.widgetEdit.setOnClickListener {
+        openColorDialog(holder)
+      }
+      holder.widgetImage.setImageBitmap(getWidgetBitmap(item))
     }
+  }
 
-    private fun getWidgetBitmap(item: CounterWidget): Bitmap? {
-        val widgetView = WidgetPreview(context)
+  private fun getWidgetBitmap(item: CounterWidget): Bitmap? {
+    val widgetView = WidgetPreview(context)
 
-        widgetView.setNameText(item.counterItem!!.name)
-        widgetView.setValueText(item.counterItem!!.value)
-        widgetView.setStrokeColor(item.color!!)
+    widgetView.setNameText(item.counterItem!!.name)
+    widgetView.setValueText(item.counterItem!!.value)
+    widgetView.setStrokeColor(item.color!!)
 
-        return widgetView.getBitmap()
-    }
+    return widgetView.getBitmap()
+  }
 
-    private fun openColorDialog(holder: CounterWidgetViewHolder) {
-        DialogManager.showColors(context, supportFragmentManager, object : ColorDialogCallback {
-            override fun onPositiveClicked(color: Int) {
-                holder.item?.color = color
-                Di.storage.saveWidget(holder.item!!)
-                holder.widgetImage.setImageBitmap(getWidgetBitmap(holder.item!!))
-                CounterItemManager.updateWidget(holder.item?.id)
-            }
+  private fun openColorDialog(holder: CounterWidgetViewHolder) {
+    DialogManager.showColors(context, supportFragmentManager, object : ColorDialogCallback {
+      override fun onPositiveClicked(color: Int) {
+        holder.item?.color = color
+        Di.storage.saveWidget(holder.item!!)
+        holder.widgetImage.setImageBitmap(getWidgetBitmap(holder.item!!))
+        CounterItemManager.updateWidget(holder.item?.id)
+      }
 
-            override fun onNegativeClicked() {
-            }
+      override fun onNegativeClicked() {
+      }
 
-        })
-    }
+    })
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterWidgetViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(layout.counter_widget_list_item, parent, false)
-        return CounterWidgetViewHolder(view)
-    }
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterWidgetViewHolder {
+    val view = LayoutInflater.from(parent.context)
+        .inflate(layout.counter_widget_list_item, parent, false)
+    return CounterWidgetViewHolder(view)
+  }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+  override fun getItemCount(): Int {
+    return items.size
+  }
 }
 
 class CounterWidgetViewHolder(itemView: View) : ViewHolder(itemView) {
 
-    var item: CounterWidget? = null
-    var widgetImage = itemView.findViewById(R.id.widgetImage) as ImageView
-    var counterName = itemView.findViewById(R.id.counterName) as TextView
-    var widgetAdded = itemView.findViewById(R.id.widgetAdded) as TextView
-    var widgetEdit = itemView.findViewById(R.id.widgetEdit) as IconicsButton
+  var item: CounterWidget? = null
+  var widgetImage: ImageView = itemView.findViewById(R.id.widgetImage)
+  var counterName: TextView = itemView.findViewById(R.id.counterName)
+  var widgetAdded: TextView = itemView.findViewById(R.id.widgetAdded)
+  var widgetEdit: IconicsButton = itemView.findViewById(R.id.widgetEdit)
 
 }

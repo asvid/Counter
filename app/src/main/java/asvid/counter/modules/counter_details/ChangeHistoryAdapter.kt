@@ -17,41 +17,41 @@ import org.ocpsoft.prettytime.PrettyTime
 class ChangeHistoryAdapter(private val items: List<Change>,
     val context: Context) : Adapter<ChangeViewHolder>() {
 
-    val prettyTime = PrettyTime()
+  val prettyTime = PrettyTime()
 
-    override fun getItemCount(): Int {
-        return items.size
+  override fun getItemCount(): Int {
+    return items.size
+  }
+
+  override fun onBindViewHolder(holder: ChangeViewHolder, position: Int) {
+    val item = items[position]
+    if (item.isValid) {
+      holder.item = item
+      holder.indexView.text = "${position + 1}"
+      holder.changeNameView.text = getChange(item)
+      holder.changeDateView.text = prettyTime.format(item.date)
     }
+  }
 
-    override fun onBindViewHolder(holder: ChangeViewHolder, position: Int) {
-        val item = items[position]
-        if (item.isValid) {
-            holder.item = item
-            holder.indexView.text = "${position + 1}"
-            holder.changeNameView.text = getChange(item)
-            holder.changeDateView.text = prettyTime.format(item.date)
-        }
-    }
+  private fun getChange(item: Change): CharSequence? {
+    if (item.preValue!! > item.postValue!!) return context.getString(
+        R.string.value_decremented)
+    if (item.preValue!! < item.postValue!!) return context.getString(
+        R.string.value_incremented)
+    return ""
+  }
 
-    private fun getChange(item: Change): CharSequence? {
-        if (item.preValue!! > item.postValue!!) return context.getString(
-            R.string.value_decremented)
-        if (item.preValue!! < item.postValue!!) return context.getString(
-            R.string.value_incremented)
-        return ""
-    }
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChangeViewHolder {
+    val view = LayoutInflater.from(parent.context)
+        .inflate(layout.change_list_item, parent, false)
+    return ChangeViewHolder(view)
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChangeViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(layout.change_list_item, parent, false)
-        return ChangeViewHolder(view)
-    }
+  inner class ChangeViewHolder(itemView: View) : ViewHolder(itemView) {
 
-    inner class ChangeViewHolder(itemView: View) : ViewHolder(itemView) {
-
-        var item: Change? = null
-        var indexView = itemView.findViewById(id.indexView) as TextView
-        var changeNameView = itemView.findViewById(id.changeNameView) as TextView
-        var changeDateView = itemView.findViewById(id.changeDateView) as TextView
-    }
+    var item: Change? = null
+    var indexView: TextView = itemView.findViewById(id.indexView)
+    var changeNameView: TextView = itemView.findViewById(id.changeNameView)
+    var changeDateView: TextView = itemView.findViewById(id.changeDateView)
+  }
 }

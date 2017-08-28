@@ -1,7 +1,10 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:configure="asvid.counter.widget.down_counter.DownCounterWidgetConfigurationActivity"
-                    android:initialLayout="@layout/down_counter_appwidget"
-                    android:minWidth="@dimen/widget_base_width_x2"
-                    android:previewImage="@drawable/down_counter"
-                    android:resizeMode="none"
-                    android:updatePeriodMillis="1800000" />
+    android:configure="asvid.counter.widget.down_counter.DownCounterWidgetConfigurationActivity"
+    android:initialLayout="@layout/down_counter_appwidget"
+    android:minHeight="@dimen/widget_base_width"
+    android:minResizeHeight="@dimen/widget_base_width"
+    android:minResizeWidth="@dimen/widget_base_width"
+    android:minWidth="@dimen/widget_base_width_x2"
+    android:previewImage="@drawable/down_counter"
+    android:resizeMode="none"
+    android:updatePeriodMillis="1800000"/>
