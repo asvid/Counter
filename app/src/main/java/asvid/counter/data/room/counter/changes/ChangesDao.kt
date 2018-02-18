@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import asvid.counter.data.room.counter.changes.ChangesEntity.Companion.TABLE_NAME
+import io.reactivex.Flowable
 
 @Dao
 interface ChangesDao {
@@ -20,9 +21,9 @@ interface ChangesDao {
   fun delete(vararg repos: ChangesEntity)
 
   @Query("SELECT * FROM $TABLE_NAME")
-  fun getAllRepos(): List<ChangesEntity>
+  fun getAllRepos(): Flowable<List<ChangesEntity>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE counterId=:counterId")
-  fun findChangesForCounter(counterId: Long): List<ChangesEntity>
+  fun findChangesForCounter(counterId: Long): Flowable<List<ChangesEntity>>
 
 }

@@ -5,6 +5,7 @@ import asvid.counter.BuildConfig
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.data_migration.Migration
 import asvid.counter.data.down_counter.DownCounterWidget
+import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.data.widget.CounterWidget
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -101,7 +102,7 @@ class Storage(context: Context) {
         }
     }
 
-    fun getWidgetsOfCounter(counter: CounterItem): List<CounterWidget> {
+    fun getWidgetsOfCounter(counter: CounterEntity): List<CounterWidget> {
         return realm.where(CounterWidget::class.java)
             .equalTo("counterItem.id", counter.id!!)
             .findAll()

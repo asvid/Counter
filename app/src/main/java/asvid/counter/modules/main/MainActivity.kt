@@ -15,7 +15,6 @@ import asvid.counter.R
 import asvid.counter.R.layout
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
-import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.data.room.counter.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.dialogs.DialogCallback
@@ -39,9 +38,6 @@ import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
-  @Inject
-  lateinit var counterRepository: CounterRepository
-
   @field:[Inject Named("string1")]
   lateinit var string1: String
 
@@ -64,23 +60,6 @@ class MainActivity : AppCompatActivity() {
       else {
         counterNameInputLayer.error = resources.getString(R.string.no_name_error)
       }
-    }
-
-    Timber.d("is debug?: $isDebug")
-    Timber.d("string1: $string1")
-
-    counterRepository.getAll().map {
-      Timber.d("printing counters: $it")
-    }
-
-    counterRepository.createNewCounter(CounterEntity("name 1", 0))
-    counterRepository.createNewCounter(CounterEntity("name 2", 1))
-    counterRepository.createNewCounter(CounterEntity("name 3", 2))
-    counterRepository.createNewCounter(CounterEntity("name 4", 3))
-
-
-    counterRepository.getAll().map {
-      Timber.d("printing counters: $it")
     }
   }
 
@@ -109,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun setList() {
     val itemList = CounterItemManager.getAllCounterItems()
-    if (itemList.isEmpty()) availableCountersText.visibility = GONE
+    if (itemList.isEmpty) availableCountersText.visibility = GONE
     counterAdapter = CounterListAdapter(itemList)
 
     counterList.adapter = counterAdapter

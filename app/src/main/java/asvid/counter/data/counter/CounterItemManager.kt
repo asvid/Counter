@@ -2,60 +2,59 @@ package asvid.counter.data.counter
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
+import asvid.counter.data.room.counter.CounterEntity
+import asvid.counter.data.room.counter.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.di.Di.context
-import asvid.counter.analytics.enums.Action.ADD
-import asvid.counter.analytics.enums.Action.ALL_ITEMS
-import asvid.counter.analytics.enums.Action.DELETE
-import asvid.counter.analytics.enums.Category.COUNTER
 import asvid.counter.widget.CounterWidgetProvider
+import io.reactivex.Flowable
 import timber.log.Timber
+import javax.inject.Inject
 
 object CounterItemManager {
 
-    fun incrementAndSave(item: CounterItem) {
-        item.incrementValue()
-        saveAndUpdateWidget(item)
-        Timber.i("incrementAndSave: $item")
-    }
+  @Inject
+  lateinit var counterRepository: CounterRepository
 
-    fun updateWidget(id: Long?) {
-        val intent = Intent(context, CounterWidgetProvider::class.java)
-        intent.action = CounterWidgetProvider.UPDATE
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id?.toInt())
+  fun incrementAndSave(counterEntity: CounterEntity) {
+    counterEntity.incrementValue()
+    saveAndUpdateWidget(counterEntity)
+    Timber.i("incrementAndSave: $counterEntity")
+  }
 
-        context.sendBroadcast(intent)
-    }
+  fun updateWidget(id: Long?) {
+    val intent = Intent(context, CounterWidgetProvider::class.java)
+    intent.action = CounterWidgetProvider.UPDATE
+    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id?.toInt())
 
-    fun decrementAndSave(item: CounterItem) {
-        item.decrementValue()
-        saveAndUpdateWidget(item)
-    }
+    context.sendBroadcast(intent)
+  }
 
-    fun saveAndUpdateWidget(item: CounterItem) {
-        Di.storage.saveItem(item)
-        Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
-    }
+  fun decrementAndSave(counterEntity: CounterEntity) {
+    counterEntity.decrementValue()
+    saveAndUpdateWidget(counterEntity)
+  }
 
-    fun getAllCounterItems(): MutableList<CounterItem> {
-        val allItems = Di.storage.allItems()
-        Di.analyticsHelper.sendEvent(COUNTER, ALL_ITEMS, "${allItems.size}")
-        return allItems
-    }
+  fun saveAndUpdateWidget(counterEntity: CounterEntity) {
+    counterRepository.updateCounter(counterEntity)
+    Di.storage.getWidgetsOfCounter(counterEntity).map { updateWidget(it.id) }
+  }
 
-    fun getCounterItem(id: Long): CounterItem {
-        return Di.storage.getCounterItem(id)
-    }
+  fun getAllCounterItems(): Flowable<List<CounterEntity>> {
+    return counterRepository.getAll()
+  }
 
-    fun saveCounterItem(counterItem: CounterItem) {
-        Di.storage.saveItem(counterItem)
-        Di.analyticsHelper.sendEvent(COUNTER, ADD, "")
-    }
+  fun getCounterItem(id: Long): CounterEntity {
+    return counterRepository.getCounter(id)
+  }
 
-    fun deleteCounterItem(item: CounterItem) {
-        Di.analyticsHelper.sendEvent(COUNTER, DELETE, "")
-        Di.storage.getWidgetsOfCounter(item).map { updateWidget(it.id) }
-        Di.storage.deleteCounter(item)
-    }
+  fun saveCounterItem(counterEntity: CounterEntity) {
+    counterRepository.updateCounter(counterEntity)
+  }
+
+  fun deleteCounterItem(counterEntity: CounterEntity) {
+    Di.storage.getWidgetsOfCounter(counterEntity).map { updateWidget(it.id) }
+    counterRepository.deleteCounter(counterEntity)
+  }
 
 }

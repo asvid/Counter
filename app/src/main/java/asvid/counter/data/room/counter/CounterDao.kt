@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import asvid.counter.data.room.counter.CounterEntity.Companion.TABLE_NAME
+import io.reactivex.Flowable
 
 
 @Dao
@@ -21,9 +22,9 @@ interface CounterDao {
   fun delete(vararg repos: CounterEntity)
 
   @Query("SELECT * FROM $TABLE_NAME")
-  fun getAllCounters(): List<CounterEntity>
+  fun getAllCounters(): Flowable<List<CounterEntity>>
 
   @Query("SELECT * FROM $TABLE_NAME WHERE id=:counterId")
-  fun findCounterById(counterId: Long): List<CounterEntity>
+  fun findCounterById(counterId: Long): CounterEntity
 
 }
