@@ -9,6 +9,7 @@ apply from: '../dependencies.gradle'
 android {
   signingConfigs {
     release
+    release
   }
   def props = new Properties()
 
@@ -84,6 +85,7 @@ dependencies {
   //  room
   implementation deps.external.roomRuntime
   annotationProcessor deps.apt.roomCompiler
+  kapt deps.apt.roomCompiler
 
   //  DI
   implementation deps.external.dagger

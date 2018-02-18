@@ -9,7 +9,7 @@ import asvid.counter.data.room.counter.CounterEntity.Companion.TABLE_NAME
 data class CounterEntity(var name: String?, var value: Int?) {
 
   companion object {
-    const val TABLE_NAME = "counter"
+    const val TABLE_NAME = "counters"
     const val ID = "id"
   }
 

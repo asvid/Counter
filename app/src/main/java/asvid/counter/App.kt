@@ -41,7 +41,7 @@ class App : Application(), HasActivityInjector {
     initLeakCanary()
     initTimber()
     Di.set(this)
-    setCrashReporting()
+//    setCrashReporting()
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
   }
 

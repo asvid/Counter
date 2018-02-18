@@ -18,13 +18,11 @@ class DataModule {
   @Singleton
   @Provides
   fun counterDatabase(context: Context): CounterDatabase = Room.databaseBuilder(context,
-      CounterDatabase::class.java, "Counter.db").build()
+      CounterDatabase::class.java, "Counter.db").allowMainThreadQueries().build()
 
   @Singleton
   @Provides
-  @Named("counterRepo")
-  fun counterRepository(
-      counterDao: CounterDao): CounterRepository = CounterRepository().also { it.counterDao = counterDao }
+  fun counterRepository(counterDao: CounterDao): CounterRepository = CounterRepository(counterDao)
 
   @Singleton
   @Provides
@@ -33,7 +31,7 @@ class DataModule {
   @Singleton
   @Provides
   fun changesRepository(
-      changesDao: ChangesDao): ChangesRepository = ChangesRepository().also { it.changesDao = changesDao }
+      changesDao: ChangesDao): ChangesRepository = ChangesRepository()
 
   @Singleton
   @Provides

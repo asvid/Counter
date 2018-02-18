@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
+import asvid.counter.data.room.counter.changes.ChangesEntity.Companion.TABLE_NAME
 
 @Dao
 interface ChangesDao {
@@ -18,10 +19,10 @@ interface ChangesDao {
   @Delete
   fun delete(vararg repos: ChangesEntity)
 
-  @Query("SELECT * FROM repo")
+  @Query("SELECT * FROM $TABLE_NAME")
   fun getAllRepos(): List<ChangesEntity>
 
-  @Query("SELECT * FROM repo WHERE counterId=:counterId")
+  @Query("SELECT * FROM $TABLE_NAME WHERE counterId=:counterId")
   fun findChangesForCounter(counterId: Long): List<ChangesEntity>
 
 }

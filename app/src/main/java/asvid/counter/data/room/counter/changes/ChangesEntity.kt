@@ -9,7 +9,6 @@ import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.data.room.counter.CounterEntity.Companion.ID
 import asvid.counter.data.room.counter.changes.ChangesEntity.Companion.COUNTER_ID
 import asvid.counter.data.room.counter.changes.ChangesEntity.Companion.TABLE_NAME
-import java.util.Date
 
 @Entity(tableName = TABLE_NAME,
     foreignKeys = (arrayOf(ForeignKey(
@@ -20,7 +19,7 @@ import java.util.Date
 data class ChangesEntity(
     var preValue: Int?,
     var postValue: Int?,
-    var date: Date?,
+    var date: Long?,
     @NonNull var counterId: Long) {
 
   companion object {
@@ -30,6 +29,6 @@ data class ChangesEntity(
 
   @PrimaryKey
   @NonNull
-  private lateinit var itemId: String
+  var id: Long? = null
 
 }

@@ -2,10 +2,7 @@ package asvid.counter.data.room.counter
 
 import javax.inject.Inject
 
-class CounterRepository {
-
-  lateinit var counterDao: CounterDao
-    @Inject set
+class CounterRepository @Inject constructor(var counterDao: CounterDao) {
 
   fun getAll(): List<CounterEntity> = counterDao.getAllCounters()
   fun getCounter(counterId: Long) = counterDao.findCounterById(counterId)

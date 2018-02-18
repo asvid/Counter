@@ -15,6 +15,8 @@ import asvid.counter.R
 import asvid.counter.R.layout
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.room.counter.CounterEntity
+import asvid.counter.data.room.counter.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager
@@ -37,8 +39,8 @@ import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
-//  lateinit var counterRepository: CounterRepository
-//    @Inject set
+  @Inject
+  lateinit var counterRepository: CounterRepository
 
   @field:[Inject Named("string1")]
   lateinit var string1: String
@@ -67,9 +69,19 @@ class MainActivity : AppCompatActivity() {
     Timber.d("is debug?: $isDebug")
     Timber.d("string1: $string1")
 
-//    counterRepo.getAll().map {
-//      Timber.d("printing counters: $it")
-//    }
+    counterRepository.getAll().map {
+      Timber.d("printing counters: $it")
+    }
+
+    counterRepository.createNewCounter(CounterEntity("name 1", 0))
+    counterRepository.createNewCounter(CounterEntity("name 2", 1))
+    counterRepository.createNewCounter(CounterEntity("name 3", 2))
+    counterRepository.createNewCounter(CounterEntity("name 4", 3))
+
+
+    counterRepository.getAll().map {
+      Timber.d("printing counters: $it")
+    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
