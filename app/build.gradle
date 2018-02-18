@@ -87,6 +87,7 @@ dependencies {
 
   //  DI
   implementation deps.external.dagger
+  implementation deps.external.daggerSupport
   annotationProcessor deps.apt.daggerCompiler
   kapt deps.apt.daggerCompiler
 

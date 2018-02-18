@@ -51,6 +51,7 @@ def test = [junit         : "junit:junit:4.12",
             compileTesting: "com.google.testing.compile:compile-testing:0.11"]
 
 def external = [dagger           : "com.google.dagger:dagger:${versions.dagger}",
+                daggerSupport    : "com.google.dagger:dagger-android-support:${versions.dagger}",
                 rxjava2          : "io.reactivex.rxjava2:rxjava:${versions.rx}",
                 rxrelay2         : "com.jakewharton.rxrelay2:rxrelay:2.0.0",
                 rxbinding        : 'com.jakewharton.rxbinding2:rxbinding:2.0.0',

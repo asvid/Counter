@@ -11,13 +11,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
-import android.widget.Button
-import asvid.counter.di.Di
 import asvid.counter.R
-import asvid.counter.R.id
 import asvid.counter.R.layout
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.di.Di
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.modules.app_info.AppInfoActivity
@@ -25,23 +23,38 @@ import asvid.counter.modules.counter_details.CounterDetailsActivity
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.widget_list.WidgetListActivity
 import asvid.counter.utils.startAlphaAnimation
+import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_main.addButton
 import kotlinx.android.synthetic.main.activity_main.availableCountersText
 import kotlinx.android.synthetic.main.activity_main.counterList
 import kotlinx.android.synthetic.main.activity_main.counterName
 import kotlinx.android.synthetic.main.activity_main.counterNameInputLayer
 import kotlinx.android.synthetic.main.activity_main.counterStartValue
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Named
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
+
+//  lateinit var counterRepository: CounterRepository
+//    @Inject set
+
+  @field:[Inject Named("string1")]
+  lateinit var string1: String
+
+  @set:[Inject Named("isDebug")]
+  var isDebug: Boolean? = null
 
   private var counterAdapter: CounterListAdapter by Delegates.notNull()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    AndroidInjection.inject(this)
+
     setContentView(layout.activity_main)
     Di.analyticsHelper.sendScreenName(this, "MainActivity")
-    val addButton: Button = findViewById(id.addButton) as Button
 
     addButton.setOnClickListener {
       if (!TextUtils.isEmpty(counterName.text))
@@ -51,6 +64,12 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    Timber.d("is debug?: $isDebug")
+    Timber.d("string1: $string1")
+
+//    counterRepo.getAll().map {
+//      Timber.d("printing counters: $it")
+//    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -161,8 +180,7 @@ class MainActivity : AppCompatActivity() {
         holder.name, "counterNameTransition")
     val p2: Pair<View, String> = Pair.create(
         holder.changeDate, "counterChangeDateTransition")
-    val options = ActivityOptionsCompat.
-        makeSceneTransitionAnimation(this, p1, p2)
+    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
     startActivity(intent, options.toBundle())
   }
 

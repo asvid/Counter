@@ -2,14 +2,14 @@ package asvid.counter.di
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import asvid.counter.data.room.changes.ChangesDao
-import asvid.counter.data.room.changes.ChangesDatabase
-import asvid.counter.data.room.changes.ChangesRepository
 import asvid.counter.data.room.counter.CounterDao
 import asvid.counter.data.room.counter.CounterDatabase
 import asvid.counter.data.room.counter.CounterRepository
+import asvid.counter.data.room.counter.changes.ChangesDao
+import asvid.counter.data.room.counter.changes.ChangesRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module(includes = [AppModule::class])
@@ -17,13 +17,14 @@ class DataModule {
 
   @Singleton
   @Provides
-  fun counterRepository(
-      counterDao: CounterDao): CounterRepository = CounterRepository().also { it.counterDao = counterDao }
+  fun counterDatabase(context: Context): CounterDatabase = Room.databaseBuilder(context,
+      CounterDatabase::class.java, "Counter.db").build()
 
   @Singleton
   @Provides
-  fun counterDatabase(context: Context): CounterDatabase = Room.databaseBuilder(context,
-      CounterDatabase::class.java, "Counter.db").build()
+  @Named("counterRepo")
+  fun counterRepository(
+      counterDao: CounterDao): CounterRepository = CounterRepository().also { it.counterDao = counterDao }
 
   @Singleton
   @Provides
@@ -36,12 +37,11 @@ class DataModule {
 
   @Singleton
   @Provides
-  fun changesDatabase(context: Context): ChangesDatabase = Room.databaseBuilder(context,
-      ChangesDatabase::class.java, "Changes.db").build()
+  fun changesDao(context: Context): ChangesDao = counterDatabase(context).changesDao()
 
   @Singleton
   @Provides
-  fun changesDao(context: Context): ChangesDao = changesDatabase(context).changesDao()
-
+  @Named("string1")
+  fun provideString1() = "STRING_1"
 
 }
