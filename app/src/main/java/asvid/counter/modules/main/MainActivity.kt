@@ -12,7 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.widget.Button
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.R.id
 import asvid.counter.R.layout
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(layout.activity_main)
     Di.analyticsHelper.sendScreenName(this, "MainActivity")
-    val addButton: Button = findViewById(id.addButton)
+    val addButton: Button = findViewById(id.addButton) as Button
 
     addButton.setOnClickListener {
       if (!TextUtils.isEmpty(counterName.text))

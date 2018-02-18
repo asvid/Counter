@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.R.layout
 import asvid.counter.data.counter.CounterItemManager

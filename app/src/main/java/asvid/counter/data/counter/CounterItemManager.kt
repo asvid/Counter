@@ -2,16 +2,13 @@ package asvid.counter.data.counter
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import asvid.counter.Di
-import asvid.counter.Di.context
-import asvid.counter.analytics.enums.Action
+import asvid.counter.di.Di
+import asvid.counter.di.Di.context
 import asvid.counter.analytics.enums.Action.ADD
 import asvid.counter.analytics.enums.Action.ALL_ITEMS
 import asvid.counter.analytics.enums.Action.DELETE
-import asvid.counter.analytics.enums.Category
 import asvid.counter.analytics.enums.Category.COUNTER
 import asvid.counter.widget.CounterWidgetProvider
-import asvid.counter.widget.CounterWidgetProvider.Companion
 import timber.log.Timber
 
 object CounterItemManager {

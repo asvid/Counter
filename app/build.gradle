@@ -1,30 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-crash'
-
-def versionMajor = 0
-def versionMinor = 3
-def versionPatch = 3
-def versionBuild = 0
-
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
-  }
-}
-
-repositories {
-  maven { url 'https://maven.fabric.io/public' }
-  maven { url "https://jitpack.io" }
-  mavenCentral()
-}
+apply from: '../dependencies.gradle'
 
 android {
   signingConfigs {
@@ -38,16 +18,14 @@ android {
   android.signingConfigs.release.keyAlias props.keyAlias
   android.signingConfigs.release.keyPassword props.keyAliasPassword
 
-  compileSdkVersion rootProject.compileSdkVersion
-  buildToolsVersion rootProject.buildToolsVersion
+  compileSdkVersion deps.build.compileSdkVersion
   defaultConfig {
     applicationId "asvid.counter"
-    minSdkVersion rootProject.minSdkVersion
-    targetSdkVersion rootProject.targetSdkVersion
-    versionCode versionMajor * 1000 + versionMinor * 100 + versionPatch * 10 + versionBuild
-    versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
-    multiDexEnabled false
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    minSdkVersion deps.build.minSdkVersion
+    targetSdkVersion deps.build.targetSdkVersion
+    versionCode deps.build.versionCode
+    versionName deps.build.versionName
+
     vectorDrawables.useSupportLibrary = true
     buildConfigField "long", "REALM_SCHEMA_VERSION", "1"
   }
@@ -69,35 +47,52 @@ android {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-  compile "com.android.support:preference-v7:$supportLibraryVersion"
-  compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-  compile "com.android.support:cardview-v7:$supportLibraryVersion"
-  compile "com.android.support:design:$supportLibraryVersion"
-  compile 'com.google.firebase:firebase-core:11.2.0'
-  compile 'com.google.firebase:firebase-crash:11.2.0'
-  compile 'com.google.firebase:firebase-messaging:11.2.0'
-  //  color picker
-  compile 'com.thebluealliance:spectrum:0.7.1'
-  //  colors for color picker
-  compile 'com.wada811:android-material-design-colors:3.0.0'
-  //  logging
-  compile 'com.jakewharton.timber:timber:4.5.1'
-  //  vector icons
-  compile 'com.mikepenz:iconics-core:2.8.1@aar'
-  compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
-  //  charts
-  compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-  //  pretty time
-  compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
-  //  RX
-  compile "io.reactivex.rxjava2:rxjava:2.1.0"
+  implementation deps.external.kotlin
+  implementation deps.support.appcompat
+  implementation deps.support.preference
+  implementation deps.support.recyclerView
+  implementation deps.support.cardView
+  implementation deps.support.design
+  implementation deps.support.constraint
+  implementation deps.firebase.core
+  implementation deps.firebase.crash
+  implementation deps.firebase.messaging
 
-  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-  testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-  compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
+  //  color picker
+  implementation deps.external.colorPicker
+  //  colors for color picker
+  implementation deps.external.materialColors
+
+  //  logging
+  implementation deps.external.timber
+
+  //  vector icons
+  implementation deps.external.vectorIcons
+  implementation deps.external.vectorIconsViews
+  implementation deps.external.fontAwesomeIcons
+
+  //  charts
+  implementation deps.external.charts
+
+  //  pretty time
+  implementation deps.external.prettyTime
+  //  RX
+  implementation deps.external.rxjava2
+  implementation deps.external.rxrelay2
+  implementation deps.external.rxbinding
+
+  //  room
+  implementation deps.external.roomRuntime
+  annotationProcessor deps.apt.roomCompiler
+
+  //  DI
+  implementation deps.external.dagger
+  annotationProcessor deps.apt.daggerCompiler
+  kapt deps.apt.daggerCompiler
+
+  debugCompile deps.external.leakcanaryDebug
+  releaseCompile deps.external.leakcanaryRelease
+  testCompile deps.external.leakcanaryRelease
 }
 
 apply plugin: 'com.google.gms.google-services'

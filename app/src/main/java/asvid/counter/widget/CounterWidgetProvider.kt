@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.RemoteViews
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.analytics.enums.Action
 import asvid.counter.analytics.enums.Category

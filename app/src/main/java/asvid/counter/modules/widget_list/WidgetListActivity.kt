@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.R.string
 import kotlinx.android.synthetic.main.activity_widget_list.widgetList

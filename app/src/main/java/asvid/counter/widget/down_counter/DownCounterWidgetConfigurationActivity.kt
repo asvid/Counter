@@ -9,7 +9,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.widget.ImageView
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
@@ -19,7 +19,6 @@ import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DateTimeDialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.widget.views.WidgetPreview
-import kotlinx.android.synthetic.main.activity_main.counterNameInputLayer
 import kotlinx.android.synthetic.main.down_counter_widget_configuration_activity.addButton
 import kotlinx.android.synthetic.main.down_counter_widget_configuration_activity.downCounterName
 import kotlinx.android.synthetic.main.down_counter_widget_configuration_activity.downCounterNameLayout
@@ -53,7 +52,7 @@ class DownCounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher 
   }
 
   private fun setView() {
-    widgetColor = findViewById(id.widgetColor)
+    widgetColor = findViewById(id.widgetColor) as ImageView
     widgetColor.setOnClickListener {
       showColors()
     }

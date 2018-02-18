@@ -16,7 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
@@ -67,7 +67,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
     counterName.addTextChangedListener(this)
     counterStartValue.addTextChangedListener(this)
 
-    val addButton:Button = findViewById(id.addButton)
+    val addButton:Button = findViewById(id.addButton) as Button
     addButton.setOnClickListener {
       if (!TextUtils.isEmpty(counterName.text))
         addItem(counterName.text.toString(), getValue())

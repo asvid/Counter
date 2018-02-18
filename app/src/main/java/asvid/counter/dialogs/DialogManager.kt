@@ -9,7 +9,7 @@ import android.text.TextUtils
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.widget.TextView
-import asvid.counter.Di
+import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
