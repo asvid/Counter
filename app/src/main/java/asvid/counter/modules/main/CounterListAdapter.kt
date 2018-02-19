@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.data.counter.CounterItem
+import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.modules.main.ACTION.DECREMENT
 import asvid.counter.modules.main.ACTION.DELETE
 import asvid.counter.modules.main.ACTION.DETAILS
@@ -28,7 +28,7 @@ import kotlin.properties.Delegates
  * Created by adam on 15.01.17.
  */
 class CounterListAdapter(
-    private val items: MutableList<CounterItem>) : Adapter<CounterItemViewHolder>() {
+    private var items: List<CounterEntity>) : Adapter<CounterItemViewHolder>() {
 
   val onClickSubject: PublishSubject<OnClickAction> = PublishSubject.create()
 
@@ -42,35 +42,33 @@ class CounterListAdapter(
 
   override fun onBindViewHolder(holder: CounterItemViewHolder, position: Int) {
     val item = items[position]
-    if (item.isValid) {
-      holder.item = item
-      holder.name.text = item.name
-      holder.value.text = item.value.toString()
-      if (item.changes.isNotEmpty()) {
-        holder.changeDate.text = prettyTime.format(
-            item.changes[item.changes.lastIndex].date)
-      } else {
-        holder.changeDate.visibility = View.GONE
-      }
+    holder.item = item
+    holder.name.text = item.name
+    holder.value.text = item.value.toString()
+//    if (item.changes.isNotEmpty()) {
+//      holder.changeDate.text = prettyTime.format(
+//          item.changes[item.changes.lastIndex].date)
+//    } else {
+//      holder.changeDate.visibility = View.GONE
+//    }
 
-      holder.deleteButton.setOnClickListener {
-        onClickSubject.onNext(OnClickAction(DELETE, holder.item, position, holder))
-      }
-      holder.editButton.setOnClickListener {
-        onClickSubject.onNext(OnClickAction(EDIT, holder.item, position, holder))
-      }
-      holder.decrementButton.setOnClickListener {
-        onClickSubject.onNext(OnClickAction(DECREMENT, holder.item, position, holder))
-      }
-      holder.incrementButton.setOnClickListener {
-        onClickSubject.onNext(OnClickAction(INCREMENT, holder.item, position, holder))
-      }
-      holder.detailsButton.setOnClickListener {
-        onClickSubject.onNext(OnClickAction(DETAILS, holder.item, position, holder))
-      }
-      holder.cardView.setOnClickListener {
-        onClickSubject.onNext(OnClickAction(ITEM_CLICKED, holder.item, position, holder))
-      }
+    holder.deleteButton.setOnClickListener {
+      onClickSubject.onNext(OnClickAction(DELETE, holder.item, position, holder))
+    }
+    holder.editButton.setOnClickListener {
+      onClickSubject.onNext(OnClickAction(EDIT, holder.item, position, holder))
+    }
+    holder.decrementButton.setOnClickListener {
+      onClickSubject.onNext(OnClickAction(DECREMENT, holder.item, position, holder))
+    }
+    holder.incrementButton.setOnClickListener {
+      onClickSubject.onNext(OnClickAction(INCREMENT, holder.item, position, holder))
+    }
+    holder.detailsButton.setOnClickListener {
+      onClickSubject.onNext(OnClickAction(DETAILS, holder.item, position, holder))
+    }
+    holder.cardView.setOnClickListener {
+      onClickSubject.onNext(OnClickAction(ITEM_CLICKED, holder.item, position, holder))
     }
   }
 
@@ -82,13 +80,7 @@ class CounterListAdapter(
     return items.size
   }
 
-  fun addItem(counterItem: CounterItem) {
-    items.add(counterItem)
-    notifyItemInserted(itemCount - 1)
-  }
-
   fun removeItem(position: Int) {
-    items.removeAt(position)
     notifyItemRemoved(position)
   }
 
@@ -98,7 +90,7 @@ class CounterListAdapter(
 
   inner class CounterItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
-    var item: CounterItem by Delegates.notNull()
+    var item: CounterEntity by Delegates.notNull()
     var cardView: CardView = itemView.findViewById(id.card_view)
     var name: TextView = itemView.findViewById(id.counterName)
     var value: TextView = itemView.findViewById(id.counterStartValue)
@@ -108,5 +100,9 @@ class CounterListAdapter(
     var incrementButton: IconicsButton = itemView.findViewById(id.incrementButton)
     var decrementButton: IconicsButton = itemView.findViewById(id.decrementButton)
     var changeDate: TextView = itemView.findViewById(id.changeDate)
+  }
+
+  fun setItems(list: List<CounterEntity>) {
+    items = list
   }
 }

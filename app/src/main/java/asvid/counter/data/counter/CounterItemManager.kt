@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 object CounterItemManager {
 
-  @Inject
   lateinit var counterRepository: CounterRepository
+    @Inject set
 
   fun incrementAndSave(counterEntity: CounterEntity) {
     counterEntity.incrementValue()
@@ -50,6 +50,11 @@ object CounterItemManager {
 
   fun saveCounterItem(counterEntity: CounterEntity) {
     counterRepository.updateCounter(counterEntity)
+  }
+
+  fun createNewCounter(name: String, value: Int) {
+    val counterEntity = CounterEntity(name, value)
+    counterRepository.createNewCounter(counterEntity)
   }
 
   fun deleteCounterItem(counterEntity: CounterEntity) {

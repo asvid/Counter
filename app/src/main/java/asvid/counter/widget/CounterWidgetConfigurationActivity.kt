@@ -95,29 +95,29 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
   }
 
   private fun setList() {
-    val itemList = CounterItemManager.getAllCounterItems()
-    counterAdapter = CounterListAdapter(itemList)
-
-    counterList.adapter = counterAdapter
-    counterList.layoutManager = LinearLayoutManager(this)
-
-    counterAdapter.getPositionClicks().subscribe { action ->
-      when (action.action) {
-        ACTION.DELETE -> onItemDelete(action.item, action.position)
-        ACTION.ITEM_CLICKED -> onItemClicked(action.item, action.position)
-        ACTION.EDIT -> onItemEdit(action.item, action.position)
-        ACTION.DETAILS -> onDetailsClicked(action.item, action.position, action.holder)
-        ACTION.INCREMENT -> onItemIncrement(action.item, action.position)
-        ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
-      }
-    }
+//    val itemList = CounterItemManager.getAllCounterItems()
+//    counterAdapter = CounterListAdapter(itemList)
+//
+//    counterList.adapter = counterAdapter
+//    counterList.layoutManager = LinearLayoutManager(this)
+//
+//    counterAdapter.getPositionClicks().subscribe { action ->
+//      when (action.action) {
+//        ACTION.DELETE -> onItemDelete(action.item, action.position)
+//        ACTION.ITEM_CLICKED -> onItemClicked(action.item, action.position)
+//        ACTION.EDIT -> onItemEdit(action.item, action.position)
+//        ACTION.DETAILS -> onDetailsClicked(action.item, action.position, action.holder)
+//        ACTION.INCREMENT -> onItemIncrement(action.item, action.position)
+//        ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
+//      }
+//    }
   }
 
   private fun addItem(name: String, value: String) {
     val counterItem = CounterItem()
     counterItem.name = name
     counterItem.value = Integer.parseInt(value)
-    CounterItemManager.saveCounterItem(counterItem)
+//    CounterItemManager.saveCounterItem(counterItem)
 
     createWidget(counterItem)
   }
@@ -169,7 +169,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
   }
 
   fun onItemDelete(item: CounterItem, position: Int) {
-    CounterItemManager.deleteCounterItem(item)
+//    CounterItemManager.deleteCounterItem(item)
     counterAdapter.removeItem(position)
   }
 
@@ -191,7 +191,7 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
       if (!TextUtils.isEmpty(counterName.text)) {
         counter.name = counterName.text.toString()
         counter.value = (counterValue.text.toString()).toInt()
-        CounterItemManager.saveAndUpdateWidget(counter)
+//        CounterItemManager.saveAndUpdateWidget(counter)
       }
       counterAdapter.notifyItemChanged(position)
     })
@@ -202,19 +202,19 @@ class CounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher {
     builder.show()
   }
 
-  fun onItemClicked(item: CounterItem, position: Int) {
-    createWidget(item)
-  }
-
-  fun onItemIncrement(item: CounterItem, position: Int) {
-    CounterItemManager.incrementAndSave(item)
-    counterAdapter.notifyItemChanged(position)
-  }
-
-  fun onItemDecrement(item: CounterItem, position: Int) {
-    CounterItemManager.decrementAndSave(item)
-    counterAdapter.notifyItemChanged(position)
-  }
+//  fun onItemClicked(item: CounterItem, position: Int) {
+//    createWidget(item)
+//  }
+//
+//  fun onItemIncrement(item: CounterItem, position: Int) {
+//    CounterItemManager.incrementAndSave(item)
+//    counterAdapter.notifyItemChanged(position)
+//  }
+//
+//  fun onItemDecrement(item: CounterItem, position: Int) {
+//    CounterItemManager.decrementAndSave(item)
+//    counterAdapter.notifyItemChanged(position)
+//  }
 
   fun onDetailsClicked(item: CounterItem, position: Int,
       holder: CounterItemViewHolder) {

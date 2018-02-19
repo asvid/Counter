@@ -13,8 +13,7 @@ import android.view.View
 import android.view.View.GONE
 import asvid.counter.R
 import asvid.counter.R.layout
-import asvid.counter.data.counter.CounterItem
-import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.data.room.counter.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.dialogs.DialogCallback
@@ -34,7 +33,6 @@ import kotlinx.android.synthetic.main.activity_main.counterStartValue
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,7 +42,10 @@ class MainActivity : AppCompatActivity() {
   @set:[Inject Named("isDebug")]
   var isDebug: Boolean? = null
 
-  private var counterAdapter: CounterListAdapter by Delegates.notNull()
+  lateinit var counterRepository: CounterRepository
+    @Inject set
+
+  private var counterAdapter: CounterListAdapter = CounterListAdapter(mutableListOf())
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -87,13 +88,8 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun setList() {
-    val itemList = CounterItemManager.getAllCounterItems()
-    if (itemList.isEmpty) availableCountersText.visibility = GONE
-    counterAdapter = CounterListAdapter(itemList)
-
     counterList.adapter = counterAdapter
     counterList.layoutManager = LinearLayoutManager(this)
-
     counterAdapter.getPositionClicks().subscribe { action ->
       when (action.action) {
         ACTION.DELETE -> onItemDelete(action.item, action.position)
@@ -104,26 +100,26 @@ class MainActivity : AppCompatActivity() {
         ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
       }
     }
+    counterRepository.getAll().subscribe { list ->
+      Timber.d("list update: $list")
+      if (list.isEmpty()) availableCountersText.visibility = GONE
+      counterAdapter.setItems(list)
+    }
+
   }
 
   private fun addItem(name: String, value: String) {
-    val counterItem = CounterItem()
-    counterItem.name = name
-    if (!TextUtils.isEmpty(value)) counterItem.value = Integer.parseInt(value)
-    CounterItemManager.saveCounterItem(counterItem)
-    counterAdapter.addItem(counterItem)
-    counterList.adapter = counterAdapter
+    counterRepository.createNewCounter(CounterEntity(name, Integer.parseInt(value)))
     counterName.text.clear()
     startAlphaAnimation(counterName, this)
     counterList.scrollToPosition(counterAdapter.itemCount - 1)
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemDelete(item: CounterItem, position: Int) {
+  fun onItemDelete(item: CounterEntity, position: Int) {
     DialogManager.showCounterDeleteDialog(this, item, object : DialogCallback {
       override fun onPositiveClicked() {
-        CounterItemManager.deleteCounterItem(item)
-        counterAdapter.removeItem(position)
+        counterRepository.deleteCounter(item)
       }
 
       override fun onNegativeClicked() {
@@ -133,7 +129,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemEdit(item: CounterItem, position: Int) {
+  fun onItemEdit(item: CounterEntity, position: Int) {
     DialogManager.showCounterEditDialog(this, item, object : DialogCallback {
       override fun onPositiveClicked() {
         counterAdapter.notifyItemChanged(position)
@@ -146,24 +142,24 @@ class MainActivity : AppCompatActivity() {
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemIncrement(item: CounterItem, position: Int) {
-    CounterItemManager.incrementAndSave(item)
-    counterAdapter.notifyItemChanged(position)
+  fun onItemIncrement(item: CounterEntity, position: Int) {
+    item.incrementValue()
+    counterRepository.updateCounter(item)
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemDecrement(item: CounterItem, position: Int) {
-    CounterItemManager.decrementAndSave(item)
-    counterAdapter.notifyItemChanged(position)
+  fun onItemDecrement(item: CounterEntity, position: Int) {
+    item.decrementValue()
+    counterRepository.updateCounter(item)
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemClicked(item: CounterItem, position: Int) {
+  fun onItemClicked(item: CounterEntity, position: Int) {
 //NOOP
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onDetailsClicked(item: CounterItem, position: Int,
+  fun onDetailsClicked(item: CounterEntity, position: Int,
       holder: CounterItemViewHolder) {
     val intent = Intent(this, CounterDetailsActivity::class.java)
     intent.putExtra(CounterDetailsActivity.EXTRA_COUNTER, item.id)

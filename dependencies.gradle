@@ -66,6 +66,7 @@ def external = [dagger           : "com.google.dagger:dagger:${versions.dagger}"
                 prettyTime       : 'org.ocpsoft.prettytime:prettytime:4.0.1.Final',
                 leakcanaryDebug  : 'com.squareup.leakcanary:leakcanary-android:1.5.4',
                 roomRuntime      : "android.arch.persistence.room:runtime:${versions.room}",
+                roomRx           : "android.arch.persistence.room:rxjava2:1.0.0",
                 leakcanaryRelease: 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4']
 
 def firebase = [core     : 'com.google.firebase:firebase-core:11.2.0',

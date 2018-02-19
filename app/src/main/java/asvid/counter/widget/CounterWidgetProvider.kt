@@ -85,9 +85,9 @@ class CounterWidgetProvider : AppWidgetProvider() {
     val item = widget.counterItem
     if (item != null && !TextUtils.isEmpty(buttonAction)) {
       when (buttonAction) {
-        INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
-        DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
-        SINGLE_ACTION -> CounterItemManager.incrementAndSave(item)
+//        INCREMENT_CLICKED -> CounterItemManager.incrementAndSave(item)
+//        DECREMENT_CLICKED -> CounterItemManager.decrementAndSave(item)
+//        SINGLE_ACTION -> CounterItemManager.incrementAndSave(item)
       }
     }
 

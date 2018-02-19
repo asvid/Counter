@@ -4,35 +4,22 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.AppBarLayout.OnOffsetChangedListener
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import asvid.counter.R
-import asvid.counter.charts.MyXAxisValueFormatter
-import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.counter.CounterItemManager
+import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager
 import asvid.counter.utils.startAlphaAnimation
 import asvid.counter.widget.views.WidgetPreview
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import kotlinx.android.synthetic.main.activity_counter_details.changeDate
-import kotlinx.android.synthetic.main.activity_counter_details.decrementButton
 import kotlinx.android.synthetic.main.activity_counter_details.image
 import kotlinx.android.synthetic.main.activity_counter_details.imageToolbar
-import kotlinx.android.synthetic.main.activity_counter_details.incrementButton
 import kotlinx.android.synthetic.main.activity_counter_details.toolbar
-import kotlinx.android.synthetic.main.activity_counter_details.toolbarTitle
 import kotlinx.android.synthetic.main.content_counter_details.changesChart
 import kotlinx.android.synthetic.main.content_counter_details.changesList
 import kotlinx.android.synthetic.main.content_counter_details.emptyChangesText
-import org.ocpsoft.prettytime.PrettyTime
 import timber.log.Timber
 import kotlin.properties.Delegates
 
@@ -44,7 +31,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   private var mAppBarLayout: AppBarLayout by Delegates.notNull()
   private var buttonsLayout: View by Delegates.notNull()
 
-  private var counterItem: CounterItem by Delegates.notNull()
+  private var counterItem: CounterEntity by Delegates.notNull()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -57,44 +44,44 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
 
     mAppBarLayout.addOnOffsetChangedListener(this)
 
-    setView()
-    setHistoryList()
-    setChart()
+//    setView()
+//    setHistoryList()
+//    setChart()
   }
 
-  private fun setChart() {
-    if (counterItem.changes.isNotEmpty()) {
-      showChanges()
-      val entries = ArrayList<Entry>()
-      val refTime = counterItem.changes[0].date!!.time
-      counterItem.changes.mapTo(entries) {
-        Entry((it.date!!.time - refTime).toFloat(), it.postValue!!.toFloat())
-      }
-      val xAxis = changesChart.xAxis
-      xAxis.position = XAxis.XAxisPosition.BOTTOM
-      xAxis.valueFormatter = MyXAxisValueFormatter(refTime, this)
-      xAxis.granularity = 1f
-      xAxis.isGranularityEnabled = true
-      changesChart.extraBottomOffset = 50f
-
-      val leftYAxis = changesChart.axisLeft
-      val rightYAxis = changesChart.axisRight
-      leftYAxis.isGranularityEnabled = true
-      rightYAxis.isGranularityEnabled = true
-
-      val dataSet = LineDataSet(entries, "data")
-      dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-      dataSet.setDrawFilled(true)
-      val lineData = LineData(dataSet)
-      changesChart.data = lineData
-      changesChart.description.text = ""
-      changesChart.legend.isEnabled = false
-
-      changesChart.invalidate()
-    } else {
-      showNoChangesText()
-    }
-  }
+//  private fun setChart() {
+//    if (counterItem.changes.isNotEmpty()) {
+//      showChanges()
+//      val entries = ArrayList<Entry>()
+//      val refTime = counterItem.changes[0].date!!.time
+//      counterItem.changes.mapTo(entries) {
+//        Entry((it.date!!.time - refTime).toFloat(), it.postValue!!.toFloat())
+//      }
+//      val xAxis = changesChart.xAxis
+//      xAxis.position = XAxis.XAxisPosition.BOTTOM
+//      xAxis.valueFormatter = MyXAxisValueFormatter(refTime, this)
+//      xAxis.granularity = 1f
+//      xAxis.isGranularityEnabled = true
+//      changesChart.extraBottomOffset = 50f
+//
+//      val leftYAxis = changesChart.axisLeft
+//      val rightYAxis = changesChart.axisRight
+//      leftYAxis.isGranularityEnabled = true
+//      rightYAxis.isGranularityEnabled = true
+//
+//      val dataSet = LineDataSet(entries, "data")
+//      dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+//      dataSet.setDrawFilled(true)
+//      val lineData = LineData(dataSet)
+//      changesChart.data = lineData
+//      changesChart.description.text = ""
+//      changesChart.legend.isEnabled = false
+//
+//      changesChart.invalidate()
+//    } else {
+//      showNoChangesText()
+//    }
+//  }
 
   private fun showNoChangesText() {
     emptyChangesText.visibility = View.VISIBLE
@@ -108,41 +95,41 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
     changesList.visibility = View.VISIBLE
   }
 
-  private fun setHistoryList() {
-    changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
-    changesList.layoutManager = LinearLayoutManager(this)
-    changesList.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
-  }
+//  private fun setHistoryList() {
+//    changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
+//    changesList.layoutManager = LinearLayoutManager(this)
+//    changesList.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
+//  }
+//
+//  private fun setView() {
+//    toolbarTitle.text = counterItem.name
+//    toolbarTitle.onTextContextMenuItem(R.attr.menu)
+//    if (counterItem.changes.isEmpty()) {
+//      changeDate.visibility = View.GONE
+//    } else changeDate.text = PrettyTime().format(
+//        counterItem.changes[counterItem.changes.lastIndex].date)
+//
+//    incrementButton.setOnClickListener {
+//      CounterItemManager.incrementAndSave(counterItem)
+//      updateData()
+//    }
+//    decrementButton.setOnClickListener {
+//      CounterItemManager.decrementAndSave(counterItem)
+//      updateData()
+//    }
+//    setImage()
+//    toolbar.inflateMenu(R.menu.menu_counter_details)
+//    toolbar.setOnMenuItemClickListener(this)
+//  }
 
-  private fun setView() {
-    toolbarTitle.text = counterItem.name
-    toolbarTitle.onTextContextMenuItem(R.attr.menu)
-    if (counterItem.changes.isEmpty()) {
-      changeDate.visibility = View.GONE
-    } else changeDate.text = PrettyTime().format(
-        counterItem.changes[counterItem.changes.lastIndex].date)
-
-    incrementButton.setOnClickListener {
-      CounterItemManager.incrementAndSave(counterItem)
-      updateData()
-    }
-    decrementButton.setOnClickListener {
-      CounterItemManager.decrementAndSave(counterItem)
-      updateData()
-    }
-    setImage()
-    toolbar.inflateMenu(R.menu.menu_counter_details)
-    toolbar.setOnMenuItemClickListener(this)
-  }
-
-  private fun updateData() {
-    toolbarTitle.text = counterItem.name
-    changeDate.text = PrettyTime().format(
-        counterItem.changes[counterItem.changes.lastIndex].date)
-    setImage()
-    setChart()
-    changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
-  }
+//  private fun updateData() {
+//    toolbarTitle.text = counterItem.name
+//    changeDate.text = PrettyTime().format(
+//        counterItem.changes[counterItem.changes.lastIndex].date)
+//    setImage()
+//    setChart()
+//    changesList.adapter = ChangeHistoryAdapter(counterItem.changes.reversed(), this)
+//  }
 
   private fun setImage() {
     val widgetView = WidgetPreview(this)
@@ -196,7 +183,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   private fun editCounter() {
     DialogManager.showCounterEditDialog(this, counterItem, object : DialogCallback {
       override fun onPositiveClicked() {
-        updateData()
+//        updateData()
       }
 
       override fun onNegativeClicked() {
