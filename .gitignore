@@ -19,3 +19,15 @@ app/google-services\.json
 fastlane/
 
 *.json
+
+buildSrc/build/classes/
+
+buildSrc/build/tmp/
+
+buildSrc/build/libs/
+
+buildSrc/build/kotlin-classes/
+
+buildSrc/build/kotlin-build/
+
+buildSrc/build/kotlin/

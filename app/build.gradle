@@ -4,7 +4,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-crash'
-apply from: '../dependencies.gradle'
 
 android {
   signingConfigs {
@@ -18,13 +17,13 @@ android {
   android.signingConfigs.release.keyAlias props.keyAlias
   android.signingConfigs.release.keyPassword props.keyAliasPassword
 
-  compileSdkVersion deps.build.compileSdkVersion
+  compileSdkVersion Build.compileSdkVersion
   defaultConfig {
     applicationId "asvid.counter"
-    minSdkVersion deps.build.minSdkVersion
-    targetSdkVersion deps.build.targetSdkVersion
-    versionCode deps.build.versionCode
-    versionName deps.build.versionName
+    minSdkVersion Build.minSdkVersion
+    targetSdkVersion Build.targetSdkVersion
+    versionCode Build.versionCode
+    versionName Build.versionName
 
     vectorDrawables.useSupportLibrary = true
     buildConfigField "long", "REALM_SCHEMA_VERSION", "1"
@@ -47,55 +46,55 @@ android {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  implementation deps.external.kotlin
-  implementation deps.support.appcompat
-  implementation deps.support.preference
-  implementation deps.support.recyclerView
-  implementation deps.support.cardView
-  implementation deps.support.design
-  implementation deps.support.constraint
-  implementation deps.firebase.core
-  implementation deps.firebase.crash
-  implementation deps.firebase.messaging
+  implementation External.kotlin
+  implementation Support.appcompat
+  implementation Support.preference
+  implementation Support.recyclerView
+  implementation Support.cardView
+  implementation Support.design
+  implementation Support.constraint
+  implementation Firebase.core
+  implementation Firebase.crash
+  implementation Firebase.messaging
 
   //  color picker
-  implementation deps.external.colorPicker
+  implementation External.colorPicker
   //  colors for color picker
-  implementation deps.external.materialColors
+  implementation External.materialColors
 
   //  logging
-  implementation deps.external.timber
+  implementation External.timber
 
   //  vector icons
-  implementation deps.external.vectorIcons
-  implementation deps.external.vectorIconsViews
-  implementation deps.external.fontAwesomeIcons
+  implementation External.vectorIcons
+  implementation External.vectorIconsViews
+  implementation External.fontAwesomeIcons
 
   //  charts
-  implementation deps.external.charts
+  implementation External.charts
 
   //  pretty time
-  implementation deps.external.prettyTime
+  implementation External.prettyTime
   //  RX
-  implementation deps.external.rxjava2
-  implementation deps.external.rxrelay2
-  implementation deps.external.rxbinding
+  implementation External.rxjava2
+  implementation External.rxrelay2
+  implementation External.rxbinding
 
   //  room
-  implementation deps.external.roomRuntime
-  implementation deps.external.roomRx
-  annotationProcessor deps.apt.roomCompiler
-  kapt deps.apt.roomCompiler
+  implementation External.roomRuntime
+  implementation External.roomRx
+  annotationProcessor Apt.roomCompiler
+  kapt Apt.roomCompiler
 
   //  DI
-  implementation deps.external.dagger
-  implementation deps.external.daggerSupport
-  annotationProcessor deps.apt.daggerCompiler
-  kapt deps.apt.daggerCompiler
+  implementation External.dagger
+  implementation External.daggerSupport
+  annotationProcessor Apt.daggerCompiler
+  kapt Apt.daggerCompiler
 
-  debugCompile deps.external.leakcanaryDebug
-  releaseCompile deps.external.leakcanaryRelease
-  testCompile deps.external.leakcanaryRelease
+  debugCompile External.leakcanaryDebug
+  releaseCompile External.leakcanaryRelease
+  testCompile External.leakcanaryRelease
 }
 
 apply plugin: 'com.google.gms.google-services'
