@@ -1,7 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-  apply from: 'dependencies.gradle'
   repositories {
     jcenter()
     google()
@@ -10,12 +9,12 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.0-alpha01'
-    classpath "io.realm:realm-gradle-plugin:3.5.0"
-    classpath 'com.google.gms:google-services:3.0.0'
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${deps.versions.kotlin}"
-    classpath "org.jetbrains.kotlin:kotlin-android-extensions:${deps.versions.kotlin}"
-    classpath('com.google.firebase:firebase-plugins:1.0.5') {
+    classpath ProjectDpes.gradlePlugin
+    classpath ProjectDpes.realmPlugin
+    classpath ProjectDpes.googleServices
+    classpath ProjectDpes.kotlinPlugin
+    classpath ProjectDpes.kotlinExtensions
+    classpath(ProjectDpes.firebasePlugin) {
       exclude group: 'com.google.guava', module: 'guava-jdk5'
     }
   }

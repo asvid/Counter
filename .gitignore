@@ -23,3 +23,15 @@ fastlane/
 app/libs/
 app/src/main/res/layout-land/
 app/src/main/res/values-pl-rPL/
+
+buildSrc/build/classes/
+
+buildSrc/build/tmp/
+
+buildSrc/build/libs/
+
+buildSrc/build/kotlin-classes/
+
+buildSrc/build/kotlin-build/
+
+buildSrc/build/kotlin/
