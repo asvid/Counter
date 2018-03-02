@@ -32,15 +32,8 @@ import kotlinx.android.synthetic.main.activity_main.counterNameInputLayer
 import kotlinx.android.synthetic.main.activity_main.counterStartValue
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Named
 
 class MainActivity : AppCompatActivity() {
-
-  @field:[Inject Named("string1")]
-  lateinit var string1: String
-
-  @set:[Inject Named("isDebug")]
-  var isDebug: Boolean? = null
 
   lateinit var counterRepository: CounterRepository
     @Inject set
@@ -49,8 +42,6 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-
 
     AndroidInjection.inject(this)
 

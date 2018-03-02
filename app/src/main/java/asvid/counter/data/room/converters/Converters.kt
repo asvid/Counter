@@ -3,8 +3,8 @@ package asvid.counter.data.room.converters
 import android.arch.persistence.room.TypeConverter
 import java.util.Date
 
-object Converters {
-  
+class Converters {
+
   @TypeConverter
   fun fromTimestamp(value: Long?): Date? {
     return if (value == null) null else Date(value)
