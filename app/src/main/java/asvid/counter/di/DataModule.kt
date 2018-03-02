@@ -7,6 +7,8 @@ import asvid.counter.data.room.counter.CounterDatabase
 import asvid.counter.data.room.counter.CounterRepository
 import asvid.counter.data.room.counter.changes.ChangesDao
 import asvid.counter.data.room.counter.changes.ChangesRepository
+import asvid.counter.data.room.widget.WidgetDao
+import asvid.counter.data.room.widget.WidgetRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -39,7 +41,10 @@ class DataModule {
 
   @Singleton
   @Provides
-  @Named("string1")
-  fun provideString1() = "STRING_1"
+  fun widgetRepository(widgetDao: WidgetDao): WidgetRepository = WidgetRepository(widgetDao)
+
+  @Singleton
+  @Provides
+  fun widgetDao(context: Context): WidgetDao = counterDatabase(context).widgetDao()
 
 }

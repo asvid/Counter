@@ -3,6 +3,7 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/sonarlint
 .DS_Store
 /build
 /captures
@@ -19,3 +20,6 @@ app/google-services\.json
 fastlane/
 
 *.json
+app/libs/
+app/src/main/res/layout-land/
+app/src/main/res/values-pl-rPL/

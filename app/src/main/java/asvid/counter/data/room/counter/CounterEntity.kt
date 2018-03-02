@@ -19,6 +19,7 @@ data class CounterEntity(var name: String, var value: Int) {
   @NonNull
   var id: Long? = null
 
+  //  TODO: move to model, Entity should be pure DB class
   fun incrementValue() {
     val change = Change()
     change.date = Date()
@@ -28,6 +29,7 @@ data class CounterEntity(var name: String, var value: Int) {
     TODO("add change")
   }
 
+  //  TODO: move to model, Entity should be pure DB class
   fun decrementValue() {
     val change = Change()
     change.date = Date()
