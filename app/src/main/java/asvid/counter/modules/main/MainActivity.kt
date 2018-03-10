@@ -14,7 +14,7 @@ import android.view.View.GONE
 import asvid.counter.R
 import asvid.counter.R.layout
 import asvid.counter.data.room.counter.CounterEntity
-import asvid.counter.data.room.counter.CounterRepository
+import asvid.counter.repository.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager

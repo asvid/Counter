@@ -47,3 +47,7 @@ p
 @app/src/main/java/asvid/counter/data/room/widget/WidgetEntity.kt,a/3/a3d625a6c2632cd34016812b759362336dfa18cd
 r
 Bapp/src/main/java/asvid/counter/data/room/counter/CounterEntity.kt,d/d/dd8b6feb50a62879c7b64a29ddc5f4853080a0a5
+<
+signing.conf,c\f\cfb460901c592b9110031662016fbbbd19d273e7
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35

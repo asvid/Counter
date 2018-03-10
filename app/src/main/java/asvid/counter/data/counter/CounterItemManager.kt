@@ -3,9 +3,10 @@ package asvid.counter.data.counter
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import asvid.counter.data.room.counter.CounterEntity
-import asvid.counter.data.room.counter.CounterRepository
+import asvid.counter.repository.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.di.Di.context
+import asvid.counter.model.Counter
 import asvid.counter.widget.CounterWidgetProvider
 import io.reactivex.Flowable
 import timber.log.Timber
@@ -16,12 +17,6 @@ object CounterItemManager {
   lateinit var counterRepository: CounterRepository
     @Inject set
 
-  fun incrementAndSave(counterEntity: CounterEntity) {
-    counterEntity.incrementValue()
-    saveAndUpdateWidget(counterEntity)
-    Timber.i("incrementAndSave: $counterEntity")
-  }
-
   fun updateWidget(id: Long?) {
     val intent = Intent(context, CounterWidgetProvider::class.java)
     intent.action = CounterWidgetProvider.UPDATE
@@ -30,13 +25,8 @@ object CounterItemManager {
     context.sendBroadcast(intent)
   }
 
-  fun decrementAndSave(counterEntity: CounterEntity) {
-    counterEntity.decrementValue()
-    saveAndUpdateWidget(counterEntity)
-  }
-
-  fun saveAndUpdateWidget(counterEntity: CounterEntity) {
-    counterRepository.updateCounter(counterEntity)
+  fun saveAndUpdateWidget(counter: Counter) {
+    counterRepository.save(counter)
     Di.storage.getWidgetsOfCounter(counterEntity).map { updateWidget(it.id) }
   }
 

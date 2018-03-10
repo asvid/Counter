@@ -5,15 +5,10 @@ import asvid.counter.BuildConfig
 import asvid.counter.data.counter.CounterItem
 import asvid.counter.data.data_migration.Migration
 import asvid.counter.data.down_counter.DownCounterWidget
-import asvid.counter.data.room.counter.CounterEntity
-import asvid.counter.data.widget.CounterWidget
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmObject
 
-/**
- * Created by adam on 15.01.17.
- */
 val ID = "id"
 
 class Storage(context: Context) {
@@ -35,21 +30,10 @@ class Storage(context: Context) {
         realm.commitTransaction()
     }
 
-    fun saveWidget(widget: CounterWidget) {
-        realm.beginTransaction()
-        realm.copyToRealmOrUpdate(widget)
-        realm.commitTransaction()
-    }
-
     fun saveDownCounter(widget: DownCounterWidget) {
         realm.beginTransaction()
         realm.copyToRealmOrUpdate(widget)
         realm.commitTransaction()
-    }
-
-    fun getWidget(id: Int): CounterWidget {
-        return realm.copyFromRealm(
-            realm.where(CounterWidget::class.java).equalTo("id", id).findFirst())
     }
 
     fun getDownCounterWidget(id: Int): DownCounterWidget {
@@ -84,11 +68,6 @@ class Storage(context: Context) {
             realm.where(CounterItem::class.java).equalTo("id", id).findFirst())
     }
 
-    fun deleteWidget(widget: CounterWidget) {
-        deleteObject(
-            realm.where(CounterWidget::class.java).equalTo("id", widget.id?.toInt()!!).findFirst())
-    }
-
     fun deleteCounter(counter: CounterItem) {
         deleteObject(
             realm.where(CounterItem::class.java).equalTo("id", counter.id?.toInt()!!).findFirst())
@@ -100,15 +79,5 @@ class Storage(context: Context) {
             realmObject.deleteFromRealm()
             realm.commitTransaction()
         }
-    }
-
-    fun getWidgetsOfCounter(counter: CounterEntity): List<CounterWidget> {
-        return realm.where(CounterWidget::class.java)
-            .equalTo("counterItem.id", counter.id!!)
-            .findAll()
-    }
-
-    fun getAllWidgets(): MutableList<CounterWidget> {
-        return realm.copyFromRealm(realm.where(CounterWidget::class.java).findAll())
     }
 }
