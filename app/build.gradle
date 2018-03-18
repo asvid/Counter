@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-crash'
 
 android {
@@ -26,7 +25,6 @@ android {
     versionName Build.versionName
 
     vectorDrawables.useSupportLibrary = true
-    buildConfigField "long", "REALM_SCHEMA_VERSION", "1"
   }
   buildTypes {
     release {

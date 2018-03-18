@@ -11,8 +11,8 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import asvid.counter.R
 import asvid.counter.data.counter.CounterItemManager
-import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.di.Di
+import asvid.counter.model.Counter
 import com.thebluealliance.spectrum.SpectrumDialog
 import timber.log.Timber
 import java.util.Calendar
@@ -22,7 +22,7 @@ object DialogManager {
 
   private fun getBuilder(context: Context) = AlertDialog.Builder(context)
 
-  fun showCounterEditDialog(context: Context, counter: CounterEntity, callback: DialogCallback) {
+  fun showCounterEditDialog(context: Context, counter: Counter, callback: DialogCallback) {
     val builder = getBuilder(context)
     builder.setTitle(context.resources.getString(R.string.edit_counter_dialog_title))
 
@@ -53,7 +53,7 @@ object DialogManager {
   }
 
   fun showCounterDeleteDialog(context: Context,
-      counterItem: CounterEntity, dialogCallback: DialogCallback) {
+      counterItem: Counter, dialogCallback: DialogCallback) {
     val builder = getBuilder(context)
     builder.setTitle(context.resources.getString(R.string.delete_counter_dialog_title))
     builder.setMessage(context.resources.getString(R.string.delete_counter_dialog_content))

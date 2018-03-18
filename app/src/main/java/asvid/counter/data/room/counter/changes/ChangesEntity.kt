@@ -29,7 +29,7 @@ data class ChangesEntity(
     const val ID = "counterId"
   }
 
-  @PrimaryKey
+  @PrimaryKey(autoGenerate = true)
   @NonNull
   var id: Long? = null
 

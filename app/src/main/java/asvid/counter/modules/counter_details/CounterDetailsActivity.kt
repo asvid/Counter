@@ -9,9 +9,9 @@ import android.view.MenuItem
 import android.view.View
 import asvid.counter.R
 import asvid.counter.data.counter.CounterItemManager
-import asvid.counter.data.room.counter.CounterEntity
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager
+import asvid.counter.model.Counter
 import asvid.counter.utils.startAlphaAnimation
 import asvid.counter.widget.views.WidgetPreview
 import kotlinx.android.synthetic.main.activity_counter_details.image
@@ -23,7 +23,8 @@ import kotlinx.android.synthetic.main.content_counter_details.emptyChangesText
 import timber.log.Timber
 import kotlin.properties.Delegates
 
-class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnMenuItemClickListener {
+class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener,
+    OnMenuItemClickListener {
 
   private var mIsTheTitleVisible = false
   private var isButtonsLayoutVisible = true
@@ -31,14 +32,14 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   private var mAppBarLayout: AppBarLayout by Delegates.notNull()
   private var buttonsLayout: View by Delegates.notNull()
 
-  private var counterItem: CounterEntity by Delegates.notNull()
+  private var counterItem: Counter? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_counter_details)
 
     val counterId = intent.extras.getLong(EXTRA_COUNTER)
-    counterItem = CounterItemManager.getCounterItem(counterId)
+    CounterItemManager.getCounterItem(counterId).subscribe { counterItem }
 
     bindActivity()
 
@@ -134,8 +135,8 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   private fun setImage() {
     val widgetView = WidgetPreview(this)
 
-    widgetView.setNameText(counterItem.name)
-    widgetView.setValueText(counterItem.value)
+    widgetView.setNameText(counterItem?.name)
+    widgetView.setValueText(counterItem?.value)
     widgetView.setStrokeColor(resources.getColor(R.color.colorAccent))
 
     val imageBitmap = widgetView.getBitmap()
@@ -168,9 +169,9 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   }
 
   private fun deleteCounter() {
-    DialogManager.showCounterDeleteDialog(this, counterItem, object : DialogCallback {
+    DialogManager.showCounterDeleteDialog(this, counterItem!!, object : DialogCallback {
       override fun onPositiveClicked() {
-        CounterItemManager.deleteCounterItem(counterItem)
+        CounterItemManager.deleteCounterItem(counterItem!!)
         finish()
       }
 
@@ -181,7 +182,7 @@ class CounterDetailsActivity : AppCompatActivity(), OnOffsetChangedListener, OnM
   }
 
   private fun editCounter() {
-    DialogManager.showCounterEditDialog(this, counterItem, object : DialogCallback {
+    DialogManager.showCounterEditDialog(this, counterItem!!, object : DialogCallback {
       override fun onPositiveClicked() {
 //        updateData()
       }

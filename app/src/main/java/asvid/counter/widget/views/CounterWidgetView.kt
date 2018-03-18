@@ -13,9 +13,9 @@ import android.widget.RemoteViews
 import asvid.counter.R
 import asvid.counter.R.id
 import asvid.counter.R.string
-import asvid.counter.data.widget.CounterWidget
 import asvid.counter.dpToPx
 import asvid.counter.getLastItem
+import asvid.counter.model.CounterWidget
 import asvid.counter.widget.CounterWidgetProvider
 import org.ocpsoft.prettytime.PrettyTime
 import timber.log.Timber
@@ -66,16 +66,16 @@ class CounterWidgetView(val context: Context) {
 
     fun update(appWidgetManager: AppWidgetManager, widgetId: Int,
         widget: CounterWidget, remoteView: RemoteViews) {
-        remoteView.setTextViewText(R.id.counterName, widget.counterItem?.name)
-        remoteView.setTextViewText(R.id.counterStartValue, widget.counterItem?.value.toString())
-        if (widget.counterItem!!.changes.isNotEmpty()) remoteView.setTextViewText(R.id.lastChange,
-            getLastChangePretyTime(widget))
-        setStrokeColor(widget.color!!)
-        remoteView.setImageViewBitmap(R.id.imageView, getBitmap(widget.size!!.widthFactor!!))
-
-        setActions(remoteView, widget, widgetId)
-
-        appWidgetManager.updateAppWidget(widgetId, remoteView)
+//        remoteView.setTextViewText(R.id.counterName, widget.counterItem?.name)
+//        remoteView.setTextViewText(R.id.counterStartValue, widget.counterItem?.value.toString())
+//        if (widget.counterItem!!.changes.isNotEmpty()) remoteView.setTextViewText(R.id.lastChange,
+//            getLastChangePretyTime(widget))
+//        setStrokeColor(widget.color!!)
+//        remoteView.setImageViewBitmap(R.id.imageView, getBitmap(widget.size!!.widthFactor!!))
+//
+//        setActions(remoteView, widget, widgetId)
+//
+//        appWidgetManager.updateAppWidget(widgetId, remoteView)
     }
 
     private fun setActions(remoteView: RemoteViews,
@@ -93,7 +93,7 @@ class CounterWidgetView(val context: Context) {
     }
 
     private fun getLastChangePretyTime(widget: CounterWidget) = PrettyTime().format(
-        widget.counterItem!!.changes.getLastItem().date)
+        widget.counter.changes.getLastItem().date)
 
     fun setInactive(appWidgetManager: AppWidgetManager, widgetId: Int,
         widget: CounterWidget, remoteView: RemoteViews) {

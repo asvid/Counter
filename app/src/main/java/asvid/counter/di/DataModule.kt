@@ -4,10 +4,10 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import asvid.counter.data.room.counter.CounterDao
 import asvid.counter.data.room.counter.CounterDatabase
-import asvid.counter.repository.CounterRepository
 import asvid.counter.data.room.counter.changes.ChangesDao
-import asvid.counter.repository.ChangesRepository
 import asvid.counter.data.room.widget.counter.CounterWidgetDao
+import asvid.counter.repository.ChangesRepository
+import asvid.counter.repository.CounterRepository
 import asvid.counter.repository.CounterWidgetRepository
 import dagger.Module
 import dagger.Provides
@@ -32,8 +32,7 @@ class DataModule {
 
   @Singleton
   @Provides
-  fun changesRepository(
-      changesDao: ChangesDao): ChangesRepository = ChangesRepository()
+  fun changesRepository(changesDao: ChangesDao): ChangesRepository = ChangesRepository(changesDao)
 
   @Singleton
   @Provides
@@ -41,7 +40,8 @@ class DataModule {
 
   @Singleton
   @Provides
-  fun widgetRepository(counterWidgetDao: CounterWidgetDao): CounterWidgetRepository = CounterWidgetRepository(
+  fun widgetRepository(
+      counterWidgetDao: CounterWidgetDao): CounterWidgetRepository = CounterWidgetRepository(
       counterWidgetDao)
 
   @Singleton

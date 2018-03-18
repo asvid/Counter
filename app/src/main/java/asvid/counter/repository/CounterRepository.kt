@@ -9,6 +9,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
+import timber.log.Timber
 import javax.inject.Inject
 
 class CounterRepository @Inject constructor(
@@ -39,6 +40,7 @@ class CounterRepository @Inject constructor(
     return Single.fromCallable {
       val id = counterDao.save(model.toEntity())
       model.id = id
+      Timber.d("Counter inserted to DB: $model")
       return@fromCallable model
     }
   }

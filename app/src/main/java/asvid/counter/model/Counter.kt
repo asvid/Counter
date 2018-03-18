@@ -2,7 +2,7 @@ package asvid.counter.model
 
 import java.util.Date
 
-data class Counter(var id: Long, var name: String, var value: Int) {
+data class Counter(var id: Long?, var name: String, var value: Int) {
 
   var changes: MutableList<Change> = mutableListOf()
 

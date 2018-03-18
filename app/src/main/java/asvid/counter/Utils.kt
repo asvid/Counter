@@ -3,27 +3,26 @@ package asvid.counter
 import android.graphics.Color
 import android.util.DisplayMetrics
 import asvid.counter.di.Di.context
-import asvid.counter.data.counter.Change
-import io.realm.RealmList
+import asvid.counter.model.Change
 
 fun dpToPx(dp: Int): Int {
-    val resources = context.resources
-    val metrics = resources.displayMetrics
-    return (dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+  val resources = context.resources
+  val metrics = resources.displayMetrics
+  return (dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
 }
 
 fun getComplementaryColor(color: Int): Int {
-    return Color.argb(Color.alpha(color), 255 - Color.red(color),
-        255 - Color.green(color),
-        255 - Color.blue(color))
+  return Color.argb(Color.alpha(color), 255 - Color.red(color),
+      255 - Color.green(color),
+      255 - Color.blue(color))
 }
 
 fun addAlphaToColor(color: Int, alpha: Int): Int {
-    return Color.argb(alpha, Color.red(color),
-        Color.green(color),
-        Color.blue(color))
+  return Color.argb(alpha, Color.red(color),
+      Color.green(color),
+      Color.blue(color))
 }
 
-fun RealmList<Change>.getLastItem(): Change {
-    return this[this.lastIndex]
+fun MutableList<Change>.getLastItem(): Change {
+  return this[this.lastIndex]
 }

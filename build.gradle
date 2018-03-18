@@ -10,7 +10,6 @@ buildscript {
   }
   dependencies {
     classpath ProjectDpes.gradlePlugin
-    classpath ProjectDpes.realmPlugin
     classpath ProjectDpes.googleServices
     classpath ProjectDpes.kotlinPlugin
     classpath ProjectDpes.kotlinExtensions

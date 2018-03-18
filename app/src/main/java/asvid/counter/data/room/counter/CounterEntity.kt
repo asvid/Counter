@@ -13,8 +13,12 @@ data class CounterEntity(var name: String, var value: Int) {
     const val ID = "id"
   }
 
-  @PrimaryKey
+  @PrimaryKey(autoGenerate = true)
   @NonNull
   var id: Long? = null
+
+  override fun toString(): String {
+    return "CounterEntity(name='$name', value=$value, id=$id)"
+  }
 
 }

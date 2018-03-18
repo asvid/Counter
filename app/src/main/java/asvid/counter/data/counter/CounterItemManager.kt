@@ -2,14 +2,12 @@ package asvid.counter.data.counter
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import asvid.counter.data.room.counter.CounterEntity
-import asvid.counter.repository.CounterRepository
-import asvid.counter.di.Di
 import asvid.counter.di.Di.context
 import asvid.counter.model.Counter
+import asvid.counter.repository.CounterRepository
 import asvid.counter.widget.CounterWidgetProvider
 import io.reactivex.Flowable
-import timber.log.Timber
+import io.reactivex.Maybe
 import javax.inject.Inject
 
 object CounterItemManager {
@@ -27,29 +25,27 @@ object CounterItemManager {
 
   fun saveAndUpdateWidget(counter: Counter) {
     counterRepository.save(counter)
-    Di.storage.getWidgetsOfCounter(counterEntity).map { updateWidget(it.id) }
   }
 
-  fun getAllCounterItems(): Flowable<List<CounterEntity>> {
-    return counterRepository.getAll()
+  fun getAllCounterItems(): Flowable<Collection<Counter>> {
+    return counterRepository.fetchAll()
   }
 
-  fun getCounterItem(id: Long): CounterEntity {
-    return counterRepository.getCounter(id)
+  fun getCounterItem(id: Long): Maybe<Counter> {
+    return counterRepository.fetchById(id)
   }
 
-  fun saveCounterItem(counterEntity: CounterEntity) {
-    counterRepository.updateCounter(counterEntity)
+  fun saveCounterItem(counter: Counter) {
+    counterRepository.save(counter)
   }
 
   fun createNewCounter(name: String, value: Int) {
-    val counterEntity = CounterEntity(name, value)
-    counterRepository.createNewCounter(counterEntity)
+    val counterEntity = Counter(null, name, value)
+    counterRepository.save(counterEntity)
   }
 
-  fun deleteCounterItem(counterEntity: CounterEntity) {
-    Di.storage.getWidgetsOfCounter(counterEntity).map { updateWidget(it.id) }
-    counterRepository.deleteCounter(counterEntity)
+  fun deleteCounterItem(counter: Counter) {
+    counterRepository.delete(counter)
   }
 
 }

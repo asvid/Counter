@@ -70,7 +70,6 @@
 -dontnote org.apache.http.**
 -dontwarn java.awt.**
 -dontwarn org.postgresql.**
--dontwarn io.realm.**
 -dontwarn okio.**
 -dontwarn retrofit2.Platform$Java8
 -dontwarn com.yoavst.**

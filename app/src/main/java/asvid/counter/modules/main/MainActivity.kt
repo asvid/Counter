@@ -13,15 +13,15 @@ import android.view.View
 import android.view.View.GONE
 import asvid.counter.R
 import asvid.counter.R.layout
-import asvid.counter.data.room.counter.CounterEntity
-import asvid.counter.repository.CounterRepository
 import asvid.counter.di.Di
 import asvid.counter.dialogs.DialogCallback
 import asvid.counter.dialogs.DialogManager
+import asvid.counter.model.Counter
 import asvid.counter.modules.app_info.AppInfoActivity
 import asvid.counter.modules.counter_details.CounterDetailsActivity
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
 import asvid.counter.modules.widget_list.WidgetListActivity
+import asvid.counter.repository.CounterRepository
 import asvid.counter.utils.startAlphaAnimation
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.addButton
@@ -93,26 +93,29 @@ class MainActivity : AppCompatActivity() {
         ACTION.DECREMENT -> onItemDecrement(action.item, action.position)
       }
     }
-    counterRepository.getAll().subscribe { list ->
+    counterRepository.fetchAll().subscribe { list ->
       Timber.d("list update: $list")
       if (list.isEmpty()) availableCountersText.visibility = GONE
-      counterAdapter.setItems(list)
+      counterAdapter.setItems(list.toList())
     }
 
   }
 
   private fun addItem(name: String, value: String) {
-    counterRepository.createNewCounter(CounterEntity(name, Integer.parseInt(value)))
-    counterName.text.clear()
-    startAlphaAnimation(counterName, this)
-    counterList.scrollToPosition(counterAdapter.itemCount - 1)
+    val newCounter = Counter(null, name, value.toInt())
+    counterRepository.save(newCounter).subscribe { onSuccess ->
+      Timber.d("Counter inserted to DB: $onSuccess")
+      counterName.text.clear()
+      startAlphaAnimation(counterName, this)
+      counterList.scrollToPosition(counterAdapter.itemCount - 1)
+    }
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemDelete(item: CounterEntity, position: Int) {
+  fun onItemDelete(item: Counter, position: Int) {
     DialogManager.showCounterDeleteDialog(this, item, object : DialogCallback {
       override fun onPositiveClicked() {
-        counterRepository.deleteCounter(item)
+        counterRepository.delete(item)
       }
 
       override fun onNegativeClicked() {
@@ -122,7 +125,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemEdit(item: CounterEntity, position: Int) {
+  fun onItemEdit(item: Counter, position: Int) {
     DialogManager.showCounterEditDialog(this, item, object : DialogCallback {
       override fun onPositiveClicked() {
         counterAdapter.notifyItemChanged(position)
@@ -135,24 +138,24 @@ class MainActivity : AppCompatActivity() {
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemIncrement(item: CounterEntity, position: Int) {
+  fun onItemIncrement(item: Counter, position: Int) {
     item.incrementValue()
-    counterRepository.updateCounter(item)
+    counterRepository.save(item)
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemDecrement(item: CounterEntity, position: Int) {
+  fun onItemDecrement(item: Counter, position: Int) {
     item.decrementValue()
-    counterRepository.updateCounter(item)
+    counterRepository.save(item)
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onItemClicked(item: CounterEntity, position: Int) {
+  fun onItemClicked(item: Counter, position: Int) {
 //NOOP
   }
 
   //  TODO: move to other class, same in CounterWIdgetConfigurationActivity
-  fun onDetailsClicked(item: CounterEntity, position: Int,
+  fun onDetailsClicked(item: Counter, position: Int,
       holder: CounterItemViewHolder) {
     val intent = Intent(this, CounterDetailsActivity::class.java)
     intent.putExtra(CounterDetailsActivity.EXTRA_COUNTER, item.id)

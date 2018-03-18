@@ -9,13 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import asvid.counter.di.Di
 import asvid.counter.R
 import asvid.counter.R.layout
 import asvid.counter.data.counter.CounterItemManager
-import asvid.counter.data.widget.CounterWidget
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DialogManager
+import asvid.counter.model.CounterWidget
 import asvid.counter.widget.views.WidgetPreview
 import com.mikepenz.iconics.view.IconicsButton
 import org.ocpsoft.prettytime.PrettyTime
@@ -24,30 +23,29 @@ import timber.log.Timber
 class WidgetListAdapter(
     private val items: List<CounterWidget>,
     val context: Context,
-    val supportFragmentManager: android.support.v4.app.FragmentManager) : Adapter<CounterWidgetViewHolder>() {
+    val supportFragmentManager: android.support.v4.app.FragmentManager) :
+    Adapter<CounterWidgetViewHolder>() {
 
   val prettyTime = PrettyTime()
 
   override fun onBindViewHolder(holder: CounterWidgetViewHolder, position: Int) {
     val item = items[position]
     Timber.d("counter widget: $item")
-    if (item.isValid) {
-      holder.item = item
-      holder.counterName.text = item.counterItem?.name
-      holder.widgetAdded.text = prettyTime.format(item.createDate)
-      holder.widgetEdit.setOnClickListener {
-        openColorDialog(holder)
-      }
-      holder.widgetImage.setImageBitmap(getWidgetBitmap(item))
+    holder.item = item
+    holder.counterName.text = item.counter.name
+    holder.widgetAdded.text = prettyTime.format(item.createDate)
+    holder.widgetEdit.setOnClickListener {
+      openColorDialog(holder)
     }
+    holder.widgetImage.setImageBitmap(getWidgetBitmap(item))
   }
 
   private fun getWidgetBitmap(item: CounterWidget): Bitmap? {
     val widgetView = WidgetPreview(context)
 
-    widgetView.setNameText(item.counterItem!!.name)
-    widgetView.setValueText(item.counterItem!!.value)
-    widgetView.setStrokeColor(item.color!!)
+    widgetView.setNameText(item.counter.name)
+    widgetView.setValueText(item.counter.value)
+    widgetView.setStrokeColor(item.color)
 
     return widgetView.getBitmap()
   }
@@ -56,7 +54,7 @@ class WidgetListAdapter(
     DialogManager.showColors(context, supportFragmentManager, object : ColorDialogCallback {
       override fun onPositiveClicked(color: Int) {
         holder.item?.color = color
-        Di.storage.saveWidget(holder.item!!)
+//        Di.storage.saveWidget(holder.item!!)
         holder.widgetImage.setImageBitmap(getWidgetBitmap(holder.item!!))
         CounterItemManager.updateWidget(holder.item?.id)
       }

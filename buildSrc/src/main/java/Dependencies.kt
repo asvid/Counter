@@ -15,7 +15,6 @@ object Versions {
 
 object ProjectDpes {
   const val gradlePlugin = "com.android.tools.build:gradle:3.1.0-alpha01"
-  const val realmPlugin = "io.realm:realm-gradle-plugin:3.5.0"
   const val googleServices = "com.google.gms:google-services:3.0.0"
   const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
   const val kotlinExtensions = "org.jetbrains.kotlin:kotlin-android-extensions:${Versions.kotlin}"

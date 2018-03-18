@@ -10,7 +10,7 @@ import android.widget.TextView
 import asvid.counter.R
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.data.counter.Change
+import asvid.counter.model.Change
 import asvid.counter.modules.counter_details.ChangeHistoryAdapter.ChangeViewHolder
 import org.ocpsoft.prettytime.PrettyTime
 
@@ -25,18 +25,16 @@ class ChangeHistoryAdapter(private val items: List<Change>,
 
   override fun onBindViewHolder(holder: ChangeViewHolder, position: Int) {
     val item = items[position]
-    if (item.isValid) {
-      holder.item = item
-      holder.indexView.text = "${position + 1}"
-      holder.changeNameView.text = getChange(item)
-      holder.changeDateView.text = prettyTime.format(item.date)
-    }
+    holder.item = item
+    holder.indexView.text = "${position + 1}"
+    holder.changeNameView.text = getChange(item)
+    holder.changeDateView.text = prettyTime.format(item.date)
   }
 
   private fun getChange(item: Change): CharSequence? {
-    if (item.preValue!! > item.postValue!!) return context.getString(
+    if (item.preValue > item.postValue) return context.getString(
         R.string.value_decremented)
-    if (item.preValue!! < item.postValue!!) return context.getString(
+    if (item.preValue < item.postValue) return context.getString(
         R.string.value_incremented)
     return ""
   }

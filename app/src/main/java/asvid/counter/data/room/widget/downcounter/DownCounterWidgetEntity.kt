@@ -19,7 +19,7 @@ class DownCounterWidgetEntity {
     const val ID = "id"
   }
 
-  @PrimaryKey
+  @PrimaryKey(autoGenerate = true)
   @NonNull
   var id: Long? = null
 

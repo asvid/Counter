@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.data.room.counter.CounterEntity
+import asvid.counter.model.Counter
 import asvid.counter.modules.main.ACTION.DECREMENT
 import asvid.counter.modules.main.ACTION.DELETE
 import asvid.counter.modules.main.ACTION.DETAILS
@@ -18,7 +19,6 @@ import asvid.counter.modules.main.ACTION.EDIT
 import asvid.counter.modules.main.ACTION.INCREMENT
 import asvid.counter.modules.main.ACTION.ITEM_CLICKED
 import asvid.counter.modules.main.CounterListAdapter.CounterItemViewHolder
-import com.mikepenz.iconics.view.IconicsButton
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import org.ocpsoft.prettytime.PrettyTime
@@ -28,7 +28,7 @@ import kotlin.properties.Delegates
  * Created by adam on 15.01.17.
  */
 class CounterListAdapter(
-    private var items: List<CounterEntity>) : Adapter<CounterItemViewHolder>() {
+    private var items: List<Counter>) : Adapter<CounterItemViewHolder>() {
 
   val onClickSubject: PublishSubject<OnClickAction> = PublishSubject.create()
 
@@ -90,19 +90,19 @@ class CounterListAdapter(
 
   inner class CounterItemViewHolder(itemView: View) : ViewHolder(itemView) {
 
-    var item: CounterEntity by Delegates.notNull()
+    var item: Counter by Delegates.notNull()
     var cardView: CardView = itemView.findViewById(id.card_view)
     var name: TextView = itemView.findViewById(id.counterName)
     var value: TextView = itemView.findViewById(id.counterStartValue)
     var deleteButton: Button = itemView.findViewById(id.deleteButton)
     var editButton: Button = itemView.findViewById(id.editButton)
     var detailsButton: Button = itemView.findViewById(id.detailsButton)
-    var incrementButton: IconicsButton = itemView.findViewById(id.incrementButton)
-    var decrementButton: IconicsButton = itemView.findViewById(id.decrementButton)
+    var incrementButton: ImageView = itemView.findViewById(id.incrementButton)
+    var decrementButton: ImageView = itemView.findViewById(id.decrementButton)
     var changeDate: TextView = itemView.findViewById(id.changeDate)
   }
 
-  fun setItems(list: List<CounterEntity>) {
+  fun setItems(list: List<Counter>) {
     items = list
   }
 }

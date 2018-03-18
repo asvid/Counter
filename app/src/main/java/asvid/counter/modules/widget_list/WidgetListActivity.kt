@@ -19,8 +19,8 @@ class WidgetListActivity : AppCompatActivity() {
     }
 
     private fun setList() {
-        widgetList.adapter = WidgetListAdapter(Di.storage.getAllWidgets(), this,
-            supportFragmentManager)
+//        widgetList.adapter = WidgetListAdapter(Di.storage.getAllWidgets(), this,
+//            supportFragmentManager)
         widgetList.layoutManager = LinearLayoutManager(this)
         widgetList.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
     }

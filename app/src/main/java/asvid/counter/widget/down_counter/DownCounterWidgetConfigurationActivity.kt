@@ -14,10 +14,10 @@ import asvid.counter.R
 import asvid.counter.R.color
 import asvid.counter.R.id
 import asvid.counter.R.layout
-import asvid.counter.data.down_counter.DownCounterWidget
 import asvid.counter.dialogs.ColorDialogCallback
 import asvid.counter.dialogs.DateTimeDialogCallback
 import asvid.counter.dialogs.DialogManager
+import asvid.counter.model.DownCounterWidget
 import asvid.counter.widget.views.WidgetPreview
 import kotlinx.android.synthetic.main.down_counter_widget_configuration_activity.addButton
 import kotlinx.android.synthetic.main.down_counter_widget_configuration_activity.downCounterName
@@ -119,18 +119,16 @@ class DownCounterWidgetConfigurationActivity : AppCompatActivity(), TextWatcher 
   }
 
   private fun addItem(name: String, date: Date) {
-    val downCounter = DownCounterWidget()
-    downCounter.id = mAppWidgetId.toLong()
-    downCounter.name = name
-    downCounter.date = date
-    downCounter.color = widgetColorValue
-
-    createWidget(downCounter)
+//    val downCounter = DownCounterWidget()
+//    downCounter.id = mAppWidgetId.toLong()
+//    downCounter.name = name
+//    downCounter.date = date
+//    downCounter.color = widgetColorValue
+//
+//    createWidget(downCounter)
   }
 
   private fun createWidget(counterItem: DownCounterWidget) {
-    Di.storage.saveDownCounter(counterItem)
-
     DownCounterWidgetProvider.updateAppWidget(this, mAppWidgetId.toLong(), counterItem)
 
     setResult(RESULT_OK)
